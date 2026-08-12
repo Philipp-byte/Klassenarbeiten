@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Klassenarbeit – JJWS</title>
+<link rel="stylesheet" href="../shared/theme.css">
+<link rel="icon" href="../../assets/logo/JJWS_Bildmarke_bunt.png">
+<style>
+  /* Nur in dieser App gebrauchte Ergänzungen */
+  .ablage-aktiv { outline: 3px dashed var(--blue); outline-offset: 4px; }
+  .start-flaeche {
+    border: 2px dashed var(--grey-200);
+    border-radius: var(--radius-lg);
+    padding: 2.2rem 1.2rem;
+    text-align: center;
+    background: var(--paper);
+  }
+  .uhr { font-variant-numeric: tabular-nums; font-weight: 700; font-size: 1.05rem; color: var(--navy); }
+  .uhr.knapp { color: var(--red); }
+  body.pruefung-laeuft { padding-bottom: 4rem; }
+</style>
+</head>
+<body>
+
+<header class="app-header">
+  <div class="titel">
+    <h1 id="kopf-titel">Klassenarbeit</h1>
+    <span class="sub" id="kopf-unter"></span>
+  </div>
+  <div class="kopf-rechts">
+    <span class="rollen-chip sus">Prüfung</span>
+    <span class="uhr" id="uhr" hidden></span>
+    <img class="logo" src="../../assets/logo/JJWS_Bildmarke_bunt.png" alt="Johann-Jakob-Widmann-Schule">
+  </div>
+</header>
+
+<main class="wrap" id="inhalt"></main>
+
+<div class="statusleiste" id="statusleiste" hidden></div>
+
+<footer class="app-fuss">
+  Alle Eingaben bleiben auf diesem Rechner. Es werden keine Daten übertragen.
+</footer>
+
+<script type="module" src="./app.js"></script>
+</body>
+</html>

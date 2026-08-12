@@ -1,0 +1,439 @@
+/* ==========================================================================
+   Druckausgabe im Layout der JJWS-Klassenarbeit.
+
+   Die Seiten werden von druck.js als feste A4-Blätter aufgebaut (210×297 mm).
+   Dadurch stimmen Seitenumbrüche, Kopf-/Fußzeile und die Seitenzählung
+   „Seite 3/6“ auch im PDF, das der Browser beim Drucken erzeugt.
+   ========================================================================== */
+
+.druck-buehne {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  background: #55636b;
+  overflow: auto;
+  padding: 1.5rem 0 4rem;
+}
+
+.druck-leiste {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  gap: .6rem;
+  flex-wrap: wrap;
+  background: #00344d;
+  color: #fff;
+  padding: .55rem 1rem;
+  margin: -1.5rem 0 1.5rem;
+  font-size: .9rem;
+}
+.druck-leiste .titel { font-weight: 700; }
+.druck-leiste .hinweis-klein { opacity: .8; font-size: .8rem; }
+
+/* --------------------------------------------------------------- Das Blatt */
+
+.blatt {
+  width: 210mm;
+  height: 297mm;
+  margin: 0 auto 1.2rem;
+  background: #fff;
+  color: #1d1d1b;
+  font-family: "Open Sans", Arial, Helvetica, sans-serif;
+  font-size: 10.5pt;
+  line-height: 1.38;
+  position: relative;
+  box-shadow: 0 6px 22px rgba(0, 0, 0, .3);
+  overflow: hidden;
+  box-sizing: border-box;
+  padding: 14mm 18mm 14mm 18mm;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Kopfzeile: links Arbeit, Mitte Fach, rechts Klasse + Bildmarke */
+.blatt > .kopf {
+  flex: none;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: 4mm;
+  font-size: 9.5pt;
+  margin-bottom: 5mm;
+}
+.blatt > .kopf .mitte { text-align: center; }
+.blatt > .kopf .rechts {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 3mm;
+  font-weight: 700;
+}
+.blatt > .kopf img { height: 9mm; width: auto; display: block; }
+.blatt.deckblatt > .kopf img { height: 0; } /* auf dem Deckblatt steht das Logo groß beim Titel */
+
+/* Inhaltsbereich – hier hinein paginiert druck.js */
+.blatt > .koerper { flex: 1 1 auto; min-height: 0; overflow: hidden; }
+
+/* Fußzeile */
+.blatt > .fuss {
+  flex: none;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: 4mm;
+  font-size: 9pt;
+  border-top: .4mm solid #1d1d1b;
+  padding-top: 1.5mm;
+  margin-top: 4mm;
+}
+.blatt > .fuss .mitte { text-align: center; }
+.blatt > .fuss .rechts { text-align: right; }
+
+/* ------------------------------------------------------------- Deckblatt */
+
+.deck-titel {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  gap: 6mm;
+  margin: 3mm 0 6mm;
+}
+.deck-titel h1 {
+  font-size: 20pt;
+  font-weight: 700;
+  text-align: center;
+  margin: 0;
+  color: #1d1d1b;
+}
+.deck-titel img { height: 17mm; width: auto; display: block; }
+
+table.deck-kopf {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 7mm;
+}
+table.deck-kopf td {
+  border: .35mm solid #1d1d1b;
+  padding: 2mm 2.5mm 5mm;
+  font-size: 10pt;
+  vertical-align: top;
+}
+table.deck-kopf td.eng { padding-bottom: 2mm; }
+/* Ausgefüllte Fassungen brauchen keinen Schreibraum – enger setzen. */
+table.deck-kopf.gedruckt td { padding: 2mm 2.5mm; }
+
+/* Deckblatt der ausgefüllten Fassungen: enger, damit Übersicht und
+   Bewertungskasten zusammen auf ein Blatt passen. */
+.blatt.deckblatt.eng .deck-titel { margin: 2mm 0 3mm; }
+.blatt.deckblatt.eng .deck-titel h1 { font-size: 18pt; }
+.blatt.deckblatt.eng table.deck-kopf { margin-bottom: 4mm; }
+.blatt.deckblatt.eng table.uebersicht { margin-bottom: 4mm; }
+table.deck-kopf .bez { font-size: 9.5pt; }
+table.deck-kopf .wert { font-weight: 700; display: block; margin-top: .8mm; }
+
+table.uebersicht {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 6mm;
+}
+table.uebersicht th {
+  background: #00344d;
+  color: #fff;
+  font-size: 10pt;
+  font-weight: 700;
+  padding: 3mm 2.5mm;
+  border: .35mm solid #00344d;
+  text-align: center;
+}
+table.uebersicht td {
+  border: .35mm solid #1d1d1b;
+  padding: 4mm 2.5mm;
+  font-size: 10pt;
+  text-align: center;
+}
+/* Bei vielen Aufgaben enger setzen, damit das Deckblatt eine Seite bleibt. */
+table.uebersicht.kompakt td { padding: 2mm 2.5mm; font-size: 9.5pt; }
+table.uebersicht.kompakt th { padding: 2mm 2.5mm; font-size: 9.5pt; }
+table.uebersicht.sehr-kompakt td { padding: 1.2mm 2mm; font-size: 9pt; }
+table.uebersicht.sehr-kompakt th { padding: 1.5mm 2mm; font-size: 9pt; }
+table.uebersicht td.aufgabe { text-align: left; }
+table.uebersicht tbody tr:nth-child(even) { background: #f0f0f0; }
+table.uebersicht td.punkte { font-weight: 700; }
+
+.deck-bewertung h2 {
+  color: #007cb3;
+  font-size: 13pt;
+  font-weight: 700;
+  margin: 0 0 1.5mm;
+  border-bottom: .5mm solid #1d1d1b;
+  padding-bottom: 1mm;
+}
+table.bewertung {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 3mm;
+}
+table.bewertung td {
+  border: .35mm solid #1d1d1b;
+  padding: 3mm 2.5mm;
+  font-size: 10.5pt;
+}
+table.bewertung td.bez { font-weight: 700; width: 32mm; }
+table.bewertung td.gross { font-size: 15pt; font-weight: 700; text-align: center; }
+table.bewertung td.note-feld { font-size: 15pt; font-weight: 700; }
+
+/* --------------------------------------------------------- Inhaltselemente */
+
+.abschnitt-titel {
+  color: #007cb3;
+  font-size: 13.5pt;
+  font-weight: 700;
+  margin: 6mm 0 2mm;
+  border-bottom: .5mm solid #1d1d1b;
+  padding-bottom: 1mm;
+  break-after: avoid;
+}
+.abschnitt-titel:first-child { margin-top: 0; }
+
+.situation {
+  border: .5mm solid #1d1d1b;
+  padding: 3mm 3.5mm;
+  text-align: justify;
+  hyphens: auto;
+  margin-bottom: 6mm;
+}
+
+.aufgabe-kasten {
+  border: .35mm solid #1d1d1b;
+  padding: 2.5mm 3mm;
+  margin-bottom: 4mm;
+}
+.aufgabe-kasten .kopfzeile {
+  display: flex;
+  align-items: baseline;
+  gap: 2.5mm;
+  margin-bottom: 1mm;
+}
+.aufgabe-kasten .nummer {
+  flex: none;
+  width: 5mm;
+  height: 5mm;
+  border-radius: 50%;
+  background: #b8bcbf;
+  color: #fff;
+  font-size: 8.5pt;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  align-self: center;
+}
+.aufgabe-kasten .bez { font-weight: 700; }
+.aufgabe-kasten .inhalt { margin-left: 7.5mm; }
+.aufgabe-kasten p { margin: 0 0 1.5mm; }
+.aufgabe-kasten p.anschluss {
+  font-style: italic;
+  color: #37444d;
+  border-left: .6mm solid #009fe3;
+  padding-left: 2mm;
+  margin-bottom: 2mm;
+}
+.aufgabe-kasten ul, .aufgabe-kasten ol { margin: 1mm 0 1.5mm 5mm; padding: 0; }
+.aufgabe-kasten code {
+  font-family: "Consolas", "DejaVu Sans Mono", monospace;
+  font-size: 9.5pt;
+  background: #eef1f3;
+  padding: 0 .8mm;
+}
+
+.antwort-bereich { margin: 2mm 0 5mm; }
+
+/* Schreiblinien */
+.linien { margin-top: 3mm; }
+.linien .linie { border-bottom: .3mm solid #1d1d1b; height: 8mm; }
+
+/* Kästchen zum Ankreuzen */
+.kaestchen {
+  display: inline-block;
+  width: 4mm;
+  height: 4mm;
+  border: .35mm solid #1d1d1b;
+  margin-right: 2mm;
+  vertical-align: -.6mm;
+  text-align: center;
+  line-height: 3.4mm;
+  font-size: 9pt;
+  font-weight: 700;
+}
+.wahl-zeile { display: flex; align-items: flex-start; gap: 0; margin-bottom: 1.6mm; }
+.wahl-zeile .text { flex: 1; }
+
+table.raster {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 2mm 0 3mm;
+  font-size: 10pt;
+}
+table.raster th, table.raster td {
+  border: .35mm solid #1d1d1b;
+  padding: 1.8mm 2mm;
+  vertical-align: top;
+}
+table.raster th {
+  background: #eef1f3;
+  font-weight: 700;
+  text-align: center;
+  font-size: 9.5pt;
+}
+table.raster td.mitte { text-align: center; width: 22mm; }
+table.raster td.nr { text-align: center; width: 8mm; }
+
+.code-feld {
+  font-family: "Consolas", "DejaVu Sans Mono", monospace;
+  font-size: 9.5pt;
+  line-height: 1.45;
+  border: .35mm solid #1d1d1b;
+  padding: 2mm 2.5mm;
+  white-space: pre-wrap;
+  word-break: break-word;
+  background: #fbfcfd;
+  margin: 2mm 0 3mm;
+}
+.code-feld.leer { background: repeating-linear-gradient(#fff 0 7.5mm, #d5dade 7.5mm 7.7mm); }
+
+.luecke-druck {
+  display: inline-block;
+  min-width: 22mm;
+  border-bottom: .35mm solid #1d1d1b;
+  text-align: center;
+  padding: 0 1mm;
+}
+.luecke-druck.gefuellt { font-weight: 700; }
+
+/* ------------------------------------------------------- Korrektur-Elemente */
+
+.korr-kopf {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 3mm;
+  margin-bottom: 1.5mm;
+}
+.korr-punkte {
+  font-weight: 700;
+  font-size: 10.5pt;
+  white-space: nowrap;
+  border: .35mm solid #1d1d1b;
+  padding: .6mm 2mm;
+}
+.korr-punkte.voll { background: #e7f4ec; border-color: #1e7a45; color: #14572f; }
+.korr-punkte.teil { background: #fdefea; border-color: #f26b43; color: #9c3f1c; }
+.korr-punkte.null { background: #fbeaea; border-color: #c00000; color: #c00000; }
+
+.schuelerantwort {
+  border-left: .8mm solid #009fe3;
+  background: #f6fbfe;
+  padding: 1.8mm 2.5mm;
+  margin: 1.5mm 0 2mm;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+.schuelerantwort.leer { color: #6e7b85; font-style: italic; border-left-color: #b8bcbf; background: #f5f6f7; }
+.schuelerantwort.code { font-family: "Consolas", "DejaVu Sans Mono", monospace; font-size: 9.5pt; }
+
+ul.pruefliste { list-style: none; margin: 1.5mm 0 0; padding: 0; font-size: 9.5pt; }
+ul.pruefliste li {
+  display: grid;
+  grid-template-columns: 5mm 1fr auto;
+  gap: 1.5mm;
+  padding: .6mm 0;
+  border-bottom: .2mm dotted #c9d0d5;
+  align-items: baseline;
+}
+ul.pruefliste li:last-child { border-bottom: 0; }
+ul.pruefliste .zeichen { font-weight: 700; text-align: center; }
+ul.pruefliste li.richtig .zeichen { color: #1e7a45; }
+ul.pruefliste li.falsch .zeichen { color: #c00000; }
+ul.pruefliste li.leer .zeichen, ul.pruefliste li.offen .zeichen { color: #6e7b85; }
+ul.pruefliste .detail { color: #4a555d; font-size: 9pt; display: block; }
+ul.pruefliste .p { white-space: nowrap; font-variant-numeric: tabular-nums; }
+
+.korr-hinweis {
+  font-size: 9pt;
+  color: #6e7b85;
+  margin-top: 1mm;
+}
+.korr-kommentar {
+  border: .35mm solid #009fe3;
+  background: #eaf6fc;
+  padding: 1.8mm 2.5mm;
+  margin-top: 2mm;
+  font-size: 9.5pt;
+}
+.korr-kommentar .bez { font-weight: 700; color: #00344d; }
+
+/* Notenschlüsselblatt */
+table.schluessel {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 9.5pt;
+}
+table.schluessel th {
+  background: #00344d;
+  color: #fff;
+  padding: 2mm;
+  border: .3mm solid #00344d;
+}
+table.schluessel td { border: .3mm solid #6e7b85; padding: 1.6mm 2mm; text-align: center; }
+table.schluessel tbody tr:nth-child(even) { background: #f0f4f6; }
+
+.spalten-druck { column-count: 3; column-gap: 6mm; }
+.spalten-druck table { width: 100%; break-inside: avoid; }
+
+/* --------------------------------------------------------------- Drucken */
+
+@media print {
+  html, body { background: #fff !important; margin: 0 !important; padding: 0 !important; }
+  body > *:not(.druck-buehne) { display: none !important; }
+  .druck-buehne {
+    position: static;
+    background: #fff;
+    padding: 0;
+    overflow: visible;
+  }
+  .druck-leiste { display: none !important; }
+  .blatt {
+    margin: 0;
+    box-shadow: none;
+    break-after: page;
+    page-break-after: always;
+  }
+  .blatt:last-child { break-after: auto; page-break-after: auto; }
+  * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+}
+
+@page {
+  size: A4 portrait;
+  margin: 0;
+}
+
+/* Fortsetzung eines Blocks auf dem nächsten Blatt: oben offen darstellen,
+   damit erkennbar ist, dass es sich um denselben Kasten handelt. */
+.aufgabe-kasten.fortsetzung,
+.situation.fortsetzung,
+.code-feld.fortsetzung,
+.schuelerantwort.fortsetzung {
+  border-top-style: dashed;
+}
+.aufgabe-kasten.fortsetzung::before,
+.code-feld.fortsetzung::before {
+  content: "(Fortsetzung)";
+  display: block;
+  font-size: 8pt;
+  font-style: italic;
+  color: #6e7b85;
+  margin-bottom: 1mm;
+}
+table.fortsetzung caption { display: none; }

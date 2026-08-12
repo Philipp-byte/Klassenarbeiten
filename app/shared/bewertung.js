@@ -281,20 +281,21 @@ function bewerteAufzaehlung(a, antwort) {
 }
 
 function bewerteZuordnung(a, antwort) {
+  // Die Antwort enthält den gewählten TEXT, nicht eine Kennung. So muss in der
+  // Schülerdatei nirgends stehen, welche Kennung zu welchem Paar gehört.
   const zuordnung = antwort && typeof antwort === "object" ? antwort : {};
-  if (!Object.keys(zuordnung).length) return leerErgebnis(a);
+  if (!Object.values(zuordnung).some((v) => String(v ?? "").trim())) return leerErgebnis(a);
   const pro = Number(a.punkteProPaar) || 0;
-  const rechtsText = (id) => a.paare.find((p) => p.id === id)?.rechts ?? "–";
 
   const teile = a.paare.map((p) => {
-    const gew = zuordnung[p.id];
-    const ok = gew === p.id;
+    const gew = String(zuordnung[p.id] ?? "").trim();
+    const ok = !!gew && trifftLoesung(gew, [p.rechts], { ignoriereGross: true, ignoriereLeerzeichen: true });
     return teil(
       p.links,
       ok ? pro : 0,
       pro,
       ok ? "richtig" : gew ? "falsch" : "leer",
-      ok ? p.rechts : `gewählt: ${gew ? rechtsText(gew) : "–"} · richtig: ${p.rechts}`
+      ok ? p.rechts : `gewählt: ${gew || "–"} · richtig: ${p.rechts}`
     );
   });
   return ergebnis(a, teile);

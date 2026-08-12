@@ -1,12 +1,30 @@
+# ---------------------------------------------------------------------------
 # Pyodide wird lokal geholt (ca. 12 MB) und gehört nicht ins Repository.
+# ---------------------------------------------------------------------------
 app/vendor/pyodide/
+!app/vendor/pyodide/.gitkeep
 
-# Abgaben und Auswertungen enthalten personenbezogene Daten –
-# sie dürfen niemals versehentlich eingecheckt werden.
-*.jjwsa
-*.jjwskey
+# ---------------------------------------------------------------------------
+# NIEMALS einchecken – enthält Lösungen bzw. personenbezogene Daten.
+# ---------------------------------------------------------------------------
+*.jjwsa          # verschlüsselte Abgaben der SuS
+*.jjwskey        # privater Schlüssel der Lehrkraft
+*.jjwsm          # Klassenarbeiten mit Lösungen …
+!beispiele/*.jjwsm   # … außer der Beispielarbeit mit erfundenen Inhalten
+*.jjwsp          # ausgegebene Fassungen
+!beispiele/*.jjwsp
+
 abgaben/
 korrekturen/
+notenlisten/
+*.csv
+!beispiele/*.csv
 
+# ---------------------------------------------------------------------------
+# Sonstiges
+# ---------------------------------------------------------------------------
 .DS_Store
 Thumbs.db
+desktop.ini
+*.swp
+node_modules/

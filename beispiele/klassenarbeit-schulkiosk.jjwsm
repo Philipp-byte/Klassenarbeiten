@@ -1,0 +1,417 @@
+{
+  "typ": "jjws-klassenarbeit-master",
+  "formatVersion": 1,
+  "id": "ka_beispiel_kiosk",
+  "titel": "Klassenarbeit 1",
+  "fach": "Informatik",
+  "thema": "Kassenprogramm für den Schulkiosk",
+  "klasse": "1BK2T",
+  "lehrkraft": "Riegert",
+  "schule": "JJWS",
+  "datum": "2026-09-24",
+  "bearbeitungszeitMin": 60,
+  "hinweise": "Bearbeite die Aufgaben in beliebiger Reihenfolge. Deine Eingaben werden automatisch zwischengespeichert. Bei der Programmieraufgabe kannst du deinen Code jederzeit ausführen und die Selbsttests nutzen. Am Ende auf „Abgeben“ klicken und die Datei im Tauschordner ablegen.",
+  "hilfsmittel": "Keine. Die Python-Umgebung in der App darf benutzt werden.",
+  "ausgangssituation": "Der Schulkiosk wird von der SMV betrieben. Bisher rechnet ihr in der großen Pause im Kopf, und am Monatsende stimmt die Kasse selten. Deshalb sollt ihr ein kleines Kassenprogramm schreiben.\n\nEs gilt: Ein belegtes Brötchen kostet 2,20 €, ein Getränk 1,50 €, ein Müsliriegel 0,90 €. Wer einen Schülerausweis vorzeigt, bekommt 10 % Rabatt. Ab einem Einkauf von 10 € gibt es zusätzlich ein Getränk gratis.\n\nIhr arbeitet zu zweit an der Kasse und habt vereinbart, dass das Programm auch von jemandem bedient werden kann, der nicht programmieren kann.",
+  "situationId": "kiosk",
+  "situationTitel": "Der Schulkiosk bekommt eine Kasse",
+  "identifikation": "name",
+  "mischenProSuS": true,
+  "notenschluessel": null,
+  "abschnitte": [],
+  "aufgaben": [
+    {
+      "id": "a_beispiel9p37d7",
+      "titel": "Datentypen erkennen",
+      "text": "Der Preis eines Brötchens wird im Programm als `2.20` gespeichert.\n\nWelchen Datentyp hat dieser Wert in Python?",
+      "abschnitt": "Grundlagen",
+      "situationsAnschluss": "Bevor du programmierst, verschaffst du dir Klarheit über die Regeln des Kiosks.",
+      "handlungsschritt": "informieren",
+      "punkte": 2,
+      "typ": "mc",
+      "mehrfach": false,
+      "teilpunkte": true,
+      "mischen": true,
+      "optionen": [
+        {
+          "id": "o_beispiel8mlctw",
+          "text": "float",
+          "richtig": true
+        },
+        {
+          "id": "o_beispielpc9690",
+          "text": "int",
+          "richtig": false
+        },
+        {
+          "id": "o_beispielog53rn",
+          "text": "str",
+          "richtig": false
+        },
+        {
+          "id": "o_beispieldbnob9",
+          "text": "bool",
+          "richtig": false
+        }
+      ]
+    },
+    {
+      "id": "a_beispiel3ndnjx",
+      "titel": "Aussagen prüfen",
+      "text": "Entscheide für jede Aussage, ob sie zutrifft.",
+      "abschnitt": "Grundlagen",
+      "situationsAnschluss": "Bevor du programmierst, verschaffst du dir Klarheit über die Regeln des Kiosks.",
+      "handlungsschritt": "informieren",
+      "punkte": 4,
+      "typ": "wahrfalsch",
+      "punkteProZeile": 1,
+      "rasterUeberschrift": "Aussage",
+      "spalten": [
+        {
+          "id": "sp_w",
+          "text": "wahr"
+        },
+        {
+          "id": "sp_f",
+          "text": "falsch"
+        }
+      ],
+      "zeilen": [
+        {
+          "id": "z_beispiel5e4h73",
+          "text": "Mit input() liest ein Programm eine Eingabe von der Tastatur.",
+          "richtig": "sp_w"
+        },
+        {
+          "id": "z_beispiel53n009",
+          "text": "Eine Variable muss in Python vor der ersten Zuweisung deklariert werden.",
+          "richtig": "sp_f"
+        },
+        {
+          "id": "z_beispiel4x72um",
+          "text": "int('7') wandelt die Zeichenkette '7' in eine Zahl um.",
+          "richtig": "sp_w"
+        },
+        {
+          "id": "z_beispiel9hgo1j",
+          "text": "Der Vergleich auf Gleichheit wird in Python mit einem einzelnen = geschrieben.",
+          "richtig": "sp_f"
+        }
+      ]
+    },
+    {
+      "id": "a_beispielexi1fj",
+      "titel": "Zuweisung und Vergleich",
+      "text": "Ergänze die fehlenden Zeichen.",
+      "abschnitt": "Grundlagen",
+      "situationsAnschluss": "Bevor du programmierst, verschaffst du dir Klarheit über die Regeln des Kiosks.",
+      "handlungsschritt": "informieren",
+      "punkte": 4,
+      "typ": "lueckentext",
+      "punkteProLuecke": 1,
+      "ignoriereGross": true,
+      "alsCode": true,
+      "vorlage": "preis [[=]] 2.20\nwenn der Kunde einen Ausweis hat: rabatt [[==]] True"
+    },
+    {
+      "id": "a_beispielwcxss8",
+      "titel": "Ablauf des Kassenvorgangs",
+      "text": "Bringe die Schritte des Kassenvorgangs in die richtige Reihenfolge.",
+      "abschnitt": "Planen",
+      "situationsAnschluss": "Du überlegst dir zuerst den Ablauf des Programms, bevor du die erste Zeile Code schreibst.",
+      "handlungsschritt": "planen",
+      "punkte": 4,
+      "typ": "reihenfolge",
+      "wertung": "nachbarn",
+      "punkteProSchritt": 1,
+      "elemente": [
+        {
+          "id": "e_beispielevcj4k",
+          "text": "Artikel und Anzahl erfassen"
+        },
+        {
+          "id": "e_beispiel8aakxk",
+          "text": "Zwischensumme berechnen"
+        },
+        {
+          "id": "e_beispielr2x1gj",
+          "text": "Rabatt prüfen und abziehen"
+        },
+        {
+          "id": "e_beispiel872g8v",
+          "text": "Endbetrag ausgeben"
+        }
+      ]
+    },
+    {
+      "id": "a_beispiel2arrc2",
+      "titel": "Beispieleinkauf",
+      "text": "Ein Kunde kauft **4 belegte Brötchen** und **2 Getränke** und zeigt seinen Schülerausweis vor.\n\nBerechne die geforderten Werte.",
+      "abschnitt": "Rechnen",
+      "situationsAnschluss": "Jetzt setzt du das Kassenprogramm um.",
+      "handlungsschritt": "durchfuehren",
+      "punkte": 4,
+      "typ": "rechenweg",
+      "schritte": [
+        {
+          "id": "r_beispielm4dd7k",
+          "bezeichnung": "Zwischensumme ohne Rabatt",
+          "loesung": "11.80",
+          "toleranz": 0.01,
+          "einheit": "€",
+          "punkte": 2
+        },
+        {
+          "id": "r_beispieleex6kj",
+          "bezeichnung": "Rabattbetrag (10 %)",
+          "loesung": "1.18",
+          "toleranz": 0.01,
+          "einheit": "€",
+          "punkte": 2
+        },
+        {
+          "id": "r_beispielylnhgz",
+          "bezeichnung": "Endbetrag",
+          "loesung": "10.62",
+          "toleranz": 0.01,
+          "einheit": "€",
+          "punkte": 2
+        }
+      ]
+    },
+    {
+      "id": "a_beispielwigdy8",
+      "titel": "Funktion für den Gesamtpreis",
+      "text": "Schreibe die Funktion `gesamtpreis(broetchen, getraenke, riegel)`.\n\nSie gibt den Preis in Euro als Zahl zurück:\n- Brötchen 2,20 € · Getränk 1,50 € · Müsliriegel 0,90 €\n- Das Ergebnis wird auf zwei Nachkommastellen gerundet.",
+      "abschnitt": "Programmieren",
+      "situationsAnschluss": "Jetzt setzt du das Kassenprogramm um.",
+      "handlungsschritt": "durchfuehren",
+      "punkte": 4,
+      "typ": "code-python",
+      "startcode": "def gesamtpreis(broetchen, getraenke, riegel):\n    # Deine Lösung hier\n    pass\n",
+      "loesungscode": "def gesamtpreis(broetchen, getraenke, riegel):\n    summe = broetchen * 2.20 + getraenke * 1.50 + riegel * 0.90\n    return round(summe, 2)\n",
+      "vorlaufcode": "",
+      "tests": [
+        {
+          "id": "t_beispielrz9cbi",
+          "name": "Ein Brötchen kostet 2,20 €",
+          "punkte": 2,
+          "art": "funktion",
+          "funktion": "gesamtpreis",
+          "argumente": "1, 0, 0",
+          "erwartet": "2.2",
+          "toleranz": 0.001
+        },
+        {
+          "id": "t_beispielnnlove",
+          "name": "Gemischter Einkauf",
+          "punkte": 3,
+          "art": "funktion",
+          "funktion": "gesamtpreis",
+          "argumente": "4, 2, 1",
+          "erwartet": "11.7",
+          "toleranz": 0.001
+        },
+        {
+          "id": "t_beispielmmpayf",
+          "name": "Leerer Einkauf ergibt 0",
+          "punkte": 1,
+          "art": "funktion",
+          "funktion": "gesamtpreis",
+          "argumente": "0, 0, 0",
+          "erwartet": "0",
+          "toleranz": 0.001
+        },
+        {
+          "id": "t_beispielfgt639",
+          "name": "Es wird gerundet",
+          "punkte": 2,
+          "art": "enthaelt",
+          "muster": "round",
+          "vorhanden": true
+        }
+      ],
+      "selbsttests": [
+        {
+          "id": "t_beispielv3ufj4",
+          "name": "Die Funktion ist vorhanden",
+          "punkte": 0,
+          "art": "assert",
+          "code": "assert callable(gesamtpreis), 'Es gibt keine Funktion gesamtpreis'"
+        },
+        {
+          "id": "t_beispiel3ldkbe",
+          "name": "Ein Brötchen kostet 2,20 €",
+          "punkte": 0,
+          "art": "funktion",
+          "funktion": "gesamtpreis",
+          "argumente": "1, 0, 0",
+          "erwartet": "2.2",
+          "toleranz": 0.001
+        }
+      ]
+    },
+    {
+      "id": "a_beispiel5mn73r",
+      "titel": "Rabatt prüfen",
+      "text": "Setze aus den Bausteinen eine Funktion zusammen, die bei vorgezeigtem Ausweis 10 % Rabatt abzieht. Achte auf die Einrückung.",
+      "abschnitt": "Programmieren",
+      "situationsAnschluss": "Du überlegst dir zuerst den Ablauf des Programms, bevor du die erste Zeile Code schreibst.",
+      "handlungsschritt": "planen",
+      "punkte": 4,
+      "typ": "parsons",
+      "punkteProZeile": 1,
+      "pruefeEinrueckung": true,
+      "zeilen": [
+        {
+          "id": "z_beispieloilrj5",
+          "text": "def mit_rabatt(betrag, ausweis):",
+          "einrueckung": 0
+        },
+        {
+          "id": "z_beispiel1d3vkm",
+          "text": "if ausweis:",
+          "einrueckung": 1
+        },
+        {
+          "id": "z_beispielo6tl3n",
+          "text": "betrag = betrag * 0.9",
+          "einrueckung": 2
+        },
+        {
+          "id": "z_beispielt7tlbn",
+          "text": "return round(betrag, 2)",
+          "einrueckung": 1
+        }
+      ],
+      "ablenker": [
+        {
+          "id": "z_beispielyr3arh",
+          "text": "betrag = betrag - 0.9"
+        },
+        {
+          "id": "z_beispiel1v76ex",
+          "text": "print(betrag)"
+        }
+      ]
+    },
+    {
+      "id": "a_beispielbso5m8",
+      "titel": "Preisschild für den Kiosk",
+      "text": "Für den Kiosk soll ein Preisschild als Webseite entstehen.\n\n- Eine Überschrift `<h1>` mit dem Text **Kiosk**\n- Eine Liste `<ul>` mit genau drei Einträgen (die drei Artikel)\n- Die Überschrift in der Schulfarbe Navy (`#00344D`)",
+      "abschnitt": "Programmieren",
+      "situationsAnschluss": "Jetzt setzt du das Kassenprogramm um.",
+      "handlungsschritt": "durchfuehren",
+      "punkte": 4,
+      "typ": "code-web",
+      "startHtml": "<h1></h1>\n<ul>\n  <li></li>\n</ul>\n",
+      "startCss": "",
+      "startJs": "",
+      "jsAktiv": false,
+      "loesungHtml": "<h1>Kiosk</h1>\n<ul>\n  <li>Belegtes Brötchen 2,20 €</li>\n  <li>Getränk 1,50 €</li>\n  <li>Müsliriegel 0,90 €</li>\n</ul>\n",
+      "loesungCss": "h1 { color: #00344D; }\n",
+      "loesungJs": "",
+      "tests": [
+        {
+          "id": "t_beispiellgs873",
+          "name": "Überschrift vorhanden",
+          "punkte": 1,
+          "art": "selektor",
+          "selektor": "h1",
+          "mindestens": 1
+        },
+        {
+          "id": "t_beispiel98rzb2",
+          "name": "Überschrift lautet „Kiosk“",
+          "punkte": 1,
+          "art": "text",
+          "selektor": "h1",
+          "erwartet": "Kiosk",
+          "exakt": false
+        },
+        {
+          "id": "t_beispiel4u7w9v",
+          "name": "Drei Listeneinträge",
+          "punkte": 2,
+          "art": "selektor",
+          "selektor": "ul li",
+          "mindestens": 3
+        },
+        {
+          "id": "t_beispiel5sugk4",
+          "name": "Überschrift in Navy",
+          "punkte": 2,
+          "art": "stil",
+          "selektor": "h1",
+          "eigenschaft": "color",
+          "erwartet": "rgb(0, 52, 77)"
+        }
+      ]
+    },
+    {
+      "id": "a_beispielqgfkcx",
+      "titel": "Vorteile des Kassenprogramms",
+      "text": "Nenne drei Vorteile, die das Kassenprogramm gegenüber dem Kopfrechnen hat.",
+      "abschnitt": "Bewerten",
+      "situationsAnschluss": "Nach der ersten Pause mit dem neuen Programm zieht ihr im Kiosk-Team Bilanz.",
+      "handlungsschritt": "reflektieren",
+      "punkte": 4,
+      "typ": "aufzaehlung",
+      "anzahlFelder": 3,
+      "beschriftung": "Vorteil",
+      "maxPunkte": 0,
+      "gesucht": [
+        {
+          "id": "g_beispielikqha9",
+          "varianten": "weniger Rechenfehler | keine Rechenfehler | Fehler vermeiden | genauer",
+          "punkte": 1
+        },
+        {
+          "id": "g_beispielmj4rot",
+          "varianten": "schneller | Zeit sparen | geht schneller",
+          "punkte": 1
+        },
+        {
+          "id": "g_beispielvdg726",
+          "varianten": "Kasse stimmt | Abrechnung stimmt | nachvollziehbar | Belege",
+          "punkte": 1
+        },
+        {
+          "id": "g_beispiela35okn",
+          "varianten": "jeder kann bedienen | einfacher zu bedienen | auch ohne Übung",
+          "punkte": 1
+        }
+      ]
+    },
+    {
+      "id": "a_beispiela01own",
+      "titel": "Empfehlung an die SMV",
+      "text": "Die SMV überlegt, statt eures Programms ein fertiges Kassensystem für 15 € im Monat zu mieten.\n\n**Nimm begründet Stellung**, was du der SMV empfiehlst. Gehe auf mindestens zwei Gesichtspunkte ein.",
+      "abschnitt": "Bewerten",
+      "situationsAnschluss": "Im Kiosk-Team gibt es unterschiedliche Vorschläge zur Umsetzung. Du sollst dich begründet entscheiden.",
+      "handlungsschritt": "entscheiden",
+      "punkte": 6,
+      "typ": "freitext",
+      "zeilen": 10,
+      "erwartungshorizont": "Erwartet wird eine begründete Entscheidung, keine bloße Aufzählung.\n\nMögliche Argumente für das eigene Programm: keine laufenden Kosten, an den Kiosk angepasst, die SMV lernt etwas dabei, Daten bleiben in der Schule.\n\nMögliche Argumente für die Mietlösung: Wartung und Updates inbegriffen, funktioniert sofort, unabhängig davon, ob die Programmiererin die Schule verlässt, rechtssichere Belege.\n\nFür die volle Punktzahl muss eine klare Empfehlung ausgesprochen und mit mindestens zwei Gesichtspunkten belegt werden.",
+      "kriterien": [
+        {
+          "id": "k_beispielelvhy6",
+          "text": "Nennt mindestens zwei sachlich richtige Gesichtspunkte",
+          "punkte": 2
+        },
+        {
+          "id": "k_beispiel43xp1k",
+          "text": "Spricht eine klare Empfehlung aus",
+          "punkte": 2
+        },
+        {
+          "id": "k_beispielci5yuk",
+          "text": "Begründet die Empfehlung nachvollziehbar",
+          "punkte": 2
+        }
+      ]
+    }
+  ],
+  "geaendertAm": "2026-08-12T12:00:00.000Z"
+}

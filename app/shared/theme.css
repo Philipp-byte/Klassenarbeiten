@@ -467,3 +467,89 @@ dialog h2 { margin-top: 0; }
   .aufgabe { break-inside: avoid; }
   table.liste th { background: #00344d !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
 }
+
+/* ==========================================================================
+   Kleine Bildschirme
+
+   Die Prüfungs-App läuft im Unterricht am PC, aber Klassenarbeiten werden
+   auch mal abends am Handy vorbereitet. Deshalb sind beide Apps bis hinunter
+   zu ~340 px Breite bedienbar: Spalten brechen um, Tabellen scrollen in
+   ihrem eigenen Kasten, Tippziele bleiben groß genug.
+   ========================================================================== */
+
+/* Zwei-Spalten-Arbeitsfläche der Korrektur */
+.spalten-korrektur {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: minmax(15rem, 20rem) minmax(0, 1fr);
+}
+
+@media (max-width: 1000px) {
+  .spalten-korrektur { grid-template-columns: minmax(0, 1fr); }
+  .wrap { padding: 1rem .8rem 5rem; }
+}
+
+@media (max-width: 760px) {
+  body { font-size: 15px; }
+
+  .app-header {
+    padding: .5rem .7rem;
+    gap: .5rem;
+    flex-wrap: wrap;
+  }
+  .app-header h1 { font-size: 1.05rem; }
+  .app-header .sub { width: 100%; order: 3; font-size: .78rem; }
+  .app-header img.logo { height: 34px; }
+  .app-header .kopf-rechts { gap: .5rem; }
+
+  .karte { padding: .85rem .8rem; border-radius: 8px; }
+  .spalten-2, .spalten-3 { grid-template-columns: minmax(0, 1fr); }
+
+  /* Tippziele: mindestens ~44 px hoch */
+  .btn { padding: .6rem 1rem; }
+  .btn.klein { padding: .45rem .7rem; font-size: .85rem; }
+  input[type="text"], input[type="number"], input[type="password"],
+  input[type="date"], select, textarea { padding: .6rem .65rem; font-size: 16px; }
+  /* 16 px verhindert, dass iOS beim Antippen hineinzoomt. */
+  input[type="checkbox"], input[type="radio"] { width: 1.3rem; height: 1.3rem; }
+
+  /* Editor-Zeilen (Antwortoptionen, Testfälle …) untereinander */
+  .teil-zeile { grid-template-columns: minmax(0, 1fr) !important; }
+  .teil-zeile > button { justify-self: end; }
+
+  .aufgabe-karte > summary { flex-wrap: wrap; padding: .7rem .6rem; }
+  .aufgabe-karte .koerper { padding: .2rem .6rem 1rem; }
+
+  .tabs { gap: 0; }
+  .tabs button { padding: .55rem .6rem; font-size: .86rem; }
+
+  .statusleiste { flex-wrap: wrap; gap: .4rem .6rem; padding: .45rem .6rem; }
+  .aufgaben-nav { order: 3; width: 100%; }
+  .aufgaben-nav button { width: 2.4rem; height: 2.4rem; }
+
+  .note-gross { font-size: 1.7rem; }
+  dialog { max-width: 96vw; }
+  dialog .dlg-inhalt { padding: .9rem .8rem; }
+
+  /* Zwei nebeneinanderliegende Code-Felder untereinander */
+  textarea.code { min-height: 11rem; font-size: .84rem; }
+}
+
+@media (max-width: 420px) {
+  .app-header .rollen-chip { display: none; }
+  .karte-kopf { flex-direction: column; align-items: flex-start; }
+  .zeile > .schieb-rechts { display: none; }
+  .zeile { gap: .45rem; }
+  .btn { width: 100%; justify-content: center; }
+  .btn.klein, .zeile-eng .btn { width: auto; }
+}
+
+/* Druckvorschau auf schmalen Bildschirmen verkleinern, damit das A4-Blatt
+   nicht seitlich herausragt. Beim echten Druck greift das nicht. */
+@media screen and (max-width: 230mm) {
+  .druck-buehne .blatt {
+    transform: scale(calc(min(1, (100vw - 1.5rem) / 210mm)));
+    transform-origin: top center;
+    margin-bottom: calc(1.2rem - 297mm * (1 - min(1, (100vw - 1.5rem) / 210mm)));
+  }
+}

@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Klassenarbeiten – Lehrkraft – JJWS</title>
+<link rel="stylesheet" href="../shared/theme.css">
+<link rel="stylesheet" href="../shared/druck.css">
+<link rel="icon" href="../../assets/logo/JJWS_Bildmarke_bunt.png">
+<style>
+  .ablage-aktiv { outline: 3px dashed var(--blue); outline-offset: 4px; }
+  .ablage {
+    border: 2px dashed var(--grey-200);
+    border-radius: var(--radius-lg);
+    padding: 1.6rem 1.2rem;
+    text-align: center;
+    background: var(--paper);
+  }
+  .aufgaben-liste > li { list-style: none; }
+  .aufgabe-karte {
+    border: 1px solid var(--grey-200);
+    border-left: 4px solid var(--blue);
+    border-radius: var(--radius);
+    background: var(--paper);
+    margin-bottom: .7rem;
+  }
+  .aufgabe-karte > summary {
+    cursor: pointer;
+    padding: .6rem .8rem;
+    display: flex;
+    align-items: center;
+    gap: .6rem;
+    font-weight: 600;
+    color: var(--navy);
+  }
+  .aufgabe-karte > summary::-webkit-details-marker { display: none; }
+  .aufgabe-karte > summary::before { content: "▸"; color: var(--blue); }
+  .aufgabe-karte[open] > summary::before { content: "▾"; }
+  .aufgabe-karte .koerper { padding: .2rem .9rem 1rem; border-top: 1px solid var(--grey-100); }
+  .teil-zeile {
+    display: grid;
+    gap: .4rem;
+    align-items: center;
+    padding: .35rem 0;
+    border-bottom: 1px dotted var(--grey-200);
+  }
+  .teil-zeile:last-child { border-bottom: 0; }
+  .sit-karte {
+    border: 1px solid var(--grey-200);
+    border-radius: var(--radius);
+    padding: .7rem .85rem;
+    cursor: pointer;
+    background: var(--paper);
+    text-align: left;
+    font-family: var(--font);
+  }
+  .sit-karte:hover { border-color: var(--blue); background: var(--blue-100); }
+  .sit-karte.gewaehlt { border-color: var(--blue); border-width: 2px; background: var(--blue-100); }
+  .sus-liste button {
+    width: 100%;
+    text-align: left;
+    border: 1px solid var(--grey-200);
+    background: var(--paper);
+    border-radius: var(--radius);
+    padding: .45rem .6rem;
+    margin-bottom: .3rem;
+    cursor: pointer;
+    font-family: var(--font);
+    font-size: .88rem;
+    display: flex;
+    justify-content: space-between;
+    gap: .5rem;
+    align-items: center;
+  }
+  .sus-liste button:hover { border-color: var(--blue); }
+  .sus-liste button[aria-current="true"] { background: var(--navy); color: #fff; border-color: var(--navy); }
+  .balken { display: flex; height: 1.4rem; border-radius: 4px; overflow: hidden; border: 1px solid var(--grey-200); }
+  .balken > span { display: block; }
+</style>
+</head>
+<body>
+
+<header class="app-header">
+  <div class="titel">
+    <h1>Klassenarbeiten</h1>
+    <span class="sub" id="kopf-unter">Erstellen · Korrigieren · Bewerten</span>
+  </div>
+  <div class="kopf-rechts">
+    <span class="rollen-chip">Lehrkraft</span>
+    <span class="klein grau" id="schluessel-anzeige"></span>
+    <img class="logo" src="../../assets/logo/JJWS_Bildmarke_bunt.png" alt="Johann-Jakob-Widmann-Schule">
+  </div>
+</header>
+
+<main class="wrap">
+  <nav class="tabs" id="tabs" role="tablist"></nav>
+  <div id="inhalt"></div>
+</main>
+
+<footer class="app-fuss">
+  Alle Daten bleiben auf diesem Rechner · Abgaben werden nie im Browser gespeichert
+</footer>
+
+<script type="module" src="./app.js"></script>
+</body>
+</html>

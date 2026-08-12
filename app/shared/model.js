@@ -173,6 +173,7 @@ export function neuePruefung(vorgaben = {}) {
     hilfsmittel: "Keine.",
     ausgangssituation: "",
     identifikation: "name", // "name" | "nummer"
+    mischenProSuS: true, // jede Person bekommt eine eigene Aufgabenreihenfolge
     notenschluessel: null, // null = Standard aus noten.js
     abschnitte: [], // optionale Zwischenüberschriften: {id, titel, vorAufgabeId}
     aufgaben: [],
@@ -182,7 +183,17 @@ export function neuePruefung(vorgaben = {}) {
 }
 
 export function neueAufgabe(typ) {
-  const basis = { id: neueId("a"), typ, titel: "", text: "", abschnitt: "", punkte: 4 };
+  const basis = {
+    id: neueId("a"),
+    typ,
+    titel: "",
+    text: "",
+    abschnitt: "",
+    // Anschluss an die Ausgangssituation – steht vor der Aufgabenstellung
+    situationsAnschluss: "",
+    handlungsschritt: "",
+    punkte: 4,
+  };
   switch (typ) {
     case "mc":
       return {
@@ -448,6 +459,13 @@ export function varianten(text) {
 
 /* ---------------------------------------------------- Master → SuS-Fassung */
 
+/**
+ * Mischen beim Export. Das ist NICHT dasselbe wie das Mischen pro Person
+ * (mischen.js): Hier geht es darum, dass in der ausgelieferten Datei keine
+ * Lösung mehr aus der REIHENFOLGE ablesbar ist. Wer die Datei im Editor
+ * öffnet, soll auch dann nichts erkennen, wenn er den Quellcode dieser App
+ * kennt.
+ */
 function mischenListe(liste) {
   const a = [...liste];
   for (let i = a.length - 1; i > 0; i--) {
@@ -472,14 +490,14 @@ export function alsSusFassung(master, oeffentlicherSchluessel, fingerabdruck) {
       titel: a.titel,
       text: a.text,
       abschnitt: a.abschnitt || "",
+      situationsAnschluss: a.situationsAnschluss || "",
       punkte: aufgabenPunkte(a),
     };
     switch (a.typ) {
       case "mc": {
-        const optionen = (a.mischen ? mischenListe(a.optionen) : a.optionen).map((o) => ({
-          id: o.id,
-          text: o.text,
-        }));
+        // Beim Export mischen, damit die Reihenfolge in der Datei nichts verrät.
+        // In der App wird zusätzlich pro Person gemischt (mischen.js).
+        const optionen = mischenListe(a.optionen).map((o) => ({ id: o.id, text: o.text }));
         return { ...gemeinsam, mehrfach: a.mehrfach, optionen };
       }
       case "wahrfalsch":
@@ -495,15 +513,15 @@ export function alsSusFassung(master, oeffentlicherSchluessel, fingerabdruck) {
       case "aufzaehlung":
         return { ...gemeinsam, anzahlFelder: a.anzahlFelder, beschriftung: a.beschriftung };
       case "zuordnung": {
-        const links = a.paare.map((p) => ({ id: p.id, text: p.links }));
-        const rechts = (a.mischen ? mischenListe(a.paare) : a.paare).map((p) => ({
-          id: p.id,
-          text: p.rechts,
-        }));
+        // Die rechte Spalte bekommt eigene, neutrale Kennungen und eine andere
+        // Reihenfolge. Aus der Datei ist damit nicht mehr ablesbar, was
+        // zusammengehört – die Zuordnung steht nur im Master.
+        const links = mischenListe(a.paare).map((p) => ({ id: p.id, text: p.links }));
+        const rechts = mischenListe(a.paare).map((p, i) => ({ id: `r${i}`, text: p.rechts }));
         return { ...gemeinsam, links, rechts };
       }
       case "reihenfolge":
-        // Immer gemischt ausliefern – sonst stünde die Lösung schon da.
+        // Immer gemischt ausliefern – sonst stünde die Lösung schon in der Datei.
         return { ...gemeinsam, elemente: mischenListe(a.elemente).map((e) => ({ id: e.id, text: e.text })) };
       case "lueckentext": {
         // Nur die Struktur übergeben – die Lösungen bleiben im Master.
@@ -539,11 +557,8 @@ export function alsSusFassung(master, oeffentlicherSchluessel, fingerabdruck) {
           ...(a.zeilen || []).map((z) => ({ id: z.id, text: z.text })),
           ...(a.ablenker || []).map((z) => ({ id: z.id, text: z.text })),
         ];
-        return {
-          ...gemeinsam,
-          bausteine: mischenListe(alle),
-          pruefeEinrueckung: a.pruefeEinrueckung,
-        };
+        // Gemischt, damit die richtigen Zeilen nicht vor den Ablenkern stehen.
+        return { ...gemeinsam, bausteine: mischenListe(alle), pruefeEinrueckung: a.pruefeEinrueckung };
       }
       case "code-web":
         return {
@@ -576,7 +591,9 @@ export function alsSusFassung(master, oeffentlicherSchluessel, fingerabdruck) {
     hinweise: master.hinweise,
     hilfsmittel: master.hilfsmittel,
     ausgangssituation: master.ausgangssituation,
+    situationTitel: master.situationTitel ?? "",
     identifikation: master.identifikation,
+    mischenProSuS: master.mischenProSuS !== false,
     gesamtpunkte: gesamtPunkte(master),
     schluessel: { oeffentlich: oeffentlicherSchluessel, fingerabdruck },
     aufgaben,
