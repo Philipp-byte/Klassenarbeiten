@@ -84,26 +84,32 @@ und einen Pull Request stellen; ob der übernommen wird, entscheidest allein du.
 **Der von dir gewünschte Zustand ist also bereits der Normalfall.** Es gibt
 nichts, was eine fremde Person tun könnte, ohne dass du zustimmst.
 
-### Zusätzlich absichern (empfohlen)
+### Zusätzlich absichern – braucht man das?
 
-Sinnvoll ist eine Regel, die auch **versehentliche** Änderungen am Hauptzweig
-verhindert – etwa durch dich selbst, ein Skript oder einen KI-Assistenten. Dazu
-in den Repository-Einstellungen ein Ruleset anlegen:
+Ehrlich: **nein, nicht zwingend.** Gegen Fremde schützt bereits die
+Standardeinstellung. Ein Schreibschutz hilft nur gegen Unfälle von innen – durch
+dich selbst oder durch ein Werkzeug, das in deinem Auftrag pusht.
 
-1. `github.com/Philipp-byte/Klassenarbeiten` öffnen
-2. **Settings → Rules → Rulesets → New ruleset → New branch ruleset**
-3. Name: `Hauptzweig schützen`, Enforcement status: **Active**
-4. Unter *Target branches*: **Include default branch**
-5. Diese Regeln ankreuzen:
-   - **Restrict deletions** – der Zweig kann nicht gelöscht werden
-   - **Block force pushes** – die Historie kann nicht überschrieben werden
-   - **Require a pull request before merging** – jede Änderung muss durch einen
-     Pull Request, den du prüfst
-6. **Create** klicken
+Wenn du etwas einrichten möchtest, sind zwei Schalter sinnvoll und stören im
+Alltag nicht. Unter **Settings → Rules → Rulesets → New branch ruleset**,
+Enforcement **Active**, Target branches **Include default branch**:
 
-Wichtig: Setze bei „Bypass list“ **niemanden** ein, auch dich selbst nicht –
-sonst greift die Regel bei deinen eigenen Pushes nicht. Du kannst weiterhin
-alles ändern, nur eben über einen Pull Request, den du selbst zusammenführst.
+- ✅ **Restrict deletions** – der Hauptzweig kann nicht gelöscht werden
+- ✅ **Block force pushes** – die Historie kann nicht überschrieben werden
+
+Diese beiden kosten nichts und verhindern genau die Fälle, in denen wirklich
+Arbeit verloren gehen kann.
+
+Bewusst **nicht** empfohlen für ein Ein-Personen-Projekt:
+
+- ❌ **Require a pull request before merging** – danach kannst auch du keinen
+  Tippfehler mehr direkt korrigieren; jede Änderung braucht einen Pull Request.
+  Sinnvoll nur, wenn du jede Änderung vorher im Überblick sehen willst, etwa
+  weil ein KI-Assistent in deinem Auftrag pusht.
+
+Wichtig, falls du die PR-Pflicht doch setzt: Trage bei „Bypass list“
+**niemanden** ein, auch dich selbst nicht – sonst greift die Regel bei deinen
+eigenen Pushes nicht.
 
 ### Weitere Einstellungen, die sich lohnen
 
