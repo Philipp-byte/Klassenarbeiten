@@ -1,0 +1,12 @@
+# Pyodide wird lokal geholt (ca. 12 MB) und gehört nicht ins Repository.
+app/vendor/pyodide/
+
+# Abgaben und Auswertungen enthalten personenbezogene Daten –
+# sie dürfen niemals versehentlich eingecheckt werden.
+*.jjwsa
+*.jjwskey
+abgaben/
+korrekturen/
+
+.DS_Store
+Thumbs.db
