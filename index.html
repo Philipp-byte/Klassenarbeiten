@@ -1,0 +1,343 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Klassenarbeiten · JJWS</title>
+<meta name="description" content="Digitale Klassenarbeiten mit automatischer Korrektur – auch für Python und Webprogrammierung. Alles bleibt lokal im Browser.">
+<link rel="stylesheet" href="app/shared/theme.css">
+<link rel="icon" href="assets/logo/JJWS_Bildmarke_bunt.png">
+<style>
+  .held {
+    background:
+      radial-gradient(1200px 400px at 15% -10%, rgba(0, 159, 227, .14), transparent 60%),
+      radial-gradient(900px 380px at 90% 0%, rgba(0, 52, 77, .10), transparent 55%),
+      var(--paper);
+    border-bottom: 1px solid var(--grey-200);
+    padding: 3.5rem 1.25rem 3rem;
+  }
+  .held-inhalt { max-width: 1080px; margin: 0 auto; }
+  .held .marke {
+    font-size: .74rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase;
+    color: var(--blue-700); margin-bottom: .8rem;
+  }
+  .held h1 {
+    font-size: clamp(2rem, 5.2vw, 3.1rem);
+    line-height: 1.08;
+    letter-spacing: -.028em;
+    margin-bottom: .9rem;
+    max-width: 20ch;
+  }
+  .held h1 em { font-style: normal; color: var(--blue-700); }
+  .held .vorspann { font-size: clamp(1rem, 2.1vw, 1.16rem); color: var(--ink-2); max-width: 56ch; margin-bottom: 1.6rem; }
+  .held .knoepfe { display: flex; gap: .7rem; flex-wrap: wrap; }
+
+  .band { max-width: 1080px; margin: 0 auto; padding: 3rem 1.25rem; }
+  .band-grau { background: var(--grey-050); border-block: 1px solid var(--grey-200); }
+  .band h2 { font-size: clamp(1.4rem, 3vw, 1.9rem); letter-spacing: -.02em; margin-bottom: .5rem; }
+  .band .unterzeile { color: var(--grey); max-width: 60ch; margin-bottom: 1.8rem; }
+
+  .merkmale { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem; }
+  .merkmal { background: var(--paper); border: 1px solid var(--grey-200); border-radius: var(--r-lg); padding: 1.2rem 1.25rem; box-shadow: var(--schatten-1); }
+  .merkmal .zeichen { font-size: 1.5rem; line-height: 1; margin-bottom: .6rem; display: block; }
+  .merkmal h3 { margin-bottom: .3rem; }
+  .merkmal p { color: var(--ink-2); font-size: .92rem; margin: 0; }
+
+  .typen { display: grid; grid-template-columns: repeat(auto-fill, minmax(215px, 1fr)); gap: .5rem; }
+  .typ {
+    display: flex; align-items: center; gap: .55rem;
+    background: var(--paper); border: 1px solid var(--grey-200);
+    border-radius: var(--r-sm); padding: .6rem .8rem; font-size: .89rem;
+  }
+  .typ .haken { color: var(--green); font-weight: 700; flex: none; }
+  .typ.manuell .haken { color: var(--amber); }
+
+  .ablauf { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 1rem; counter-reset: s; }
+  .ablauf > div { position: relative; padding-top: 2.6rem; }
+  .ablauf > div::before {
+    counter-increment: s; content: counter(s);
+    position: absolute; top: 0; left: 0;
+    width: 2rem; height: 2rem; border-radius: 50%;
+    background: var(--navy); color: #fff;
+    display: grid; place-items: center; font-weight: 700; font-size: .88rem;
+  }
+  .ablauf h3 { margin-bottom: .25rem; font-size: .98rem; }
+  .ablauf p { font-size: .88rem; color: var(--ink-2); margin: 0; }
+
+  .code-schau {
+    background: var(--paper); border: 1px solid var(--grey-200);
+    border-radius: var(--r-lg); overflow: hidden; box-shadow: var(--schatten-2);
+  }
+  .code-schau .leiste {
+    display: flex; align-items: center; gap: .45rem;
+    padding: .55rem .8rem; background: var(--grey-050); border-bottom: 1px solid var(--grey-200);
+    font-size: .76rem; color: var(--grey);
+  }
+  .code-schau .punkt { width: .6rem; height: .6rem; border-radius: 50%; background: var(--grey-200); }
+  .code-schau pre { margin: 0; padding: 1rem 1.1rem; overflow-x: auto; font-family: var(--mono); font-size: .86rem; line-height: 1.6; }
+
+  .warnkasten {
+    border: 1px solid var(--amber); background: var(--amber-100);
+    border-radius: var(--r); padding: 1rem 1.15rem; color: #6b3c05;
+  }
+  .warnkasten strong { color: #6b3c05; }
+
+  .fuss { background: var(--navy-900); color: #b9cbd6; padding: 2.5rem 1.25rem; }
+  .fuss .inner { max-width: 1080px; margin: 0 auto; display: flex; gap: 2rem; flex-wrap: wrap; justify-content: space-between; }
+  .fuss a { color: #7fd0f5; }
+  .fuss h4 { color: #6f8b9b; }
+  .fuss ul { list-style: none; padding: 0; margin: 0; line-height: 1.9; font-size: .9rem; }
+
+  .doku-liste { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: .7rem; }
+  .doku-liste a {
+    display: block; background: var(--paper); border: 1px solid var(--grey-200);
+    border-radius: var(--r); padding: .9rem 1rem; text-decoration: none; transition: all var(--uebergang);
+  }
+  .doku-liste a:hover { border-color: var(--blue); transform: translateY(-2px); box-shadow: var(--schatten-2); }
+  .doku-liste .t { font-weight: 700; color: var(--navy); margin-bottom: .15rem; }
+  .doku-liste .b { font-size: .85rem; color: var(--grey); }
+</style>
+</head>
+<body>
+
+<header class="app-header">
+  <div class="titel">
+    <h1>Klassenarbeiten</h1>
+    <span class="sub">Johann-Jakob-Widmann-Schule Heilbronn</span>
+  </div>
+  <div class="kopf-rechts">
+    <a class="btn sekundaer klein" href="https://github.com/Philipp-byte/Klassenarbeiten">Quellcode</a>
+    <img class="logo" src="assets/logo/JJWS_Bildmarke_bunt.png" alt="Johann-Jakob-Widmann-Schule">
+  </div>
+</header>
+
+<section class="held">
+  <div class="held-inhalt">
+    <div class="marke">Digitale Leistungsfeststellung</div>
+    <h1>Klassenarbeiten schreiben, <em>automatisch korrigieren</em>, als PDF zurückgeben.</h1>
+    <p class="vorspann">
+      Zwei kleine Webprogramme für berufliche Schulen: eines, in dem die Klasse schreibt,
+      und eines zum Erstellen und Korrigieren. 14 Aufgabenarten, davon 13 vollautomatisch
+      bewertet – einschließlich echter Unit-Tests für Python und DOM-Prüfungen für HTML und CSS.
+      Es verlässt kein einziges Byte den Rechner.
+    </p>
+    <div class="knoepfe">
+      <a class="btn gross" href="app/lehrer/">Lehrkraft-Werkzeug öffnen</a>
+      <a class="btn gross sekundaer" href="app/pruefung/">Prüfungs-App ansehen</a>
+      <a class="btn gross leise" href="#dokumentation">Dokumentation</a>
+    </div>
+  </div>
+</section>
+
+<section class="band">
+  <div class="warnkasten">
+    <strong>Diese Seite ist die Vorführung.</strong>
+    Für echte Klassenarbeiten wird das Projekt heruntergeladen und über den mitgelieferten
+    lokalen Server gestartet – dann geht wirklich nichts ins Netz, und die Python-Umgebung
+    steht zur Verfügung. Hier auf GitHub Pages lädt der Browser die Seite von GitHub;
+    eingegebene Daten bleiben zwar trotzdem im Browser, aber für den Unterricht gilt die
+    lokale Variante.
+  </div>
+</section>
+
+<section class="band">
+  <h2>Was es kann</h2>
+  <p class="unterzeile">Gebaut für den Alltag an beruflichen Schulen – nicht als Plattform, sondern als Werkzeug.</p>
+  <div class="merkmale">
+    <div class="merkmal">
+      <span class="zeichen">🐍</span>
+      <h3>Echte Unit-Tests</h3>
+      <p>Python läuft über Pyodide in einer WebAssembly-Sandbox. Funktionsaufruf und Rückgabewert,
+         stdin nach stdout, freie Asserts, Prüfung auf verwendete Sprachmittel. Endlosschleifen
+         werden nach zehn Sekunden abgebrochen.</p>
+    </div>
+    <div class="merkmal">
+      <span class="zeichen">🔐</span>
+      <h3>Verschlüsselte Abgabe</h3>
+      <p>ECDH P-256, HKDF und AES-256-GCM. Die Klasse kann weder die eigene noch fremde Abgaben
+         lesen, und jede nachträgliche Änderung fällt sofort auf. Punkte entstehen erst bei
+         der Lehrkraft.</p>
+    </div>
+    <div class="merkmal">
+      <span class="zeichen">🖨</span>
+      <h3>PDF im Papierlayout</h3>
+      <p>Deckblatt mit Namensfeldern, Aufgabenübersicht und Bewertungskasten, blaue
+         Abschnittsüberschriften, Schreiblinien, Seitenzählung. Als Angabe, als Lösungsblatt
+         und als korrigierte Arbeit.</p>
+    </div>
+    <div class="merkmal">
+      <span class="zeichen">🎲</span>
+      <h3>Andere Reihenfolge für jeden</h3>
+      <p>Aufgaben und Antwortmöglichkeiten werden pro Person gemischt – reproduzierbar, damit
+         ein Absturz nichts durcheinanderbringt. Der Blick zum Nachbarn bringt nichts mehr.</p>
+    </div>
+    <div class="merkmal">
+      <span class="zeichen">🧭</span>
+      <h3>Lernsituationen inklusive</h3>
+      <p>Zehn fertige Ausgangssituationen mit Anschlusstexten entlang der vollständigen Handlung.
+         Die Arbeit trägt einen roten Faden statt zusammenhangloser Einzelfragen.</p>
+    </div>
+    <div class="merkmal">
+      <span class="zeichen">📵</span>
+      <h3>Kein Netz, keine Cloud</h3>
+      <p>Keine Schriftarten von Google, kein CDN, keine Analyse, kein Konto. Nachprüfbar im
+         Netzwerk-Reiter des Browsers – ein gutes Argument gegenüber dem Datenschutzbeauftragten.</p>
+    </div>
+  </div>
+</section>
+
+<section class="band band-grau">
+  <h2>Syntaxhervorhebung ohne fremde Bibliothek</h2>
+  <p class="unterzeile">
+    Eigener Tokenizer für Python, HTML, CSS und JavaScript – mit Zeilennummern, automatischer
+    Einrückung und paarweise schließenden Klammern. So sieht der Editor aus, in dem die Klasse arbeitet:
+  </p>
+  <div class="code-schau">
+    <div class="leiste">
+      <span class="punkt"></span><span class="punkt"></span><span class="punkt"></span>
+      <span style="margin-left:.4rem; font-weight:700; letter-spacing:.06em; color:var(--navy)">PYTHON</span>
+      <span style="margin-left:auto">Zeile 4, Spalte 28</span>
+    </div>
+    <pre><code><span class="t-schluessel">def</span> <span class="t-funktion">gesamtpreis</span><span class="t-klammer">(</span>broetchen<span class="t-operator">,</span> getraenke<span class="t-operator">,</span> riegel<span class="t-klammer">)</span><span class="t-operator">:</span>
+    <span class="t-kommentar"># Preise des Schulkiosks in Euro</span>
+    summe <span class="t-operator">=</span> broetchen <span class="t-operator">*</span> <span class="t-zahl">2.20</span> <span class="t-operator">+</span> getraenke <span class="t-operator">*</span> <span class="t-zahl">1.50</span> <span class="t-operator">+</span> riegel <span class="t-operator">*</span> <span class="t-zahl">0.90</span>
+    <span class="t-schluessel">return</span> <span class="t-eingebaut">round</span><span class="t-klammer">(</span>summe<span class="t-operator">,</span> <span class="t-zahl">2</span><span class="t-klammer">)</span>
+
+
+<span class="t-schluessel">if</span> <span class="t-eingebaut">round</span><span class="t-klammer">(</span><span class="t-funktion">gesamtpreis</span><span class="t-klammer">(</span><span class="t-zahl">4</span><span class="t-operator">,</span> <span class="t-zahl">2</span><span class="t-operator">,</span> <span class="t-zahl">1</span><span class="t-klammer">)</span><span class="t-operator">,</span> <span class="t-zahl">2</span><span class="t-klammer">)</span> <span class="t-operator">==</span> <span class="t-zahl">11.70</span><span class="t-operator">:</span>
+    <span class="t-eingebaut">print</span><span class="t-klammer">(</span><span class="t-text">"Der Testfall läuft durch."</span><span class="t-klammer">)</span></code></pre>
+  </div>
+</section>
+
+<section class="band">
+  <h2>14 Aufgabenarten</h2>
+  <p class="unterzeile">Grün = wird vollautomatisch korrigiert. Nur der Freitext wandert auf den Schreibtisch.</p>
+  <div class="typen">
+    <div class="typ"><span class="haken">✓</span> Multiple Choice</div>
+    <div class="typ"><span class="haken">✓</span> Aussagenraster</div>
+    <div class="typ"><span class="haken">✓</span> Kurzantwort</div>
+    <div class="typ"><span class="haken">✓</span> Antwort mit Stichwörtern</div>
+    <div class="typ"><span class="haken">✓</span> Aufzählung</div>
+    <div class="typ"><span class="haken">✓</span> Zuordnung</div>
+    <div class="typ"><span class="haken">✓</span> Reihenfolge</div>
+    <div class="typ"><span class="haken">✓</span> Lückentext</div>
+    <div class="typ"><span class="haken">✓</span> Zahlenwert</div>
+    <div class="typ"><span class="haken">✓</span> Rechnung mit Teilergebnissen</div>
+    <div class="typ"><span class="haken">✓</span> Python programmieren</div>
+    <div class="typ"><span class="haken">✓</span> Code sortieren (Parsons)</div>
+    <div class="typ"><span class="haken">✓</span> HTML / CSS / JavaScript</div>
+    <div class="typ manuell"><span class="haken">✎</span> Freitext (von Hand)</div>
+  </div>
+</section>
+
+<section class="band band-grau">
+  <h2>So läuft eine Klassenarbeit</h2>
+  <p class="unterzeile">Von der Vorbereitung bis zur zurückgegebenen Arbeit.</p>
+  <div class="ablauf">
+    <div>
+      <h3>Schlüssel anlegen</h3>
+      <p>Einmalig. Der öffentliche Teil wandert in jede Prüfungsdatei, der private bleibt bei dir.</p>
+    </div>
+    <div>
+      <h3>Arbeit bauen</h3>
+      <p>Ausgangssituation wählen, Aufgaben ergänzen, Notenschlüssel prüfen. Die Punkte-Noten-Tabelle rechnet live mit.</p>
+    </div>
+    <div>
+      <h3>Ausgeben</h3>
+      <p>Eine Datei ohne Lösungen in den Tauschordner legen. Wer sie im Editor öffnet, findet nichts.</p>
+    </div>
+    <div>
+      <h3>Schreiben lassen</h3>
+      <p>Die Klasse arbeitet offline, mit Autosave und Wiederaufnahme nach Absturz, und gibt verschlüsselt ab.</p>
+    </div>
+    <div>
+      <h3>Korrigieren</h3>
+      <p>Alle Abgaben hereinziehen, automatisch bewerten lassen, Freitexte per Klick nachbewerten, PDFs und Notenliste ausgeben.</p>
+    </div>
+  </div>
+</section>
+
+<section class="band" id="dokumentation">
+  <h2>Dokumentation</h2>
+  <p class="unterzeile">Alles im Repository, auf Deutsch und für den schulischen Alltag geschrieben.</p>
+  <div class="doku-liste">
+    <a href="docs/anleitung-lehrkraft.md">
+      <div class="t">Anleitung für die Lehrkraft</div>
+      <div class="b">Arbeit bauen, ausgeben, korrigieren – mit Hinweisen zu jeder Aufgabenart</div>
+    </a>
+    <a href="docs/anleitung-sus.md">
+      <div class="t">Anleitung für die Klasse</div>
+      <div class="b">Eine Seite zum Ausdrucken oder Aufhängen</div>
+    </a>
+    <a href="DATENSCHUTZ.md">
+      <div class="t">Datenschutz</div>
+      <div class="b">Rechtsgrundlagen, technische Maßnahmen, Löschkonzept, Vorlage fürs Verarbeitungsverzeichnis</div>
+    </a>
+    <a href="SICHERHEIT.md">
+      <div class="t">Sicherheit</div>
+      <div class="b">Warum ein öffentliches Repository unproblematisch ist – und wo die Grenzen liegen</div>
+    </a>
+    <a href="BAUPLAN.md">
+      <div class="t">Bauplan</div>
+      <div class="b">Alle Anforderungen, Entwurfsentscheidungen und was bewusst weggelassen wurde</div>
+    </a>
+    <a href="README.md">
+      <div class="t">Einrichtung</div>
+      <div class="b">Herunterladen, Pyodide holen, lokal starten</div>
+    </a>
+  </div>
+</section>
+
+<section class="band band-grau">
+  <h2>Selbst ausprobieren</h2>
+  <p class="unterzeile">Drei Befehle, dann läuft es lokal – mit Python-Ausführung und ohne Netz.</p>
+  <div class="code-schau">
+    <div class="leiste">
+      <span class="punkt"></span><span class="punkt"></span><span class="punkt"></span>
+      <span style="margin-left:.4rem; font-weight:700; letter-spacing:.06em; color:var(--navy)">TERMINAL</span>
+    </div>
+    <pre><code><span class="t-kommentar"># 1. Projekt holen</span>
+git clone https://github.com/Philipp-byte/Klassenarbeiten.git
+<span class="t-schluessel">cd</span> Klassenarbeiten
+
+<span class="t-kommentar"># 2. Python-Umgebung für die Programmieraufgaben (einmalig, ca. 12 MB)</span>
+./scripts/pyodide-holen.sh          <span class="t-kommentar"># Windows: scripts\pyodide-holen.cmd</span>
+
+<span class="t-kommentar"># 3. Starten – öffnet http://localhost:8080</span>
+./start.sh                          <span class="t-kommentar"># Windows: start.cmd (Doppelklick)</span></code></pre>
+  </div>
+  <p class="klein grau" style="margin-top:1rem">
+    In der Lehrkraft-App unter <em>Klassenarbeiten → Master-Datei laden</em> die Beispielarbeit
+    <code>beispiele/klassenarbeit-schulkiosk.jjwsm</code> öffnen – zehn Aufgaben quer durch alle Arten.
+  </p>
+</section>
+
+<footer class="fuss">
+  <div class="inner">
+    <div>
+      <div style="font-weight:700; color:#fff; font-size:1.05rem; margin-bottom:.3rem">Klassenarbeiten</div>
+      <div style="font-size:.88rem; max-width:34ch">
+        Digitale Leistungsfeststellung für berufliche Schulen.
+        Johann-Jakob-Widmann-Schule Heilbronn.
+      </div>
+    </div>
+    <div>
+      <h4>Projekt</h4>
+      <ul>
+        <li><a href="https://github.com/Philipp-byte/Klassenarbeiten">Quellcode auf GitHub</a></li>
+        <li><a href="BAUPLAN.md">Bauplan</a></li>
+        <li><a href="README.md">Einrichtung</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Rechtliches</h4>
+      <ul>
+        <li><a href="DATENSCHUTZ.md">Datenschutz</a></li>
+        <li><a href="SICHERHEIT.md">Sicherheit</a></li>
+      </ul>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

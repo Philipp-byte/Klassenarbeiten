@@ -31,6 +31,7 @@ import { schluessel, sicherstellenEntsperrt } from "./schluessel.js";
 import { PythonRunner, pyodideVorhanden } from "../shared/python-runner.js";
 import { WebRunner } from "../shared/web-runner.js";
 import { druckAnsicht, druckNotenliste } from "../shared/druck.js";
+import { codeAnsicht } from "../shared/code-editor.js";
 
 let behaelter = null;
 let master = null;
@@ -544,12 +545,16 @@ function antwortAnzeige(a, antwort) {
 
   switch (a.typ) {
     case "code-python":
-      return roh(antwort?.code, true);
+      return String(antwort?.code ?? "").trim()
+        ? codeAnsicht(antwort.code, "python")
+        : roh("");
     case "code-web":
-      return el("div", { class: "spalten spalten-3" }, [
-        el("div", {}, [el("h4", { text: "HTML" }), roh(antwort?.html, true)]),
-        el("div", {}, [el("h4", { text: "CSS" }), roh(antwort?.css, true)]),
-        a.jsAktiv ? el("div", {}, [el("h4", { text: "JavaScript" }), roh(antwort?.js, true)]) : null,
+      return el("div", { class: "spalten spalten-2" }, [
+        el("div", {}, [el("h4", { text: "HTML" }), codeAnsicht(antwort?.html ?? "", "html")]),
+        el("div", {}, [el("h4", { text: "CSS" }), codeAnsicht(antwort?.css ?? "", "css")]),
+        a.jsAktiv
+          ? el("div", {}, [el("h4", { text: "JavaScript" }), codeAnsicht(antwort?.js ?? "", "javascript")])
+          : null,
       ]);
     case "freitext":
     case "stichworte":

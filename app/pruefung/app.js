@@ -74,12 +74,13 @@ function zeigeStart() {
   uhrAnzeige.hidden = true;
 
   const flaeche = el("div", { class: "start-flaeche" }, [
-    el("p", { style: { fontSize: "1.05rem", marginBottom: "1rem" } }, [
-      el("strong", { text: "Klassenarbeitsdatei öffnen" }),
-    ]),
-    el("p", { class: "grau", text: "Zieh die Datei hierher oder wähle sie aus. Sie endet auf .jjwsp." }),
+    el("div", { style: { fontSize: "2rem", lineHeight: "1", marginBottom: ".6rem", opacity: ".55" }, text: "📄" }),
+    el("p", { style: { fontSize: "1.02rem", fontWeight: "700", color: "var(--navy)", marginBottom: ".3rem" },
+              text: "Klassenarbeitsdatei öffnen" }),
+    el("p", { class: "klein grau", text: "Datei hierher ziehen oder unten auswählen · Endung .jjwsp" }),
     el("button", {
       class: "btn gross",
+      style: { marginTop: ".9rem" },
       text: "Datei auswählen",
       onclick: async () => {
         const datei = await dateiWaehlen({ endungen: `.${DATEI_ENDUNG.pruefung},.json` });
@@ -89,25 +90,31 @@ function zeigeStart() {
   ]);
   ablageFlaeche(flaeche, (dateien) => ladePruefungsdatei(dateien[0]), [`.${DATEI_ENDUNG.pruefung}`, ".json"]);
 
+  const punkt = (zeichen, titel, text) =>
+    el("div", { class: "zeile", style: { alignItems: "flex-start", gap: ".7rem", marginBottom: ".7rem" } }, [
+      el("span", { style: { fontSize: "1.1rem", lineHeight: "1.3", flex: "none" }, text: zeichen }),
+      el("div", { style: { flex: "1", minWidth: "0" } }, [
+        el("div", { class: "fett", style: { fontSize: ".92rem" }, text: titel }),
+        el("div", { class: "klein grau", text }),
+      ]),
+    ]);
+
   inhalt.replaceChildren(
     el("div", { class: "wrap-schmal", style: { margin: "0 auto" } }, [
-      el("div", { class: "karte" }, [
-        el("h2", { text: "Willkommen" }),
-        el("p", {
-          text:
-            "Öffne zuerst die Datei mit der Klassenarbeit. Deine Lehrkraft hat dir gesagt, " +
-            "wo sie liegt – meist im Tauschordner.",
-        }),
-        flaeche,
+      el("div", { class: "willkommen" }, [
+        el("div", { class: "marke", text: "Johann-Jakob-Widmann-Schule" }),
+        el("h2", { text: "Klassenarbeit" }),
+        el("p", { text: "Öffne die Datei, die deine Lehrkraft im Tauschordner bereitgelegt hat." }),
       ]),
+      el("div", { class: "karte" }, [flaeche]),
       el("div", { class: "karte" }, [
         el("h3", { text: "Gut zu wissen" }),
-        el("ul", {}, [
-          el("li", { text: "Deine Eingaben werden ständig auf diesem Rechner zwischengespeichert." }),
-          el("li", { text: "Wenn der Browser abstürzt, kannst du dort weitermachen, wo du aufgehört hast." }),
-          el("li", { text: "Es wird nichts ins Internet geschickt." }),
-          el("li", { text: "Am Ende lädst du eine verschlüsselte Datei herunter und legst sie im Tauschordner ab." }),
-        ]),
+        punkt("💾", "Deine Eingaben werden laufend gespeichert",
+              "Nach einem Absturz kannst du dort weitermachen, wo du aufgehört hast."),
+        punkt("🔒", "Nichts verlässt diesen Rechner",
+              "Es wird nichts ins Internet geschickt – auch nicht dein Name."),
+        punkt("📤", "Am Ende lädst du eine verschlüsselte Datei herunter",
+              "Die legst du im Tauschordner ab. Erst dann ist die Arbeit abgegeben."),
       ]),
     ])
   );

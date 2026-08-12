@@ -5,7 +5,8 @@
    vorhanden und können deshalb auch nicht angezeigt werden.
    ========================================================================== */
 
-import { el, autoHoehe, tabEinrueckung, entprellt } from "./dom.js";
+import { el, autoHoehe, entprellt } from "./dom.js";
+import { codeEditor } from "./code-editor.js";
 import { WebRunner } from "./web-runner.js";
 
 /**
@@ -356,12 +357,15 @@ function rechenwegFeld(a, antwort, { aendern, nurLesen }) {
 function pythonFeld(a, antwort, { aendern, nurLesen, runner }) {
   const stand = { code: antwort?.code ?? a.startcode ?? "", eingabe: antwort?.eingabe ?? "" };
 
-  const editor = el("textarea", { class: "code", spellcheck: "false", disabled: nurLesen });
-  editor.value = stand.code;
-  tabEinrueckung(editor);
-  editor.addEventListener("input", () => {
-    stand.code = editor.value;
-    aendern({ ...stand });
+  const editor = codeEditor({
+    wert: stand.code,
+    sprache: "python",
+    nurLesen,
+    zeilen: 12,
+    beiAenderung: (text) => {
+      stand.code = text;
+      aendern({ ...stand });
+    },
   });
 
   const ausgabe = el("pre", { class: "ausgabe", text: "" });
@@ -391,7 +395,7 @@ function pythonFeld(a, antwort, { aendern, nurLesen, runner }) {
     ausgabe.textContent = "";
     try {
       const eingabe = stdinFeld.value.split(";").join("\n");
-      const r = await runner.ausfuehren(editor.value, eingabe);
+      const r = await runner.ausfuehren(editor.holeWert(), eingabe);
       ausgabe.textContent = [r.ausgabe, r.fehler].filter(Boolean).join("\n") || "(keine Ausgabe)";
       ausgabe.style.color = r.fehler ? "#c00000" : "";
     } finally {
@@ -407,7 +411,7 @@ function pythonFeld(a, antwort, { aendern, nurLesen, runner }) {
       testKnopf.textContent = "prüft …";
       ausgabe.textContent = "";
       try {
-        const ergebnisse = await runner.alleTests(a, editor.value, a.selbsttests);
+        const ergebnisse = await runner.alleTests(a, editor.holeWert(), a.selbsttests);
         ausgabe.textContent = ergebnisse
           .map((r, i) => {
             const t = a.selbsttests[i];
@@ -424,7 +428,7 @@ function pythonFeld(a, antwort, { aendern, nurLesen, runner }) {
   }
 
   return el("div", { class: "stapel" }, [
-    editor,
+    editor.knoten,
     el("div", { class: "zeile" }, [laufKnopf, testKnopf, el("span", { class: "schieb-rechts" })]),
     el("label", { class: "feld", style: { marginBottom: 0 } }, [
       el("span", { class: "bez", text: "Eingaben (nur zum Ausprobieren)" }),
@@ -526,26 +530,29 @@ function webFeld(a, antwort, { aendern, nurLesen }) {
 
   const aktualisieren = entprellt(() => WebRunner.vorschau(rahmen, stand, a.jsAktiv), 350);
 
-  const feld = (schluessel, bez, sichtbar = true) => {
+  const feld = (schluessel, sprache, sichtbar = true) => {
     if (!sichtbar) return null;
-    const t = el("textarea", { class: "code", spellcheck: "false", rows: 10, disabled: nurLesen });
-    t.value = stand[schluessel];
-    tabEinrueckung(t, 2);
-    t.addEventListener("input", () => {
-      stand[schluessel] = t.value;
-      aendern({ ...stand });
-      aktualisieren();
+    const e = codeEditor({
+      wert: stand[schluessel],
+      sprache,
+      nurLesen,
+      zeilen: 9,
+      beiAenderung: (text) => {
+        stand[schluessel] = text;
+        aendern({ ...stand });
+        aktualisieren();
+      },
     });
-    return el("label", { class: "feld" }, [el("span", { class: "bez", text: bez }), t]);
+    return el("div", { style: { marginBottom: ".8rem" } }, [e.knoten]);
   };
 
   setTimeout(() => WebRunner.vorschau(rahmen, stand, a.jsAktiv), 0);
 
   return el("div", { class: "spalten spalten-2" }, [
     el("div", {}, [
-      feld("html", "HTML"),
-      feld("css", "CSS"),
-      feld("js", "JavaScript", !!a.jsAktiv),
+      feld("html", "html"),
+      feld("css", "css"),
+      feld("js", "javascript", !!a.jsAktiv),
     ]),
     el("div", {}, [
       el("h4", { text: "Vorschau" }),

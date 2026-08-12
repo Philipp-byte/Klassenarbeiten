@@ -6,7 +6,7 @@
    ohne jede Lösung.
    ========================================================================== */
 
-import { el, $, meldung, frage, dateiWaehlen, autoHoehe, tabEinrueckung, entprellt } from "../shared/dom.js";
+import { el, $, meldung, frage, dateiWaehlen, autoHoehe, entprellt } from "../shared/dom.js";
 import {
   neuePruefung,
   neueAufgabe,
@@ -32,6 +32,7 @@ import { masterListe, masterLaden, masterSpeichern, masterLoeschen } from "../sh
 import { schluessel, sicherstellenEntsperrt } from "./schluessel.js";
 import { druckAnsicht } from "../shared/druck.js";
 import { baueAntwortfeld } from "../shared/aufgaben-ui.js";
+import { codeEditor } from "../shared/code-editor.js";
 
 let aktuell = null; // der Master, der gerade bearbeitet wird
 let behaelter = null;
@@ -140,6 +141,22 @@ async function importieren() {
   }
 }
 
+/* Strg+S speichert – gewohnter Griff, auch wenn ohnehin laufend gespeichert wird. */
+let tastenHorcherGesetzt = false;
+function tastenHorcher() {
+  if (tastenHorcherGesetzt) return;
+  tastenHorcherGesetzt = true;
+  window.addEventListener("keydown", (e) => {
+    if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "s") {
+      e.preventDefault();
+      if (aktuell) {
+        masterSpeichern(aktuell);
+        meldung("Gespeichert.", "gut", 1800);
+      }
+    }
+  });
+}
+
 export function oeffne(id) {
   aktuell = masterLaden(id);
   if (!aktuell) {
@@ -147,6 +164,7 @@ export function oeffne(id) {
     return zeigeArbeiten(behaelter);
   }
   if (!aktuell.notenschluessel) aktuell.notenschluessel = standardSchluessel();
+  tastenHorcher();
   zeichne();
 }
 
@@ -199,12 +217,23 @@ function zahlFeldEin(objekt, schluesselName, bez, { min = 0, schritt = 1, hinwei
   return feld(bez, eingabe, hinweis);
 }
 
-function bereichFeld(objekt, schluesselName, bez, { zeilen = 4, hinweis = "", code = false, platzhalter = "" } = {}) {
-  const eingabe = el("textarea", { rows: zeilen, spellcheck: code ? "false" : "true", placeholder: platzhalter });
-  if (code) eingabe.classList.add("code");
+function bereichFeld(objekt, schluesselName, bez, { zeilen = 4, hinweis = "", code = false, platzhalter = "", sprache = "python" } = {}) {
+  if (code) {
+    const editor = codeEditor({
+      wert: objekt[schluesselName] ?? "",
+      sprache,
+      zeilen,
+      platzhalter,
+      beiAenderung: (text) => {
+        objekt[schluesselName] = text;
+        aendern();
+      },
+    });
+    return feld(bez, editor.knoten, hinweis);
+  }
+  const eingabe = el("textarea", { rows: zeilen, spellcheck: "true", placeholder: platzhalter });
   eingabe.value = objekt[schluesselName] ?? "";
-  if (code) tabEinrueckung(eingabe);
-  else autoHoehe(eingabe, zeilen);
+  autoHoehe(eingabe, zeilen);
   eingabe.addEventListener("input", () => {
     objekt[schluesselName] = eingabe.value;
     aendern();
@@ -218,10 +247,7 @@ function schalter(objekt, schluesselName, bez, neuZeichnen = false) {
     objekt[schluesselName] = eingabe.checked;
     aendern(neuZeichnen);
   });
-  return el("label", { class: "zeile-eng", style: { cursor: "pointer", marginBottom: ".4rem" } }, [
-    eingabe,
-    el("span", { text: bez }),
-  ]);
+  return el("label", { class: "schalter" }, [eingabe, el("span", { class: "gleis" }), el("span", { text: bez })]);
 }
 
 function auswahlFeld(objekt, schluesselName, bez, optionen, neuZeichnen = false) {
@@ -245,7 +271,8 @@ function zeichne() {
     situationsKarte(),
     notenschluesselKarte(),
     aufgabenKarte(),
-    aktionsKarte()
+    aktionsKarte(),
+    aktionsLeiste()
   );
   window.scrollTo({ top: 0 });
 }
@@ -260,20 +287,37 @@ function aktualisierePunkteAnzeige() {
 function kopfLeiste() {
   punkteAnzeige = el("span", { class: "plakette info" });
   aktualisierePunkteAnzeige();
-  return el("div", { class: "zeile", style: { marginBottom: "1rem" } }, [
-    el("button", { class: "btn sekundaer", text: "← Übersicht", onclick: () => zeigeArbeiten(behaelter) }),
-    el("h2", { style: { margin: 0 }, text: aktuell.titel }),
-    punkteAnzeige,
-    el("span", { class: "schieb-rechts" }),
-    el("button", {
-      class: "btn sekundaer",
-      text: "Speichern",
-      onclick: () => {
-        masterSpeichern(aktuell);
-        meldung("Gespeichert.", "gut", 2000);
-      },
-    }),
+  return el("div", {}, [
+    el("div", { class: "zeile", style: { marginBottom: ".8rem" } }, [
+      el("button", { class: "btn leise", text: "← Übersicht", onclick: () => zeigeArbeiten(behaelter) }),
+      el("h2", { style: { margin: 0 }, text: aktuell.titel || "Ohne Titel" }),
+      punkteAnzeige,
+      el("span", { class: "schieb-rechts" }),
+      el("span", { class: "klein grau", text: "Änderungen werden automatisch gespeichert" }),
+    ]),
+    schrittAnzeige(),
   ]);
+}
+
+/** Zeigt auf einen Blick, was schon steht und was noch fehlt. */
+function schrittAnzeige() {
+  const schritte = [
+    { nr: 1, name: "Kopfdaten", fertig: !!(aktuell.titel?.trim() && aktuell.fach?.trim() && aktuell.klasse?.trim()) },
+    { nr: 2, name: "Ausgangssituation", fertig: !!aktuell.ausgangssituation?.trim() },
+    { nr: 3, name: "Aufgaben", fertig: aktuell.aufgaben.length > 0 && pruefeMaster(aktuell).length === 0 },
+    { nr: 4, name: "Ausgeben", fertig: false },
+  ];
+  const ersterOffener = schritte.find((x) => !x.fertig);
+  return el(
+    "div",
+    { class: "schritte" },
+    schritte.map((x) =>
+      el("div", { class: `schritt${x.fertig ? " erledigt" : x === ersterOffener ? " offen" : ""}` }, [
+        el("span", { class: "zahl", text: x.fertig ? "✓" : String(x.nr) }),
+        el("span", { text: x.name }),
+      ])
+    )
+  );
 }
 
 /* -------------------------------------------------------------- Kopfdaten */
@@ -503,53 +547,106 @@ function aufgabenKarte() {
   const liste = el("div", { class: "aufgaben-liste" });
   aktuell.aufgaben.forEach((a, i) => liste.appendChild(aufgabenEditor(a, i)));
   if (!aktuell.aufgaben.length) {
-    liste.appendChild(el("p", { class: "leer", text: "Noch keine Aufgabe. Unten eine Aufgabenart wählen." }));
+    liste.appendChild(
+      el("div", { class: "leer-zustand" }, [
+        el("div", { class: "zeichen", text: "✎" }),
+        el("div", { class: "titel", text: "Noch keine Aufgabe" }),
+        el("p", {
+          text:
+            "Wähle oben eine Aufgabenart. Am schnellsten geht es, wenn du zuerst eine " +
+            "Ausgangssituation festlegst – dann bekommt jede neue Aufgabe automatisch den " +
+            "passenden Einleitungssatz.",
+        }),
+        el("button", { class: "btn gross", text: "+ Erste Aufgabe anlegen", onclick: typAuswahl }),
+      ])
+    );
   }
-
-  const knoepfe = TYP_GRUPPEN.map((gruppe) =>
-    el("div", {}, [
-      el("h4", { text: gruppe }),
-      el(
-        "div",
-        { class: "zeile-eng" },
-        Object.entries(AUFGABENTYPEN)
-          .filter(([, t]) => t.gruppe === gruppe)
-          .map(([k, t]) =>
-            el("button", {
-              class: "btn sekundaer klein",
-              text: `+ ${t.name}`,
-              title: t.kurz + (t.auto ? "" : " (wird von Hand bewertet)"),
-              onclick: () => {
-                const neu = neueAufgabe(k);
-                const s = situationNach(aktuell.situationId);
-                if (s) {
-                  neu.handlungsschritt = TYP_ZU_SCHRITT[k] ?? "durchfuehren";
-                  neu.situationsAnschluss = s.anschluesse?.[neu.handlungsschritt] ?? "";
-                }
-                aktuell.aufgaben.push(neu);
-                aendern(true);
-              },
-            })
-          )
-      ),
-    ])
-  );
 
   return el("div", { class: "karte" }, [
     el("div", { class: "karte-kopf" }, [
       el("h3", { text: "Aufgaben" }),
-      el("span", { class: "klein grau", text: `${formatPunkte(gesamtPunkte(aktuell))} Punkte insgesamt` }),
+      el("div", { class: "zeile-eng" }, [
+        el("span", { class: "plakette info", text: `${formatPunkte(gesamtPunkte(aktuell))} Punkte insgesamt` }),
+        el("button", { class: "btn", text: "+ Aufgabe hinzufügen", onclick: typAuswahl }),
+      ]),
     ]),
     liste,
-    el("hr", { class: "trenner" }),
-    el("div", { class: "spalten spalten-2" }, knoepfe),
   ]);
+}
+
+/** Aufgabentyp im Dialog wählen – mit Erklärung statt bloßem Knopf. */
+function typAuswahl() {
+  const dlg = el("dialog", { style: { maxWidth: "min(56rem, 95vw)" } });
+  const inhalt = el("div", { class: "dlg-inhalt" }, [
+    el("div", { class: "karte-kopf" }, [
+      el("h2", { style: { margin: 0 }, text: "Welche Art von Aufgabe?" }),
+      el("button", { class: "btn leise", text: "Schließen", onclick: () => dlg.close() }),
+    ]),
+    el("p", {
+      class: "klein grau",
+      text: "13 der 14 Arten werden vollautomatisch korrigiert. Nur der Freitext wird von dir bewertet.",
+    }),
+  ]);
+
+  TYP_GRUPPEN.forEach((gruppe) => {
+    const typen = Object.entries(AUFGABENTYPEN).filter(([, t]) => t.gruppe === gruppe);
+    if (!typen.length) return;
+    inhalt.appendChild(el("div", { class: "typ-gruppe", text: gruppe }));
+    inhalt.appendChild(
+      el(
+        "div",
+        { class: "typ-gitter" },
+        typen.map(([k, t]) =>
+          el("button", {
+            class: "kachel",
+            type: "button",
+            onclick: () => {
+              aufgabeAnlegen(k);
+              dlg.close();
+            },
+          }, [
+            el("div", { class: "zeile-eng", style: { marginBottom: ".15rem" } }, [
+              el("span", { class: "kachel-titel", text: t.name }),
+              el("span", { class: `plakette ${t.auto ? "gut" : "teil"}`, text: t.auto ? "automatisch" : "manuell" }),
+            ]),
+            el("div", { class: "kachel-zeile", text: t.kurz }),
+          ])
+        )
+      )
+    );
+  });
+
+  dlg.appendChild(inhalt);
+  dlg.addEventListener("close", () => dlg.remove());
+  document.body.appendChild(dlg);
+  dlg.showModal();
+}
+
+function aufgabeAnlegen(typ) {
+  const neu = neueAufgabe(typ);
+  const situation = situationNach(aktuell.situationId);
+  if (situation) {
+    neu.handlungsschritt = TYP_ZU_SCHRITT[typ] ?? "durchfuehren";
+    neu.situationsAnschluss = situation.anschluesse?.[neu.handlungsschritt] ?? "";
+  }
+  aktuell.aufgaben.push(neu);
+  aendern(true);
+  // Die neue Aufgabe gleich aufklappen und anspringen.
+  setTimeout(() => {
+    const karten = behaelter.querySelectorAll(".aufgabe-karte");
+    const letzte = karten[karten.length - 1];
+    if (letzte) {
+      letzte.open = true;
+      letzte.scrollIntoView({ behavior: "smooth", block: "center" });
+    }
+  }, 30);
 }
 
 function aufgabenEditor(a, index) {
   const typ = AUFGABENTYPEN[a.typ];
   const kopf = el("summary", {}, [
-    el("span", { text: `${index + 1}. ${typ?.name ?? a.typ}` }),
+    el("span", { class: "nr-marke", text: String(index + 1) }),
+    el("span", { text: typ?.name ?? a.typ }),
     a.titel ? el("span", { class: "klein grau", text: `· ${a.titel}` }) : null,
     el("span", { class: "plakette info", text: `${formatPunkte(aufgabenPunkte(a))} P.` }),
     typ && !typ.auto ? el("span", { class: "plakette teil", text: "manuell" }) : null,
@@ -986,15 +1083,15 @@ function typEditor(a) {
       return [
         el("div", { class: "zeile" }, [schalter(a, "jsAktiv", "JavaScript freischalten", true)]),
         el("div", { class: "spalten spalten-2" }, [
-          bereichFeld(a, "startHtml", "Start-HTML", { zeilen: 6, code: true }),
-          bereichFeld(a, "startCss", "Start-CSS", { zeilen: 6, code: true }),
+          bereichFeld(a, "startHtml", "Start-HTML", { zeilen: 6, code: true, sprache: "html" }),
+          bereichFeld(a, "startCss", "Start-CSS", { zeilen: 6, code: true, sprache: "css" }),
         ]),
-        a.jsAktiv ? bereichFeld(a, "startJs", "Start-JavaScript", { zeilen: 5, code: true }) : null,
+        a.jsAktiv ? bereichFeld(a, "startJs", "Start-JavaScript", { zeilen: 5, code: true, sprache: "javascript" }) : null,
         el("details", {}, [
           el("summary", { class: "klein", style: { cursor: "pointer" }, text: "Musterlösung (für das Lösungsblatt)" }),
-          bereichFeld(a, "loesungHtml", "HTML", { zeilen: 5, code: true }),
-          bereichFeld(a, "loesungCss", "CSS", { zeilen: 5, code: true }),
-          a.jsAktiv ? bereichFeld(a, "loesungJs", "JavaScript", { zeilen: 5, code: true }) : null,
+          bereichFeld(a, "loesungHtml", "HTML", { zeilen: 5, code: true, sprache: "html" }),
+          bereichFeld(a, "loesungCss", "CSS", { zeilen: 5, code: true, sprache: "css" }),
+          a.jsAktiv ? bereichFeld(a, "loesungJs", "JavaScript", { zeilen: 5, code: true, sprache: "javascript" }) : null,
         ]),
         webTests(a),
       ];
@@ -1182,14 +1279,6 @@ function aktionsKarte() {
         ])
       : el("div", { class: "hinweis gut", text: "Die Arbeit ist vollständig und kann ausgegeben werden." }),
 
-    el("div", { class: "zeile", style: { marginTop: "1rem" } }, [
-      el("button", { class: "btn sekundaer", text: "Vorschau wie bei den SuS", onclick: vorschau }),
-      el("button", { class: "btn sekundaer", text: "Angabe drucken (PDF)", onclick: () => druckAnsicht({ modus: "leer", pruefung: aktuell }) }),
-      el("button", { class: "btn sekundaer", text: "Lösungsblatt drucken (PDF)", onclick: () => druckAnsicht({ modus: "loesung", pruefung: aktuell }) }),
-      el("span", { class: "schieb-rechts" }),
-      el("button", { class: "btn sekundaer", text: "Master sichern (.jjwsm)", onclick: masterExport }),
-      el("button", { class: "btn gross dunkel", text: "Datei für die Klasse erzeugen", onclick: susExport }),
-    ]),
     el("p", {
       class: "klein grau",
       style: { marginTop: ".7rem" },
@@ -1197,6 +1286,18 @@ function aktionsKarte() {
         "„Datei für die Klasse“ erzeugt die Fassung ohne Lösungen (.jjwsp). Diese Datei kommt in den " +
         "Tauschordner. Der Master mit den Lösungen bleibt bei dir.",
     }),
+  ]);
+}
+
+/** Immer sichtbare Leiste mit den vier Ausgaben. */
+function aktionsLeiste() {
+  return el("div", { class: "aktionsleiste" }, [
+    el("button", { class: "btn sekundaer", text: "👁 Vorschau", title: "So sehen es die SuS", onclick: vorschau }),
+    el("button", { class: "btn sekundaer", text: "🖶 Angabe", title: "Leere Arbeit als PDF drucken", onclick: () => druckAnsicht({ modus: "leer", pruefung: aktuell }) }),
+    el("button", { class: "btn sekundaer", text: "🖶 Lösungsblatt", title: "Erwartungshorizont als PDF", onclick: () => druckAnsicht({ modus: "loesung", pruefung: aktuell }) }),
+    el("span", { class: "schieb-rechts" }),
+    el("button", { class: "btn sekundaer", text: "Master sichern", title: "Datei mit Lösungen für dein Archiv", onclick: masterExport }),
+    el("button", { class: "btn dunkel", text: "Datei für die Klasse erzeugen", onclick: susExport }),
   ]);
 }
 

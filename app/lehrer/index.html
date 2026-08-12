@@ -9,62 +9,88 @@
 <link rel="stylesheet" href="../shared/druck.css">
 <link rel="icon" href="../../assets/logo/JJWS_Bildmarke_bunt.png">
 <style>
-  .ablage-aktiv { outline: 3px dashed var(--blue); outline-offset: 4px; }
-  .ablage {
-    border: 2px dashed var(--grey-200);
-    border-radius: var(--radius-lg);
-    padding: 1.6rem 1.2rem;
-    text-align: center;
-    background: var(--paper);
-  }
+  /* Nur in dieser App gebrauchte Ergänzungen */
   .aufgaben-liste > li { list-style: none; }
+
   .aufgabe-karte {
     border: 1px solid var(--grey-200);
-    border-left: 4px solid var(--blue);
-    border-radius: var(--radius);
+    border-left: 3px solid var(--blue);
+    border-radius: var(--r);
     background: var(--paper);
-    margin-bottom: .7rem;
+    margin-bottom: .6rem;
+    box-shadow: var(--schatten-1);
+    transition: box-shadow var(--uebergang), border-color var(--uebergang);
   }
+  .aufgabe-karte:hover { box-shadow: var(--schatten-2); }
+  .aufgabe-karte[open] { border-left-color: var(--navy); }
   .aufgabe-karte > summary {
     cursor: pointer;
-    padding: .6rem .8rem;
+    padding: .7rem .9rem;
     display: flex;
     align-items: center;
     gap: .6rem;
-    font-weight: 600;
+    font-weight: 650;
     color: var(--navy);
+    list-style: none;
+    border-radius: var(--r);
   }
   .aufgabe-karte > summary::-webkit-details-marker { display: none; }
-  .aufgabe-karte > summary::before { content: "▸"; color: var(--blue); }
-  .aufgabe-karte[open] > summary::before { content: "▾"; }
-  .aufgabe-karte .koerper { padding: .2rem .9rem 1rem; border-top: 1px solid var(--grey-100); }
+  .aufgabe-karte > summary::before {
+    content: "";
+    width: .45rem; height: .45rem;
+    border-right: 2px solid var(--blue);
+    border-bottom: 2px solid var(--blue);
+    transform: rotate(-45deg);
+    transition: transform var(--uebergang);
+    flex: none;
+  }
+  .aufgabe-karte[open] > summary::before { transform: rotate(45deg); }
+  .aufgabe-karte > summary:hover { background: var(--blue-050); }
+  .aufgabe-karte .koerper { padding: .3rem 1rem 1.1rem; border-top: 1px solid var(--grey-100); }
+  .aufgabe-karte .nr-marke {
+    width: 1.6rem; height: 1.6rem;
+    border-radius: var(--r-sm);
+    background: var(--navy-050);
+    color: var(--navy);
+    display: grid; place-items: center;
+    font-size: .8rem; flex: none;
+  }
+
   .teil-zeile {
     display: grid;
-    gap: .4rem;
+    gap: .45rem;
     align-items: center;
-    padding: .35rem 0;
-    border-bottom: 1px dotted var(--grey-200);
+    padding: .4rem 0;
+    border-bottom: 1px dashed var(--grey-200);
   }
-  .teil-zeile:last-child { border-bottom: 0; }
-  .sit-karte {
-    border: 1px solid var(--grey-200);
-    border-radius: var(--radius);
-    padding: .7rem .85rem;
+  .teil-zeile:last-of-type { border-bottom: 0; }
+
+  /* Auswahlkacheln (Situationen, Arbeiten, Aufgabentypen) */
+  .sit-karte { /* Altname – verhält sich wie .kachel */
+    border: 1.5px solid var(--grey-200);
+    border-radius: var(--r);
+    padding: .8rem .9rem;
     cursor: pointer;
     background: var(--paper);
     text-align: left;
     font-family: var(--font);
+    font-size: .92rem;
+    color: var(--ink);
+    transition: all var(--uebergang);
   }
-  .sit-karte:hover { border-color: var(--blue); background: var(--blue-100); }
-  .sit-karte.gewaehlt { border-color: var(--blue); border-width: 2px; background: var(--blue-100); }
+  .sit-karte:hover { border-color: var(--blue); background: var(--blue-050); transform: translateY(-2px); box-shadow: var(--schatten-2); }
+  .sit-karte.gewaehlt { border-color: var(--blue); background: var(--blue-050); box-shadow: var(--schatten-2); }
+
+  /* Abgabenliste in der Korrektur */
+  .sus-liste { max-height: 26rem; overflow-y: auto; padding-right: .2rem; }
   .sus-liste button {
     width: 100%;
     text-align: left;
-    border: 1px solid var(--grey-200);
+    border: 1.5px solid var(--grey-200);
     background: var(--paper);
-    border-radius: var(--radius);
-    padding: .45rem .6rem;
-    margin-bottom: .3rem;
+    border-radius: var(--r-sm);
+    padding: .55rem .7rem;
+    margin-bottom: .35rem;
     cursor: pointer;
     font-family: var(--font);
     font-size: .88rem;
@@ -72,11 +98,38 @@
     justify-content: space-between;
     gap: .5rem;
     align-items: center;
+    transition: all var(--uebergang);
   }
-  .sus-liste button:hover { border-color: var(--blue); }
+  .sus-liste button:hover { border-color: var(--blue); background: var(--blue-050); }
   .sus-liste button[aria-current="true"] { background: var(--navy); color: #fff; border-color: var(--navy); }
-  .balken { display: flex; height: 1.4rem; border-radius: 4px; overflow: hidden; border: 1px solid var(--grey-200); }
-  .balken > span { display: block; }
+  .sus-liste button[aria-current="true"] .plakette { background: rgba(255,255,255,.2); color: #fff; }
+
+  .balken { display: flex; height: 1.5rem; border-radius: var(--r-sm); overflow: hidden; border: 1px solid var(--grey-200); }
+  .balken > span { display: block; transition: width .3s ease; }
+
+  /* Feste Aktionsleiste am unteren Rand des Editors */
+  .aktionsleiste {
+    position: sticky;
+    bottom: 0;
+    z-index: 20;
+    display: flex;
+    align-items: center;
+    gap: .6rem;
+    flex-wrap: wrap;
+    background: rgba(255, 255, 255, .94);
+    backdrop-filter: saturate(160%) blur(10px);
+    -webkit-backdrop-filter: saturate(160%) blur(10px);
+    border: 1px solid var(--grey-200);
+    border-radius: var(--r);
+    padding: .7rem .9rem;
+    margin-top: 1rem;
+    box-shadow: var(--schatten-2);
+  }
+
+  /* Typ-Auswahl im Dialog */
+  .typ-gitter { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: .55rem; }
+  .typ-gruppe { font-size: .74rem; font-weight: 700; letter-spacing: .07em; text-transform: uppercase; color: var(--grey); margin: 1rem 0 .45rem; }
+  .typ-gruppe:first-of-type { margin-top: .3rem; }
 </style>
 </head>
 <body>

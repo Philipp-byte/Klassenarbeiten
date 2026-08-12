@@ -9,17 +9,15 @@
 <link rel="icon" href="../../assets/logo/JJWS_Bildmarke_bunt.png">
 <style>
   /* Nur in dieser App gebrauchte Ergänzungen */
-  .ablage-aktiv { outline: 3px dashed var(--blue); outline-offset: 4px; }
-  .start-flaeche {
-    border: 2px dashed var(--grey-200);
-    border-radius: var(--radius-lg);
-    padding: 2.2rem 1.2rem;
-    text-align: center;
-    background: var(--paper);
+  body.pruefung-laeuft { padding-bottom: 5rem; }
+  .willkommen { text-align: center; padding: 1rem 0 .4rem; }
+  .willkommen .marke {
+    font-size: .74rem; font-weight: 700; letter-spacing: .1em;
+    text-transform: uppercase; color: var(--blue-700); margin-bottom: .4rem;
   }
-  .uhr { font-variant-numeric: tabular-nums; font-weight: 700; font-size: 1.05rem; color: var(--navy); }
-  .uhr.knapp { color: var(--red); }
-  body.pruefung-laeuft { padding-bottom: 4rem; }
+  .willkommen h2 { font-size: 1.7rem; margin-bottom: .4rem; }
+  .willkommen p { color: var(--grey); max-width: 32rem; margin: 0 auto 1.2rem; }
+  .punkte-reihe { display: flex; gap: .5rem; justify-content: center; flex-wrap: wrap; }
 </style>
 </head>
 <body>
