@@ -1,0 +1,49 @@
+# ---------------------------------------------------------------------------
+# Veröffentlicht die Projektseite auf GitHub Pages.
+#
+# Das Projekt besteht nur aus statischen Dateien – es wird nichts gebaut,
+# der Inhalt des Repositorys wird unverändert ausgeliefert.
+#
+# „enablement: true“ schaltet GitHub Pages beim ersten Lauf selbst ein,
+# sodass niemand die Einstellung von Hand setzen muss.
+# ---------------------------------------------------------------------------
+name: Projektseite veröffentlichen
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch: # lässt sich auch von Hand starten
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Läuft immer nur eine Veröffentlichung gleichzeitig.
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  veroeffentlichen:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.veroeffentlichung.outputs.page_url }}
+    steps:
+      - name: Quellcode holen
+        uses: actions/checkout@v4
+
+      - name: Pages einrichten
+        uses: actions/configure-pages@v5
+        with:
+          enablement: true
+
+      - name: Dateien packen
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: .
+
+      - name: Veröffentlichen
+        id: veroeffentlichung
+        uses: actions/deploy-pages@v4
