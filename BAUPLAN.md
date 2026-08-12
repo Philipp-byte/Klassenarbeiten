@@ -39,6 +39,10 @@ Gesammelt aus den Vorgaben der Lehrkraft, in der Reihenfolge, in der sie kamen.
 | A26 | Klassenarbeiten auch am Handy erstellen können | ✅ Editor ist mobil bedienbar |
 | A27 | SuS laden nur die Datei und exportieren sie wieder – alles andere in der Lehrer-App | ✅ Grundprinzip der Architektur |
 | A28 | Repository öffentlich, aber niemand darf ohne Erlaubnis ändern | ⚙️ Anleitung in `SICHERHEIT.md` |
+| A29 | Modernes Design | ✅ überarbeitete Design-Schicht |
+| A30 | Einfache Handhabung | ✅ Typ-Dialog, Schrittanzeige, feste Aktionsleiste |
+| A31 | Syntax-Highlighting bei Python-Aufgaben | ✅ eigener Editor, auch HTML/CSS/JS |
+| A32 | GitHub-Website | ✅ `index.html` für GitHub Pages |
 
 ---
 
@@ -300,6 +304,7 @@ app/
     py-worker.js     der Worker selbst
     web-runner.js    Prüfung von HTML/CSS/JS im Sandbox-iframe
     aufgaben-ui.js   interaktive Aufgabenfelder
+    code-editor.js   Editor mit Syntaxhervorhebung (Python, HTML, CSS, JS)
     druck.js         Seitenaufbau und PDF-Ansichten
     speicher.js      lokale Ablage
     dom.js           kleine Oberflächenhelfer
@@ -307,6 +312,7 @@ app/
   lehrer/            Programm 2 – Erstellen und Korrigieren
     schluessel.js  editor.js  korrektur.js
   vendor/pyodide/    wird einmalig lokal geholt (nicht im Repository)
+index.html           Projektseite für GitHub Pages
 assets/logo/         JJWS-Bildmarke
 beispiele/           Beispielarbeit zum Ausprobieren
 scripts/             Pyodide holen

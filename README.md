@@ -98,6 +98,9 @@ Teilergebnissen · **Python mit Unit-Tests** · **Code sortieren (Parsons)** ·
   reproduzierbar, sodass ein Absturz nichts durcheinanderbringt.
 - **PDF-Ausgabe** im Layout der Papier-Klassenarbeit: leere Angabe,
   Lösungsblatt, korrigierte Arbeit je Person, Notenliste mit Statistik.
+- **Syntaxhervorhebung** für Python, HTML, CSS und JavaScript – eigener Editor
+  mit Zeilennummern, automatischer Einrückung und paarweise schließenden
+  Klammern, ohne fremde Bibliothek.
 - **Responsiv** – Klassenarbeiten lassen sich auch am Handy vorbereiten.
 - **Autosave** in der Prüfungs-App: nach einem Absturz geht es weiter.
 

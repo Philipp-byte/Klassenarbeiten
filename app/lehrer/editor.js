@@ -350,13 +350,12 @@ function kopfdatenKarte() {
         ["name", "Name, Vorname und Klasse"],
         ["nummer", "nur eine Prüfungsnummer (datensparsam)"],
       ]),
-      el("div", {}, [
+      el("div", { style: { paddingTop: "1.1rem" } }, [
         schalter(aktuell, "mischenProSuS", "Aufgabenreihenfolge je Person mischen"),
-        el("span", {
-          class: "hinweis",
-          text:
-            "Jede Schülerin und jeder Schüler bekommt eine andere Reihenfolge – auch bei den " +
-            "Antwortmöglichkeiten. Abschnitte bleiben zusammen. Erschwert das Abschreiben vom Nachbarplatz.",
+        el("div", {
+          class: "klein grau",
+          style: { marginTop: ".2rem" },
+          text: "Erschwert das Abschreiben vom Nachbarplatz. Abschnitte bleiben zusammen.",
         }),
       ]),
     ]),
@@ -605,10 +604,8 @@ function typAuswahl() {
               dlg.close();
             },
           }, [
-            el("div", { class: "zeile-eng", style: { marginBottom: ".15rem" } }, [
-              el("span", { class: "kachel-titel", text: t.name }),
-              el("span", { class: `plakette ${t.auto ? "gut" : "teil"}`, text: t.auto ? "automatisch" : "manuell" }),
-            ]),
+            el("span", { class: `plakette ${t.auto ? "gut" : "teil"}`, text: t.auto ? "automatisch" : "manuell" }),
+            el("span", { class: "kachel-titel", text: t.name }),
             el("div", { class: "kachel-zeile", text: t.kurz }),
           ])
         )

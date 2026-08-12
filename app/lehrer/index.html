@@ -127,7 +127,10 @@
   }
 
   /* Typ-Auswahl im Dialog */
-  .typ-gitter { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: .55rem; }
+  .typ-gitter { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: .55rem; }
+  .typ-gitter .kachel { position: relative; padding-right: 6.5rem; }
+  .typ-gitter .kachel .plakette { position: absolute; top: .8rem; right: .8rem; }
+  .typ-gitter .kachel .kachel-titel { display: block; margin-bottom: .25rem; }
   .typ-gruppe { font-size: .74rem; font-weight: 700; letter-spacing: .07em; text-transform: uppercase; color: var(--grey); margin: 1rem 0 .45rem; }
   .typ-gruppe:first-of-type { margin-top: .3rem; }
 </style>
