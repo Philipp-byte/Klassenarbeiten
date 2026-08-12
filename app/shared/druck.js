@@ -605,7 +605,7 @@ function antwortBereich(a, modus, antwort, erg) {
 
 /* ============================================================== Deckblatt */
 
-function deckblatt(satz, pruefung, daten, modus) {
+function deckblatt(satz, pruefung, daten, modus, enge = "") {
   satz.neuesBlatt(true);
   // Ausgefüllte Fassungen tragen mehr Inhalt – dort enger setzen.
   if (modus !== "leer") satz.blaetter[satz.blaetter.length - 1].classList.add("eng");
@@ -672,9 +672,7 @@ function deckblatt(satz, pruefung, daten, modus) {
   einfuegen(kopfTabelle);
 
   /* Aufgabenübersicht */
-  const anzahl = pruefung.aufgaben.length;
-  const enge = anzahl > 12 ? " sehr-kompakt" : anzahl > 6 ? " kompakt" : "";
-  const ueber = el("table", { class: `uebersicht${enge}` }, [
+  const ueber = el("table", { class: `uebersicht${enge ? " " + enge : ""}` }, [
     el("thead", {}, [
       el("tr", {}, [
         el("th", { style: { width: "14mm" }, text: "Nr." }),
@@ -783,8 +781,19 @@ export function druckAnsicht({ modus = "leer", pruefung, daten = null, direktDru
     }
   );
 
-  /* --- Deckblatt --- */
-  deckblatt(satz, pruefung, daten, modus);
+  /* --- Deckblatt ---
+     Aufgabenübersicht und Bewertungskasten gehören zusammen auf das erste
+     Blatt. Bei vielen Aufgaben wird die Übersicht deshalb schrittweise enger
+     gesetzt, bis alles passt. */
+  const anzahl = pruefung.aufgaben.length;
+  const stufen = anzahl > 12 ? ["sehr-kompakt", "ultra"] : anzahl > 6 ? ["kompakt", "sehr-kompakt", "ultra"] : ["", "kompakt", "sehr-kompakt", "ultra"];
+  for (const stufe of stufen) {
+    satz.blaetter.forEach((b) => b.remove());
+    satz.blaetter.length = 0;
+    satz.koerper = null;
+    deckblatt(satz, pruefung, daten, modus, stufe);
+    if (satz.blaetter.length === 1) break;
+  }
 
   /* --- Inhalt --- */
   satz.neuesBlatt();

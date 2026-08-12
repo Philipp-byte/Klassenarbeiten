@@ -437,3 +437,8 @@ table.schluessel tbody tr:nth-child(even) { background: #f0f4f6; }
   margin-bottom: 1mm;
 }
 table.fortsetzung caption { display: none; }
+
+/* Letzte Stufe der Verdichtung, wenn eine Arbeit sehr viele Aufgaben hat. */
+table.uebersicht.ultra td { padding: .7mm 1.6mm; font-size: 8.5pt; }
+table.uebersicht.ultra th { padding: 1mm 1.6mm; font-size: 8.5pt; }
+.blatt.deckblatt.eng table.uebersicht.ultra { margin-bottom: 3mm; }
