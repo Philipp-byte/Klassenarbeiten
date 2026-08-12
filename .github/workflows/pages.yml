@@ -4,8 +4,13 @@
 # Das Projekt besteht nur aus statischen Dateien – es wird nichts gebaut,
 # der Inhalt des Repositorys wird unverändert ausgeliefert.
 #
-# „enablement: true“ schaltet GitHub Pages beim ersten Lauf selbst ein,
-# sodass niemand die Einstellung von Hand setzen muss.
+# Damit das funktioniert, muss GitHub Pages EINMAL eingeschaltet werden:
+#   Settings → Pages → Build and deployment → Source: „GitHub Actions“
+#
+# Dieser Schritt lässt sich nicht automatisieren: Der Token, mit dem Actions
+# läuft, darf ein Pages-Projekt benutzen, aber nicht anlegen. Solange die
+# Einstellung fehlt, bricht der Workflow deshalb NICHT mit einem Fehler ab –
+# er meldet nur, was zu tun ist. Sonst käme bei jedem Push eine Fehlermail.
 # ---------------------------------------------------------------------------
 name: Projektseite veröffentlichen
 
@@ -19,7 +24,7 @@ permissions:
   pages: write
   id-token: write
 
-# Läuft immer nur eine Veröffentlichung gleichzeitig.
+# Es läuft immer nur eine Veröffentlichung gleichzeitig.
 concurrency:
   group: pages
   cancel-in-progress: false
@@ -31,19 +36,51 @@ jobs:
       name: github-pages
       url: ${{ steps.veroeffentlichung.outputs.page_url }}
     steps:
+      - name: Ist GitHub Pages eingeschaltet?
+        id: pruefung
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          status=$(curl -s -o /dev/null -w '%{http_code}' \
+            -H "Authorization: Bearer $GH_TOKEN" \
+            -H "Accept: application/vnd.github+json" \
+            "https://api.github.com/repos/${GITHUB_REPOSITORY}/pages")
+          if [ "$status" = "200" ]; then
+            echo "bereit=ja" >> "$GITHUB_OUTPUT"
+            echo "Pages ist eingeschaltet – die Seite wird veröffentlicht."
+          else
+            echo "bereit=nein" >> "$GITHUB_OUTPUT"
+            {
+              echo "### Projektseite noch nicht veröffentlicht"
+              echo
+              echo "GitHub Pages ist für dieses Repository noch nicht eingeschaltet."
+              echo "Das lässt sich nur von Hand erledigen und dauert einen Klick:"
+              echo
+              echo "1. **Settings → Pages** öffnen"
+              echo "2. Unter *Build and deployment* bei **Source** den Eintrag"
+              echo "   **GitHub Actions** wählen"
+              echo
+              echo "Danach diesen Workflow erneut starten – oder einfach den"
+              echo "nächsten Push abwarten. Alles Weitere passiert automatisch."
+            } >> "$GITHUB_STEP_SUMMARY"
+            echo "::notice title=Ein Klick fehlt::Settings → Pages → Source: GitHub Actions"
+          fi
+
       - name: Quellcode holen
+        if: steps.pruefung.outputs.bereit == 'ja'
         uses: actions/checkout@v4
 
       - name: Pages einrichten
+        if: steps.pruefung.outputs.bereit == 'ja'
         uses: actions/configure-pages@v5
-        with:
-          enablement: true
 
       - name: Dateien packen
+        if: steps.pruefung.outputs.bereit == 'ja'
         uses: actions/upload-pages-artifact@v3
         with:
           path: .
 
       - name: Veröffentlichen
         id: veroeffentlichung
+        if: steps.pruefung.outputs.bereit == 'ja'
         uses: actions/deploy-pages@v4
