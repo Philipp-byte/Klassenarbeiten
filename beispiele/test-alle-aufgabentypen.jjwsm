@@ -1,0 +1,283 @@
+{
+  "typ": "jjws-klassenarbeit-master",
+  "formatVersion": 1,
+  "id": "ka_test_alle_typen",
+  "titel": "Test-Klassenarbeit – alle Aufgabentypen",
+  "fach": "Informatik",
+  "thema": "Abrechnungsprogramm für die Fahrgemeinschaft",
+  "klasse": "1BK1T",
+  "lehrkraft": "Riegert",
+  "schule": "JJWS",
+  "datum": "2026-09-10",
+  "bearbeitungszeitMin": 90,
+  "hinweise": "Bearbeite die Aufgaben in beliebiger Reihenfolge. Deine Eingaben werden automatisch zwischengespeichert. Bei den Programmieraufgaben kannst du deinen Code jederzeit ausführen und die Selbsttests nutzen. Am Ende auf „Abgeben“ klicken und die Datei im Tauschordner ablegen.",
+  "hilfsmittel": "Keine. Die Python-Umgebung in der App darf benutzt werden.",
+  "ausgangssituation": "Du fährst mit drei Mitschülerinnen und Mitschülern gemeinsam zur Berufsschule. Ihr wechselt euch mit dem Auto ab, aber die Abrechnung am Monatsende führt regelmäßig zu Diskussionen: Wer ist wie oft gefahren, wer war krank, wer hat getankt?\n\nDie Strecke beträgt 27 km je Richtung. Ihr rechnet mit 0,30 € pro Kilometer. Wer an einem Tag nicht mitfährt, zahlt für diesen Tag nichts.\n\nDu hast angeboten, ein kleines Programm zu schreiben, das die Abrechnung übernimmt.",
+  "situationId": "fahrgemeinschaft",
+  "situationTitel": "Fahrgemeinschaft zur Berufsschule",
+  "identifikation": "name",
+  "mischenProSuS": true,
+  "notenschluessel": null,
+  "abschnitte": [],
+  "aufgaben": [
+    {
+      "id": "a_test01mc",
+      "titel": "Datentyp des Kilometerpreises",
+      "text": "Im Programm wird der Kilometerpreis als `0.30` gespeichert.\n\nWelchen Datentyp hat dieser Wert in Python?",
+      "abschnitt": "Grundlagen",
+      "situationsAnschluss": "Zuerst klärst du die Grundlagen der Abrechnung.",
+      "handlungsschritt": "informieren",
+      "punkte": 2,
+      "typ": "mc",
+      "mehrfach": false,
+      "teilpunkte": true,
+      "mischen": true,
+      "optionen": [
+        { "id": "o_test01a", "text": "float", "richtig": true },
+        { "id": "o_test01b", "text": "int", "richtig": false },
+        { "id": "o_test01c", "text": "str", "richtig": false },
+        { "id": "o_test01d", "text": "list", "richtig": false }
+      ]
+    },
+    {
+      "id": "a_test02wf",
+      "titel": "Aussagen zu Python prüfen",
+      "text": "Entscheide für jede Aussage, ob sie zutrifft.",
+      "abschnitt": "Grundlagen",
+      "situationsAnschluss": "Zuerst klärst du die Grundlagen der Abrechnung.",
+      "handlungsschritt": "informieren",
+      "punkte": 4,
+      "typ": "wahrfalsch",
+      "punkteProZeile": 1,
+      "rasterUeberschrift": "Aussage",
+      "spalten": [
+        { "id": "sp_w", "text": "wahr" },
+        { "id": "sp_f", "text": "falsch" }
+      ],
+      "zeilen": [
+        { "id": "z_test02a", "text": "input() liefert in Python immer eine Zeichenkette (str) zurück.", "richtig": "sp_w" },
+        { "id": "z_test02b", "text": "Eine Liste kann in Python nachträglich nicht verändert werden.", "richtig": "sp_f" },
+        { "id": "z_test02c", "text": "round(16.249, 1) ergibt 16.2.", "richtig": "sp_w" },
+        { "id": "z_test02d", "text": "Der Operator == weist einer Variablen einen Wert zu.", "richtig": "sp_f" }
+      ]
+    },
+    {
+      "id": "a_test03ka",
+      "titel": "Länge einer Liste",
+      "text": "Die Fahrtage eines Monats stehen in einer Liste.\n\nWie heißt die Python-Funktion, die die **Anzahl der Elemente** einer Liste liefert?",
+      "abschnitt": "Grundlagen",
+      "situationsAnschluss": "Zuerst klärst du die Grundlagen der Abrechnung.",
+      "handlungsschritt": "informieren",
+      "punkte": 2,
+      "typ": "kurzantwort",
+      "loesungen": ["len", "len()"],
+      "ignoriereGross": true,
+      "ignoriereLeerzeichen": true,
+      "alsRegex": false,
+      "alsCode": true
+    },
+    {
+      "id": "a_test04sw",
+      "titel": "Warum ein Programm?",
+      "text": "Erkläre in zwei bis drei Sätzen, warum ein Programm für die Monatsabrechnung besser geeignet ist als das Rechnen von Hand.",
+      "abschnitt": "Grundlagen",
+      "situationsAnschluss": "Zuerst klärst du die Grundlagen der Abrechnung.",
+      "handlungsschritt": "informieren",
+      "punkte": 0,
+      "typ": "stichworte",
+      "zeilen": 4,
+      "maxPunkte": 3,
+      "begriffe": [
+        { "id": "b_test04a", "varianten": "Rechenfehler | weniger Fehler | fehlerfrei | keine Fehler | genauer", "punkte": 1 },
+        { "id": "b_test04b", "varianten": "schneller | Zeit | zeitsparend", "punkte": 1 },
+        { "id": "b_test04c", "varianten": "nachvollziehbar | transparent | fair | Streit | Diskussion", "punkte": 1 }
+      ]
+    },
+    {
+      "id": "a_test05az",
+      "titel": "Eingaben für die Abrechnung",
+      "text": "Nenne drei Angaben, die das Programm für die Monatsabrechnung mindestens braucht.",
+      "abschnitt": "Grundlagen",
+      "situationsAnschluss": "Zuerst klärst du die Grundlagen der Abrechnung.",
+      "handlungsschritt": "informieren",
+      "punkte": 0,
+      "typ": "aufzaehlung",
+      "anzahlFelder": 3,
+      "beschriftung": "Angabe",
+      "maxPunkte": 0,
+      "gesucht": [
+        { "id": "g_test05a", "varianten": "Fahrtage | Anzahl der Fahrten | wie oft gefahren | Schultage | Tage", "punkte": 1 },
+        { "id": "g_test05b", "varianten": "Strecke | Kilometer | km | Entfernung", "punkte": 1 },
+        { "id": "g_test05c", "varianten": "Kilometerpreis | Preis pro Kilometer | Kosten pro km | 0,30 | 0.30", "punkte": 1 },
+        { "id": "g_test05d", "varianten": "Personen | Mitfahrer | wer mitfährt | Anzahl Personen | Krankheitstage | Fehltage", "punkte": 1 }
+      ]
+    },
+    {
+      "id": "a_test06zu",
+      "titel": "Fachbegriffe zuordnen",
+      "text": "Ordne jedem Begriff die passende Beschreibung zu.",
+      "abschnitt": "Grundlagen",
+      "situationsAnschluss": "Zuerst klärst du die Grundlagen der Abrechnung.",
+      "handlungsschritt": "informieren",
+      "punkte": 0,
+      "typ": "zuordnung",
+      "punkteProPaar": 1,
+      "mischen": true,
+      "paare": [
+        { "id": "p_test06a", "links": "Variable", "rechts": "speichert einen Wert unter einem Namen" },
+        { "id": "p_test06b", "links": "Funktion", "rechts": "benannter Codeblock, der mehrfach aufgerufen werden kann" },
+        { "id": "p_test06c", "links": "Liste", "rechts": "fasst mehrere Werte in einer Reihenfolge zusammen" },
+        { "id": "p_test06d", "links": "Schleife", "rechts": "wiederholt Anweisungen mehrfach" }
+      ]
+    },
+    {
+      "id": "a_test07rf",
+      "titel": "Ablauf der Monatsabrechnung",
+      "text": "Bringe die Schritte der Monatsabrechnung in die richtige Reihenfolge.",
+      "abschnitt": "Planen",
+      "situationsAnschluss": "Du planst, wie das Programm aufgebaut sein muss.",
+      "handlungsschritt": "planen",
+      "punkte": 0,
+      "typ": "reihenfolge",
+      "wertung": "nachbarn",
+      "punkteProSchritt": 1,
+      "elemente": [
+        { "id": "e_test07a", "text": "Fahrtage und Fehltage je Person erfassen" },
+        { "id": "e_test07b", "text": "Kilometer je Person berechnen" },
+        { "id": "e_test07c", "text": "Kosten je Person berechnen" },
+        { "id": "e_test07d", "text": "Getankte Beträge verrechnen" },
+        { "id": "e_test07e", "text": "Abrechnung ausgeben" }
+      ]
+    },
+    {
+      "id": "a_test08lt",
+      "titel": "Berechnung vervollständigen",
+      "text": "Ergänze die fehlenden Zeichen und Werte im Programmausschnitt.",
+      "abschnitt": "Planen",
+      "situationsAnschluss": "Du planst, wie das Programm aufgebaut sein muss.",
+      "handlungsschritt": "planen",
+      "punkte": 0,
+      "typ": "lueckentext",
+      "punkteProLuecke": 1,
+      "ignoriereGross": true,
+      "alsCode": true,
+      "vorlage": "strecke_tag = 27 * [[2]]\nkosten_tag = strecke_tag [[*]] 0.30\nif faehrt_mit [[==]] False:\n    kosten_tag = [[0]]"
+    },
+    {
+      "id": "a_test09za",
+      "titel": "Tagesstrecke",
+      "text": "Wie viele Kilometer legt das Auto an einem Schultag insgesamt zurück (Hin- und Rückfahrt)?",
+      "abschnitt": "Rechnen",
+      "situationsAnschluss": "Jetzt schreibst du den Teil des Programms, der die Kosten berechnet.",
+      "handlungsschritt": "durchfuehren",
+      "punkte": 2,
+      "typ": "zahl",
+      "loesung": "54",
+      "toleranz": 0,
+      "einheit": "km"
+    },
+    {
+      "id": "a_test10rw",
+      "titel": "Abrechnung für Mia",
+      "text": "Im April gab es **18 Schultage** mit Fahrten. Mia war an **3 Tagen** krank. Die Kosten eines Fahrtags werden durch die **4 Personen** geteilt.\n\nBerechne die geforderten Werte.",
+      "abschnitt": "Rechnen",
+      "situationsAnschluss": "Jetzt schreibst du den Teil des Programms, der die Kosten berechnet.",
+      "handlungsschritt": "durchfuehren",
+      "punkte": 0,
+      "typ": "rechenweg",
+      "schritte": [
+        { "id": "r_test10a", "bezeichnung": "Kosten eines Fahrtags (54 km × 0,30 €)", "loesung": "16.20", "toleranz": 0.01, "einheit": "€", "punkte": 2 },
+        { "id": "r_test10b", "bezeichnung": "Mias Fahrtage im April", "loesung": "15", "toleranz": 0, "einheit": "Tage", "punkte": 2 },
+        { "id": "r_test10c", "bezeichnung": "Mias Anteil im April", "loesung": "60.75", "toleranz": 0.01, "einheit": "€", "punkte": 2 }
+      ]
+    },
+    {
+      "id": "a_test11py",
+      "titel": "Funktion für die Fahrtkosten",
+      "text": "Schreibe die Funktion `fahrtkosten(tage, personen)`.\n\nSie berechnet den Anteil **einer** Person in Euro:\n- Ein Fahrtag sind 54 km, ein Kilometer kostet 0,30 €.\n- Die Tageskosten werden durch die Anzahl der Personen geteilt.\n- Das Ergebnis wird mit `round` auf zwei Nachkommastellen gerundet zurückgegeben.",
+      "abschnitt": "Programmieren",
+      "situationsAnschluss": "Jetzt schreibst du den Teil des Programms, der die Kosten berechnet.",
+      "handlungsschritt": "durchfuehren",
+      "punkte": 0,
+      "typ": "code-python",
+      "startcode": "def fahrtkosten(tage, personen):\n    # Deine Lösung hier\n    pass\n",
+      "loesungscode": "def fahrtkosten(tage, personen):\n    kosten = tage * 54 * 0.30 / personen\n    return round(kosten, 2)\n",
+      "vorlaufcode": "",
+      "tests": [
+        { "id": "t_test11a", "name": "15 Tage, 4 Personen → 60,75 €", "punkte": 3, "art": "funktion", "funktion": "fahrtkosten", "argumente": "15, 4", "erwartet": "60.75", "toleranz": 0.001 },
+        { "id": "t_test11b", "name": "0 Tage kosten nichts", "punkte": 1, "art": "funktion", "funktion": "fahrtkosten", "argumente": "0, 4", "erwartet": "0", "toleranz": 0.001 },
+        { "id": "t_test11c", "name": "20 Tage, 3 Personen → 108,00 €", "punkte": 2, "art": "assert", "code": "assert abs(fahrtkosten(20, 3) - 108.0) < 0.01, 'fahrtkosten(20, 3) muss 108.0 ergeben'" },
+        { "id": "t_test11d", "name": "Es wird mit round gerundet", "punkte": 2, "art": "enthaelt", "muster": "round", "vorhanden": true }
+      ],
+      "selbsttests": [
+        { "id": "t_test11s1", "name": "Die Funktion ist vorhanden", "punkte": 0, "art": "assert", "code": "assert callable(fahrtkosten), 'Es gibt keine Funktion fahrtkosten'" },
+        { "id": "t_test11s2", "name": "10 Tage, 4 Personen → 40,50 €", "punkte": 0, "art": "funktion", "funktion": "fahrtkosten", "argumente": "10, 4", "erwartet": "40.5", "toleranz": 0.001 }
+      ]
+    },
+    {
+      "id": "a_test12pa",
+      "titel": "Fahrtage berechnen",
+      "text": "Setze aus den Bausteinen eine Funktion zusammen, die aus Schultagen und Krankheitstagen die Fahrtage berechnet. Negative Werte darf es nicht geben. Achte auf die Einrückung.",
+      "abschnitt": "Programmieren",
+      "situationsAnschluss": "Du planst, wie das Programm aufgebaut sein muss.",
+      "handlungsschritt": "planen",
+      "punkte": 0,
+      "typ": "parsons",
+      "punkteProZeile": 1,
+      "pruefeEinrueckung": true,
+      "zeilen": [
+        { "id": "z_test12a", "text": "def fahrtage(schultage, krank):", "einrueckung": 0 },
+        { "id": "z_test12b", "text": "tage = schultage - krank", "einrueckung": 1 },
+        { "id": "z_test12c", "text": "if tage < 0:", "einrueckung": 1 },
+        { "id": "z_test12d", "text": "tage = 0", "einrueckung": 2 },
+        { "id": "z_test12e", "text": "return tage", "einrueckung": 1 }
+      ],
+      "ablenker": [
+        { "id": "z_test12x", "text": "tage = krank - schultage" },
+        { "id": "z_test12y", "text": "return krank" }
+      ]
+    },
+    {
+      "id": "a_test13cw",
+      "titel": "Aushang für die Fahrgemeinschaft",
+      "text": "Für das schwarze Brett im Klassenzimmer soll ein Aushang als Webseite entstehen.\n\n- Eine Überschrift `<h1>` mit dem Text **Fahrgemeinschaft**\n- Eine Liste `<ul>` mit den vier Namen der Mitfahrenden\n- Ein Link, der eine E-Mail öffnet (`mailto:`-Adresse), z. B. zum Anmelden\n- Die Überschrift in der Schulfarbe Navy (`#00344D`)",
+      "abschnitt": "Programmieren",
+      "situationsAnschluss": "Jetzt schreibst du den Teil des Programms, der die Kosten berechnet.",
+      "handlungsschritt": "durchfuehren",
+      "punkte": 0,
+      "typ": "code-web",
+      "startHtml": "<h1></h1>\n<ul>\n  <li></li>\n</ul>\n<a href=\"\">Mitfahren?</a>\n",
+      "startCss": "",
+      "startJs": "",
+      "jsAktiv": false,
+      "loesungHtml": "<h1>Fahrgemeinschaft</h1>\n<ul>\n  <li>Mia</li>\n  <li>Jonas</li>\n  <li>Aylin</li>\n  <li>Tom</li>\n</ul>\n<a href=\"mailto:fahrgemeinschaft@example.de\">Mitfahren?</a>\n",
+      "loesungCss": "h1 { color: #00344D; }\n",
+      "loesungJs": "",
+      "tests": [
+        { "id": "t_test13a", "name": "Überschrift vorhanden", "punkte": 1, "art": "selektor", "selektor": "h1", "mindestens": 1 },
+        { "id": "t_test13b", "name": "Überschrift lautet „Fahrgemeinschaft“", "punkte": 1, "art": "text", "selektor": "h1", "erwartet": "Fahrgemeinschaft", "exakt": false },
+        { "id": "t_test13c", "name": "Vier Listeneinträge", "punkte": 1, "art": "selektor", "selektor": "ul li", "mindestens": 4 },
+        { "id": "t_test13d", "name": "E-Mail-Link (mailto)", "punkte": 1, "art": "attribut", "selektor": "a", "attribut": "href", "erwartet": "mailto:", "exakt": false },
+        { "id": "t_test13e", "name": "Überschrift in Navy", "punkte": 1, "art": "stil", "selektor": "h1", "eigenschaft": "color", "erwartet": "rgb(0, 52, 77)" }
+      ]
+    },
+    {
+      "id": "a_test14ft",
+      "titel": "Fertige App statt eigenem Programm?",
+      "text": "Ein Mitschüler schlägt vor, statt deines Programms eine kostenlose Fahrgemeinschafts-App zu nutzen. Die App finanziert sich über Werbung und speichert alle Fahrdaten und Namen auf Servern des Anbieters.\n\n**Nimm begründet Stellung**, ob ihr die App oder dein Programm nutzen solltet. Gehe auf mindestens zwei Gesichtspunkte ein – einer davon soll der Umgang mit euren Daten sein.",
+      "abschnitt": "Bewerten",
+      "situationsAnschluss": "Nach dem ersten Monat mit dem Programm besprecht ihr das Ergebnis.",
+      "handlungsschritt": "reflektieren",
+      "punkte": 6,
+      "typ": "freitext",
+      "zeilen": 10,
+      "erwartungshorizont": "Erwartet wird eine begründete Entscheidung, keine bloße Aufzählung.\n\nMögliche Argumente für das eigene Programm: Fahrdaten und Namen bleiben bei euch (Datensparsamkeit), keine Werbung, an eure Regeln (Krankheitstage, Tanken) anpassbar, ihr lernt etwas dabei.\n\nMögliche Argumente für die App: sofort einsatzbereit, gepflegte Oberfläche, funktioniert auch, wenn niemand mehr programmieren will.\n\nFür die volle Punktzahl muss eine klare Empfehlung ausgesprochen, mit mindestens zwei Gesichtspunkten belegt und der Datenschutz-Aspekt sachlich richtig angesprochen werden (personenbezogene Daten, Weitergabe an Dritte, Werbung als Geschäftsmodell).",
+      "kriterien": [
+        { "id": "k_test14a", "text": "Nennt mindestens zwei sachlich richtige Gesichtspunkte", "punkte": 2 },
+        { "id": "k_test14b", "text": "Geht sachlich richtig auf den Umgang mit den Daten ein", "punkte": 2 },
+        { "id": "k_test14c", "text": "Spricht eine klare, nachvollziehbar begründete Empfehlung aus", "punkte": 2 }
+      ]
+    }
+  ],
+  "geaendertAm": "2026-08-16T12:30:00.000Z"
+}
