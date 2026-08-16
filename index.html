@@ -122,9 +122,9 @@
       Es verlässt kein einziges Byte den Rechner.
     </p>
     <div class="knoepfe">
-      <a class="btn gross" href="app/lehrer/">Lehrkraft-Werkzeug öffnen</a>
-      <a class="btn gross sekundaer" href="app/pruefung/">Prüfungs-App ansehen</a>
-      <a class="btn gross leise" href="#dokumentation">Dokumentation</a>
+      <a class="btn gross" href="app/pruefung/?demo=1">🧪 Demo-Klassenarbeit schreiben</a>
+      <a class="btn gross sekundaer" href="app/lehrer/">Lehrkraft-Werkzeug öffnen</a>
+      <a class="btn gross leise" href="anleitung.html">📖 Anleitung</a>
     </div>
   </div>
 </section>
@@ -132,11 +132,41 @@
 <section class="band">
   <div class="warnkasten">
     <strong>Diese Seite ist die Vorführung.</strong>
-    Für echte Klassenarbeiten wird das Projekt heruntergeladen und über den mitgelieferten
-    lokalen Server gestartet – dann geht wirklich nichts ins Netz, und die Python-Umgebung
-    steht zur Verfügung. Hier auf GitHub Pages lädt der Browser die Seite von GitHub;
-    eingegebene Daten bleiben zwar trotzdem im Browser, aber für den Unterricht gilt die
-    lokale Variante.
+    Hier lässt sich alles ausprobieren – auch das Ausführen von Python-Code (die
+    Python-Umgebung wird dafür einmalig aus dem Internet nachgeladen). Für echte
+    Klassenarbeiten wird das Projekt heruntergeladen und über den mitgelieferten lokalen
+    Server gestartet: Dann geht wirklich nichts ins Netz. Wie das geht, steht in der
+    <a href="anleitung.html">Anleitung</a>.
+  </div>
+</section>
+
+<section class="band" style="padding-top:0">
+  <h2>Die zwei Programme</h2>
+  <p class="unterzeile">Getrennt nach Rolle – die Klasse sieht nie die Lösungen, die Bewertung passiert nur bei der Lehrkraft.</p>
+  <div class="merkmale" style="grid-template-columns:repeat(auto-fit,minmax(320px,1fr))">
+    <div class="merkmal">
+      <span class="zeichen">🧑‍🎓</span>
+      <h3>Prüfungs-App – für die Klasse</h3>
+      <p style="margin-bottom:1rem">Klassenarbeitsdatei laden, Aufgaben bearbeiten, Python-Code
+         schreiben und <strong>direkt ausführen</strong>, am Ende verschlüsselt abgeben.
+         Probier es aus – die Demo enthält zehn Aufgaben quer durch alle Arten,
+         inklusive Programmieren:</p>
+      <div class="zeile" style="gap:.6rem;flex-wrap:wrap">
+        <a class="btn" href="app/pruefung/?demo=1">🧪 Demo-Klassenarbeit schreiben</a>
+        <a class="btn leise" href="app/pruefung/">App ohne Demo öffnen</a>
+      </div>
+    </div>
+    <div class="merkmal">
+      <span class="zeichen">🧑‍🏫</span>
+      <h3>Lehrkraft-Werkzeug – erstellen &amp; korrigieren</h3>
+      <p style="margin-bottom:1rem">Klassenarbeiten mit 14 Aufgabenarten bauen, als Datei für die
+         Klasse ausgeben, Abgaben entschlüsseln und automatisch bewerten, PDFs und
+         Notenliste erzeugen. Die Beispielarbeit liegt zum Laden bei.</p>
+      <div class="zeile" style="gap:.6rem;flex-wrap:wrap">
+        <a class="btn" href="app/lehrer/">Lehrkraft-Werkzeug öffnen</a>
+        <a class="btn leise" href="anleitung.html#demo">Demo-Durchlauf in der Anleitung</a>
+      </div>
+    </div>
   </div>
 </section>
 
@@ -261,6 +291,10 @@
   <h2>Dokumentation</h2>
   <p class="unterzeile">Alles im Repository, auf Deutsch und für den schulischen Alltag geschrieben.</p>
   <div class="doku-liste">
+    <a href="anleitung.html">
+      <div class="t">📖 Die Anleitung</div>
+      <div class="b">Alles Schritt für Schritt – Einrichtung, Erstellen, Schreiben, Korrigieren, Demo-Durchlauf</div>
+    </a>
     <a href="docs/anleitung-lehrkraft.md">
       <div class="t">Anleitung für die Lehrkraft</div>
       <div class="b">Arbeit bauen, ausgeben, korrigieren – mit Hinweisen zu jeder Aufgabenart</div>

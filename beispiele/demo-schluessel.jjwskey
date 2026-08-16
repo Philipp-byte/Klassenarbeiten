@@ -1,0 +1,24 @@
+{
+  "typ": "jjws-schluessel",
+  "version": 1,
+  "bezeichnung": "DEMO-Schlüssel – öffentlich bekannt, nie für echte Arbeiten verwenden!",
+  "erzeugtAm": "2026-08-16T10:36:14.657Z",
+  "fingerabdruck": "ADF7-C13D-B4E6-9363",
+  "oeffentlich": {
+    "kty": "EC",
+    "x": "LNXQP8GCDO6v43G-b7NgntNtOO5lQmrHrqwq0Qna5zY",
+    "y": "8lX4AbSABdisz0i9vXOkYBgVTqDPEZ_eiVziKNq_UR8",
+    "crv": "P-256"
+  },
+  "kdf": {
+    "name": "PBKDF2",
+    "hash": "SHA-256",
+    "runden": 310000,
+    "salt": "FWVjfF8HpUNsjfQVucAC1Q=="
+  },
+  "privatVerschluesselt": {
+    "alg": "AES-256-GCM",
+    "iv": "wgETW6HYa8Fyfp2s",
+    "daten": "Mv8cwyq+GtO/StV/5oxDh9CAsVoTvyoCqlWJSINj/Vh44zOqcA0XlHeeMHStXUet+AvN45kpUIrc3DdSaXuUd7/PUmyfhZvq84faR+b0Dh5fcQdiWfoVMlMrrrO+4qXuJA/tu59GOOLvNquYclHe6v7gT0iH7yN5bPkPqD89VQMGtvJW3UzG844sGf+tGfozzFJa5yk+2QKdfX9Fxo/3O/q6c4awVYs5zQiBAzrwC8TWFqsvUWVBLtIuBNF9ZY2ea5Rn1UV0pia9S5DnZ6LIOOlQfw/X05rvqYL5Zf30BmxQbdfV"
+  }
+}

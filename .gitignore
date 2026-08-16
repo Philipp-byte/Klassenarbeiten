@@ -8,7 +8,8 @@ app/vendor/pyodide/
 # NIEMALS einchecken – enthält Lösungen bzw. personenbezogene Daten.
 # ---------------------------------------------------------------------------
 *.jjwsa          # verschlüsselte Abgaben der SuS
-*.jjwskey        # privater Schlüssel der Lehrkraft
+*.jjwskey        # privater Schlüssel der Lehrkraft …
+!beispiele/demo-schluessel.jjwskey   # … außer dem absichtlich öffentlichen Demo-Schlüssel
 *.jjwsm          # Klassenarbeiten mit Lösungen …
 !beispiele/*.jjwsm   # … außer der Beispielarbeit mit erfundenen Inhalten
 *.jjwsp          # ausgegebene Fassungen

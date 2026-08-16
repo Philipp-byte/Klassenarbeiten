@@ -1,0 +1,446 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Anleitung · Klassenarbeiten · JJWS</title>
+<meta name="description" content="Schritt-für-Schritt-Anleitung: Klassenarbeiten erstellen, schreiben lassen, automatisch korrigieren und als PDF zurückgeben.">
+<link rel="stylesheet" href="app/shared/theme.css">
+<link rel="icon" href="assets/logo/JJWS_Bildmarke_bunt.png">
+<style>
+  .inhaltsverz { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: .5rem; }
+  .inhaltsverz a {
+    display: block; background: var(--paper); border: 1px solid var(--grey-200);
+    border-radius: var(--r-sm); padding: .55rem .8rem; text-decoration: none;
+    font-size: .9rem; font-weight: 650; color: var(--navy); transition: all var(--uebergang);
+  }
+  .inhaltsverz a:hover { border-color: var(--blue); background: var(--blue-050); }
+
+  .abschnitt { scroll-margin-top: 5rem; }
+  .abschnitt h2 {
+    font-size: 1.45rem; margin: 2.6rem 0 .3rem;
+    padding-bottom: .4rem; border-bottom: 2px solid var(--blue-100);
+  }
+  .abschnitt h2 .nr { color: var(--blue-700); margin-right: .4rem; }
+  .abschnitt h3 { margin-top: 1.6rem; }
+
+  ol.schrittfolge { counter-reset: st; list-style: none; margin: 1rem 0; padding: 0; }
+  ol.schrittfolge > li {
+    counter-increment: st; position: relative;
+    padding: 0 0 1.1rem 3rem; margin: 0;
+  }
+  ol.schrittfolge > li::before {
+    content: counter(st);
+    position: absolute; left: 0; top: -.15rem;
+    width: 2rem; height: 2rem; border-radius: 50%;
+    background: var(--navy); color: #fff;
+    display: grid; place-items: center; font-weight: 700; font-size: .85rem;
+  }
+  ol.schrittfolge > li::after {
+    content: ""; position: absolute; left: .95rem; top: 2rem; bottom: .1rem;
+    width: 2px; background: var(--grey-200);
+  }
+  ol.schrittfolge > li:last-child::after { display: none; }
+  ol.schrittfolge .st-titel { font-weight: 700; color: var(--navy); margin-bottom: .15rem; }
+  ol.schrittfolge p { margin-bottom: .35rem; }
+
+  .knopfname {
+    display: inline-block; background: var(--navy); color: #fff;
+    font-size: .82em; font-weight: 650; padding: .08rem .5rem;
+    border-radius: 6px; white-space: nowrap;
+  }
+  .schema {
+    font-family: var(--mono); font-size: .8rem; line-height: 1.5;
+    background: var(--navy-900); color: #dcecf4;
+    padding: 1rem 1.2rem; border-radius: var(--r); overflow-x: auto;
+  }
+  .rollen-tabelle td:first-child { white-space: nowrap; font-weight: 700; color: var(--navy); }
+  .zurueck-oben { position: fixed; right: 1rem; bottom: 1rem; z-index: 50; }
+</style>
+</head>
+<body>
+
+<header class="app-header">
+  <div class="titel">
+    <h1>Anleitung</h1>
+    <span class="sub">Klassenarbeiten · Johann-Jakob-Widmann-Schule Heilbronn</span>
+  </div>
+  <div class="kopf-rechts">
+    <a class="btn sekundaer klein" href="index.html">Zur Startseite</a>
+    <img class="logo" src="assets/logo/JJWS_Bildmarke_bunt.png" alt="Johann-Jakob-Widmann-Schule">
+  </div>
+</header>
+
+<main class="wrap" style="max-width: 880px">
+
+<div class="karte">
+  <h2 style="margin-top:0">Worum es geht – in einem Absatz</h2>
+  <p>
+    Zwei kleine Webprogramme: In der <strong>Prüfungs-App</strong> schreibt die Klasse die
+    Arbeit, im <strong>Lehrkraft-Werkzeug</strong> wird sie erstellt und korrigiert. Verbunden
+    sind beide nur über zwei Dateien, die durch einen Tauschordner wandern – einen Server oder
+    ein Konto gibt es nicht. 13 von 14 Aufgabenarten werden vollautomatisch bewertet,
+    Python-Aufgaben mit echten Unit-Tests. Am Ende kommen fertige PDFs und eine Notenliste
+    heraus.
+  </p>
+  <div class="schema">LEHRKRAFT-WERKZEUG                                    PRÜFUNGS-APP (Klasse)
+────────────────────                                  ─────────────────────
+1. Klassenarbeit bauen
+2. „Datei für die Klasse
+   erzeugen“        ────── arbeit.jjwsp ──────▶  3. Datei laden, Name eintragen
+   (ohne Lösungen!)         Tauschordner            4. Aufgaben bearbeiten
+                                                    5. „Verschlüsselt abgeben“
+6. Abgaben hereinziehen ◀── abgabe_….jjwsa ────      → Datei in den Tauschordner
+7. automatisch bewerten,     Tauschordner
+   Freitexte per Klick
+8. PDFs · Notenliste · CSV</div>
+</div>
+
+<div class="karte">
+  <h3 style="margin-top:0">Inhalt</h3>
+  <div class="inhaltsverz">
+    <a href="#demo">1 · Demo: einmal komplett durchspielen</a>
+    <a href="#einrichtung">2 · Einrichtung an der Schule</a>
+    <a href="#erstellen">3 · Eine Klassenarbeit erstellen</a>
+    <a href="#pruefungstag">4 · Am Tag der Klassenarbeit</a>
+    <a href="#korrigieren">5 · Korrigieren und zurückgeben</a>
+    <a href="#klasse">6 · Ablauf für die Klasse</a>
+    <a href="#aufgabenarten">7 · Die 14 Aufgabenarten</a>
+    <a href="#dateien">8 · Die vier Dateiformate</a>
+    <a href="#probleme">9 · Wenn etwas klemmt</a>
+  </div>
+</div>
+
+<section class="abschnitt" id="demo">
+  <h2><span class="nr">1</span>Demo: einmal komplett durchspielen</h2>
+  <p>
+    Der schnellste Weg, das System zu verstehen: den ganzen Kreislauf einmal selbst durchlaufen –
+    erst als Schülerin/Schüler, dann als Lehrkraft. Dafür liegen eine fertige Beispielarbeit
+    („Der Schulkiosk bekommt eine Kasse“, 10 Aufgaben, 44 Punkte) und ein
+    <strong>Demo-Schlüssel</strong> bei. Dauert etwa zehn Minuten.
+  </p>
+
+  <h3>Teil A – die Arbeit schreiben (Rolle: Klasse)</h3>
+  <ol class="schrittfolge">
+    <li>
+      <div class="st-titel">Demo starten</div>
+      <p><a href="app/pruefung/?demo=1">Prüfungs-App mit Demo öffnen</a> – die Beispielarbeit
+      lädt von selbst. (Alternativ: Prüfungs-App öffnen und auf
+      <span class="knopfname">🧪 Beispiel-Klassenarbeit ausprobieren</span> klicken.)</p>
+    </li>
+    <li>
+      <div class="st-titel">Namen eintragen</div>
+      <p>Einen beliebigen Namen und eine Klasse eingeben, dann
+      <span class="knopfname">Arbeit beginnen</span>.</p>
+    </li>
+    <li>
+      <div class="st-titel">Aufgaben bearbeiten</div>
+      <p>Unten durch die Aufgaben klicken. Bei der Python-Aufgabe lohnt sich
+      <span class="knopfname">▶ Code ausführen</span> und
+      <span class="knopfname">Selbsttests prüfen</span> – der Code läuft wirklich.
+      Alles wird laufend gespeichert.</p>
+    </li>
+    <li>
+      <div class="st-titel">Abgeben</div>
+      <p><span class="knopfname">Abgeben</span> →
+      <span class="knopfname">Verschlüsselt abgeben</span> → bestätigen. Es wird eine Datei
+      wie <code>Klassenarbeit-1_Mustermann-Max.jjwsa</code> heruntergeladen –
+      <strong>merke dir, wo sie liegt</strong>, sie wird gleich gebraucht.</p>
+    </li>
+  </ol>
+
+  <h3>Teil B – die Arbeit korrigieren (Rolle: Lehrkraft)</h3>
+  <ol class="schrittfolge">
+    <li>
+      <div class="st-titel">Demo-Schlüssel laden</div>
+      <p><a href="app/lehrer/">Lehrkraft-Werkzeug öffnen</a> → Reiter
+      <span class="knopfname">Schlüssel</span> →
+      <span class="knopfname">Vorhandene Schlüsseldatei laden</span> → die Datei
+      <a href="beispiele/demo-schluessel.jjwskey" download>demo-schluessel.jjwskey</a>
+      wählen (vorher herunterladen). Passphrase: <code>demo1234</code>.</p>
+      <p class="klein grau">Dieser Schlüssel ist absichtlich öffentlich – nur für die Demo.
+      Für echte Arbeiten legst du dir einen eigenen an.</p>
+    </li>
+    <li>
+      <div class="st-titel">Beispielarbeit laden</div>
+      <p>Reiter <span class="knopfname">Klassenarbeiten</span> →
+      <span class="knopfname">Master-Datei laden</span> → die Datei
+      <a href="beispiele/klassenarbeit-schulkiosk.jjwsm" download>klassenarbeit-schulkiosk.jjwsm</a>
+      wählen (vorher herunterladen). Das ist die Fassung <em>mit</em> Lösungen und Testfällen.</p>
+    </li>
+    <li>
+      <div class="st-titel">Abgabe korrigieren lassen</div>
+      <p>Reiter <span class="knopfname">Korrektur</span> → „Klassenarbeit 1“ anklicken →
+      deine <code>.jjwsa</code>-Datei aus Teil A in das gestrichelte Feld ziehen.
+      Die Datei wird entschlüsselt und automatisch bewertet – auch die Python-Testfälle laufen.</p>
+    </li>
+    <li>
+      <div class="st-titel">Nachbewerten und ausgeben</div>
+      <p>Die Freitext-Aufgabe wartet auf Häkchen im Kriterienraster. Danach:
+      <span class="knopfname">Korrigierte Arbeit als PDF</span> – das fertige Blatt mit
+      Deckblatt, Punkten je Prüfschritt und Note. Oder
+      <span class="knopfname">Notenliste anzeigen</span> für Übersicht, Druck und CSV.</p>
+    </li>
+  </ol>
+
+  <div class="hinweis">
+    <strong>Hinweis zur Vorführseite:</strong> Hier wird die Python-Umgebung einmalig aus dem
+    Internet nachgeladen, damit die Demo ohne Installation funktioniert. In der
+    Schulinstallation (Abschnitt 2) liegt sie lokal – dann geht keine einzige Anfrage ins Netz.
+  </div>
+</section>
+
+<section class="abschnitt" id="einrichtung">
+  <h2><span class="nr">2</span>Einrichtung an der Schule</h2>
+  <p>Für den echten Einsatz läuft alles lokal – einmalig etwa zehn Minuten Aufwand.</p>
+  <ol class="schrittfolge">
+    <li>
+      <div class="st-titel">Projekt herunterladen</div>
+      <p>Auf <a href="https://github.com/Philipp-byte/Klassenarbeiten">GitHub</a> über
+      <span class="knopfname">Code → Download ZIP</span> herunterladen und entpacken –
+      z.&nbsp;B. nach <code>C:\Klassenarbeiten</code> oder auf das Schulnetzlaufwerk.
+      (Wer Git nutzt: <code>git clone</code> geht natürlich auch.)</p>
+    </li>
+    <li>
+      <div class="st-titel">Python-Umgebung holen (einmalig, ~12 MB)</div>
+      <p>Im Projektordner ausführen: <code>scripts\pyodide-holen.cmd</code> (Windows) bzw.
+      <code>./scripts/pyodide-holen.sh</code> (macOS/Linux). Danach laufen Python-Aufgaben
+      komplett ohne Internet. Ohne diesen Schritt funktioniert alles außer dem Ausführen
+      und Prüfen von Python-Code.</p>
+    </li>
+    <li>
+      <div class="st-titel">Starten</div>
+      <p>Doppelklick auf <code>start.cmd</code> (Windows) bzw. <code>./start.sh</code>
+      (macOS/Linux). Es öffnet sich ein kleines Serverfenster – solange es offen ist,
+      sind die Apps erreichbar:</p>
+      <p><code>http://localhost:8080/app/pruefung/</code> – für die Klasse<br>
+      <code>http://localhost:8080/app/lehrer/</code> – für dich</p>
+      <p class="klein grau">Warum ein Server? Browser sperren Verschlüsselung und
+      Python-Laufzeit, wenn eine Seite per Doppelklick (<code>file://</code>) geöffnet
+      wird. Der Server ist nur auf dem eigenen Rechner erreichbar.</p>
+    </li>
+    <li>
+      <div class="st-titel">Tauschordner klären</div>
+      <p>Ein Ordner im Schulnetz, in den die Klasse Dateien <em>hineinlegen</em>, aber keine
+      fremden Dateien lesen oder löschen kann (Schreibrecht ohne Leserecht – das richtet
+      die Schul-IT ein). Selbst ohne diese Einstellung sind die Abgaben verschlüsselt.</p>
+    </li>
+    <li>
+      <div class="st-titel">Datenschutz abhaken</div>
+      <p>Kurz mit dem Datenschutzbeauftragten abstimmen; die fertige Vorlage fürs
+      Verzeichnis von Verarbeitungstätigkeiten steht in
+      <a href="DATENSCHUTZ.md">DATENSCHUTZ.md</a>.</p>
+    </li>
+  </ol>
+</section>
+
+<section class="abschnitt" id="erstellen">
+  <h2><span class="nr">3</span>Eine Klassenarbeit erstellen</h2>
+  <ol class="schrittfolge">
+    <li>
+      <div class="st-titel">Einmalig: eigenen Schlüssel anlegen</div>
+      <p>Reiter <span class="knopfname">Schlüssel</span> →
+      <span class="knopfname">Schlüsselpaar erzeugen</span>, Bezeichnung und Passphrase
+      wählen. Die Schlüsseldatei (<code>.jjwskey</code>) wird heruntergeladen.</p>
+      <div class="hinweis warn"><strong>Wichtigster Satz dieser Anleitung:</strong>
+      Sichere die Schlüsseldatei zusätzlich außerhalb des Rechners (USB-Stick,
+      dienstliches Laufwerk) und verwahre die Passphrase sicher. Ohne beides sind
+      bereits geschriebene Arbeiten <em>unwiderruflich</em> unlesbar – es gibt keine
+      Hintertür.</div>
+    </li>
+    <li>
+      <div class="st-titel">Neue Arbeit anlegen</div>
+      <p>Reiter <span class="knopfname">Klassenarbeiten</span> →
+      <span class="knopfname">+ Neue Klassenarbeit</span>. Oben zeigt die Schrittleiste
+      (Kopfdaten · Ausgangssituation · Aufgaben · Ausgeben), was noch fehlt.
+      Alles speichert automatisch.</p>
+    </li>
+    <li>
+      <div class="st-titel">Kopfdaten ausfüllen</div>
+      <p>Titel, Fach, Klasse, Thema, Datum, Bearbeitungszeit. Zwei Entscheidungen:</p>
+      <p><strong>Die SuS geben an</strong> – Name+Klasse oder nur eine Prüfungsnummer
+      (datensparsamer; Zuordnung über deine Sitzplatzliste).<br>
+      <strong>Aufgabenreihenfolge je Person mischen</strong> – jede Person bekommt eine
+      andere Reihenfolge, auch bei Antwortmöglichkeiten. Erschwert das Abschreiben.</p>
+    </li>
+    <li>
+      <div class="st-titel">Ausgangssituation wählen</div>
+      <p>Karte <span class="knopfname">Ausgangssituation</span> aufklappen und eine der zehn
+      Vorlagen anklicken (z.&nbsp;B. Schulkiosk, Lagerbestand, Gehaltsabrechnung). Der Text wird
+      übernommen, und <em>jede Aufgabe erhält automatisch einen passenden Einleitungssatz</em>,
+      der sie an die Situation zurückbindet. Beides bleibt frei änderbar.</p>
+    </li>
+    <li>
+      <div class="st-titel">Aufgaben anlegen</div>
+      <p><span class="knopfname">+ Aufgabe hinzufügen</span> öffnet die Auswahl der 14
+      Aufgabenarten mit Erklärung (Abschnitt 7). Bei jeder Aufgabe hinterlegst du die
+      Lösungen bzw. Testfälle – daraus entsteht später die automatische Korrektur.
+      Python-Editor und Web-Felder haben Syntaxhervorhebung.</p>
+    </li>
+    <li>
+      <div class="st-titel">Notenschlüssel prüfen</div>
+      <p>Karte <span class="knopfname">Notenschlüssel</span>: Voreingestellt ist der lineare
+      Schlüssel (Lehrerfreund-Standard, Note 4 bei 40&nbsp;%), alternativ IHK oder KMK – alle
+      Schwellen frei einstellbar. Die Punkte-Noten-Tabelle rechnet live mit.</p>
+    </li>
+    <li>
+      <div class="st-titel">Prüfen und ausgeben</div>
+      <p>Die Karte „Prüfen und ausgeben“ listet offene Punkte (fehlende Lösungen, 0-Punkte-Aufgaben).
+      Dann in der Leiste unten:</p>
+      <p><span class="knopfname">👁 Vorschau</span> – die Arbeit so sehen wie die Klasse ·
+      <span class="knopfname">🖶 Angabe</span> / <span class="knopfname">🖶 Lösungsblatt</span> –
+      PDFs im Papierlayout ·
+      <span class="knopfname">Master sichern</span> – Sicherungskopie mit Lösungen ·
+      <span class="knopfname">Datei für die Klasse erzeugen</span> – die
+      <code>.jjwsp</code>-Datei <strong>ohne Lösungen</strong> für den Tauschordner.</p>
+    </li>
+  </ol>
+</section>
+
+<section class="abschnitt" id="pruefungstag">
+  <h2><span class="nr">4</span>Am Tag der Klassenarbeit</h2>
+  <ol class="schrittfolge">
+    <li>
+      <div class="st-titel">Vorbereiten</div>
+      <p>Die <code>.jjwsp</code>-Datei in den Tauschordner legen (sie enthält keine Lösungen –
+      selbst im Texteditor ist nichts zu finden). Zur Sicherheit eine Kopie auf einen USB-Stick.
+      Auf einem Schülerrechner kurz testen, ob die Prüfungs-App startet.</p>
+      <p class="klein grau">Tipp: Liegt die Datei als <code>klassenarbeit.jjwsp</code> direkt
+      neben <code>app/pruefung/index.html</code>, öffnet die App sie von selbst.</p>
+    </li>
+    <li>
+      <div class="st-titel">Während der Arbeit</div>
+      <p>Jede Person arbeitet für sich; nach dem Laden braucht die App kein Netz mehr. Alles
+      wird laufend gespeichert – nach einem Absturz: Seite neu laden, Datei erneut öffnen,
+      „Ja, ich bin …“ bestätigen, weiterarbeiten. Eine Endlosschleife im Python-Code wird nach
+      zehn Sekunden abgebrochen, ohne dass die App hängt.</p>
+    </li>
+    <li>
+      <div class="st-titel">Abgabe kontrollieren</div>
+      <p>Jede Person legt ihre <code>.jjwsa</code>-Datei im Tauschordner ab. Vor dem
+      Rausgehen kurz zählen: so viele Dateien wie Personen.</p>
+    </li>
+  </ol>
+</section>
+
+<section class="abschnitt" id="korrigieren">
+  <h2><span class="nr">5</span>Korrigieren und zurückgeben</h2>
+  <ol class="schrittfolge">
+    <li>
+      <div class="st-titel">Abgaben einlesen</div>
+      <p>Reiter <span class="knopfname">Korrektur</span> → Klassenarbeit auswählen →
+      Passphrase eingeben → <strong>alle</strong> <code>.jjwsa</code>-Dateien aus dem
+      Tauschordner markieren und in das Feld ziehen. Entschlüsselung und automatische
+      Bewertung laufen sofort, inklusive Python- und Web-Testfällen.</p>
+    </li>
+    <li>
+      <div class="st-titel">Durchsehen und nachbewerten</div>
+      <p>Links die Liste aller Abgaben mit Note; „offen“ markiert, wo du gebraucht wirst.
+      Rechts jede Aufgabe mit Antwort und Prüfliste (✓/✗ je Prüfschritt). Bei
+      <strong>Freitext</strong> setzt du Häkchen im Kriterienraster; jeden automatischen
+      Punktwert kannst du überschreiben, jede Aufgabe kommentieren. Das Feld
+      <strong>Rückmeldung</strong> erscheint am Ende der korrigierten Arbeit.</p>
+    </li>
+    <li>
+      <div class="st-titel">Ausgeben</div>
+      <p><span class="knopfname">Korrigierte Arbeit als PDF</span> je Person (im Druckdialog
+      „Als PDF speichern“) · <span class="knopfname">Notenliste anzeigen</span> →
+      Druck-PDF mit Statistik und Notenschlüssel oder
+      <span class="knopfname">CSV für Excel</span> für die Notenverwaltung ·
+      <span class="knopfname">Alle Arbeiten als PDF</span> für den Stapel.</p>
+    </li>
+    <li>
+      <div class="st-titel">Aufräumen</div>
+      <p>Die entschlüsselten Abgaben leben nur in diesem Browser-Tab – <strong>erst
+      exportieren, dann Tab schließen</strong>. Danach: Tauschordner leeren und die
+      Browserdaten der Schülerrechner löschen lassen (Löschkonzept in
+      <a href="DATENSCHUTZ.md">DATENSCHUTZ.md</a>).</p>
+    </li>
+  </ol>
+</section>
+
+<section class="abschnitt" id="klasse">
+  <h2><span class="nr">6</span>Ablauf für die Klasse</h2>
+  <p>Die Kurzfassung zum Ansagen – als Aushang gibt es
+  <a href="docs/anleitung-sus.md">docs/anleitung-sus.md</a>.</p>
+  <ol class="schrittfolge">
+    <li><div class="st-titel">Prüfungs-App öffnen</div><p>Adresse von der Tafel, dann die Klassenarbeitsdatei aus dem Tauschordner laden (Endung <code>.jjwsp</code>).</p></li>
+    <li><div class="st-titel">Name eintragen</div><p>Name und Klasse (oder Prüfungsnummer), dann <span class="knopfname">Arbeit beginnen</span>. Beim Fortsetzen nach Absturz nur bestätigen, wenn der eigene Name angezeigt wird.</p></li>
+    <li><div class="st-titel">Bearbeiten</div><p>Unten zwischen Aufgaben springen – blauer Punkt heißt „bearbeitet“. Bei Python: <span class="knopfname">▶ Code ausführen</span> und Selbsttests nutzen (zählen nicht für die Note). Alles speichert von selbst.</p></li>
+    <li><div class="st-titel">Abgeben</div><p><span class="knopfname">Abgeben</span> → <span class="knopfname">Verschlüsselt abgeben</span> → heruntergeladene Datei in den Tauschordner ziehen → Bescheid geben. <strong>Erst dann ist die Arbeit abgegeben.</strong></p></li>
+  </ol>
+</section>
+
+<section class="abschnitt" id="aufgabenarten">
+  <h2><span class="nr">7</span>Die 14 Aufgabenarten</h2>
+  <div class="tabelle-scroll"><table class="liste">
+    <thead><tr><th>Art</th><th>Korrektur</th><th>So funktioniert sie</th></tr></thead>
+    <tbody>
+      <tr><td>Multiple Choice</td><td><span class="plakette gut">automatisch</span></td><td>Einfach- oder Mehrfachauswahl, Teilpunkte möglich, Optionen werden gemischt.</td></tr>
+      <tr><td>Aussagenraster</td><td><span class="plakette gut">automatisch</span></td><td>Tabelle zum Ankreuzen mit frei benennbaren Spalten (wahr/falsch, Geldstrom/Güterstrom …).</td></tr>
+      <tr><td>Kurzantwort</td><td><span class="plakette gut">automatisch</span></td><td>Abgleich mit hinterlegten Lösungen samt Alternativen; Groß-/Kleinschreibung und Tippfehler-Toleranz einstellbar.</td></tr>
+      <tr><td>Antwort mit Stichwörtern</td><td><span class="plakette gut">automatisch</span></td><td>Fließtext wird auf Schlüsselbegriffe geprüft, Punkte je gefundenem Begriff.</td></tr>
+      <tr><td>Aufzählung („Nenne vier …“)</td><td><span class="plakette gut">automatisch</span></td><td>Mehrere Felder gegen Lösungsgruppen mit Synonymen; Doppelnennungen zählen nicht doppelt.</td></tr>
+      <tr><td>Zuordnung</td><td><span class="plakette gut">automatisch</span></td><td>Paare zusammenbringen, Punkte je Paar.</td></tr>
+      <tr><td>Reihenfolge</td><td><span class="plakette gut">automatisch</span></td><td>Abläufe sortieren; Teilpunkte je richtiger Abfolge oder alles-oder-nichts.</td></tr>
+      <tr><td>Lückentext</td><td><span class="plakette gut">automatisch</span></td><td>Lücken als <code>[[Lösung|Alternative]]</code>, auch in Code-Darstellung.</td></tr>
+      <tr><td>Zahlenwert</td><td><span class="plakette gut">automatisch</span></td><td>Mit Toleranz und Einheit; Komma und Punkt gleichwertig.</td></tr>
+      <tr><td>Rechnung mit Teilergebnissen</td><td><span class="plakette gut">automatisch</span></td><td>Mehrere benannte Zwischenschritte, jeder mit eigenen Punkten und Toleranz.</td></tr>
+      <tr><td>Python programmieren</td><td><span class="plakette gut">automatisch</span></td><td>Unit-Tests: Funktionsaufruf/Rückgabewert, Eingabe→Ausgabe, freie Asserts, „Code muss <code>for</code> enthalten“. Sichtbare Selbsttests als Lernhilfe.</td></tr>
+      <tr><td>Code sortieren (Parsons)</td><td><span class="plakette gut">automatisch</span></td><td>Codezeilen in Reihenfolge <em>und</em> Einrückung bringen, mit Ablenkerzeilen.</td></tr>
+      <tr><td>HTML / CSS / JavaScript</td><td><span class="plakette gut">automatisch</span></td><td>Live-Vorschau beim Schreiben; geprüft werden Elemente, Texte, Attribute, berechnete Stile, JS-Ausdrücke.</td></tr>
+      <tr><td>Freitext</td><td><span class="plakette teil">manuell</span></td><td>Mit Erwartungshorizont und Kriterienraster – du bewertest per Häkchen.</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<section class="abschnitt" id="dateien">
+  <h2><span class="nr">8</span>Die vier Dateiformate</h2>
+  <div class="tabelle-scroll"><table class="liste rollen-tabelle">
+    <thead><tr><th>Endung</th><th>Inhalt</th><th>Wohin damit</th></tr></thead>
+    <tbody>
+      <tr><td>.jjwsm</td><td>Master mit allen Lösungen und Testfällen</td><td>Bleibt bei dir – nie in den Tauschordner!</td></tr>
+      <tr><td>.jjwsp</td><td>Fassung für die Klasse, ohne jede Lösung</td><td>In den Tauschordner</td></tr>
+      <tr><td>.jjwsa</td><td>Abgabe einer Person, verschlüsselt (ECDH P-256 + AES-256-GCM)</td><td>Aus dem Tauschordner in die Korrektur</td></tr>
+      <tr><td>.jjwskey</td><td>Dein privater Schlüssel, passphrasengeschützt</td><td>Sicher verwahren + Sicherungskopie</td></tr>
+    </tbody>
+  </table></div>
+  <p class="klein grau" style="margin-top:.6rem">Die Klasse kann weder eigene noch fremde
+  Abgaben lesen; jede nachträgliche Änderung an einer Abgabedatei macht sie unlesbar.
+  Punkte und Noten stehen in keiner der Dateien – sie entstehen erst bei dir.</p>
+</section>
+
+<section class="abschnitt" id="probleme">
+  <h2><span class="nr">9</span>Wenn etwas klemmt</h2>
+  <div class="tabelle-scroll"><table class="liste">
+    <thead><tr><th>Meldung / Problem</th><th>Ursache und Lösung</th></tr></thead>
+    <tbody>
+      <tr><td>„Die Verschlüsselung des Browsers ist nicht verfügbar“</td><td>Seite per Doppelklick geöffnet. Über <code>start.cmd</code> / <code>start.sh</code> starten und die <code>localhost</code>-Adresse verwenden.</td></tr>
+      <tr><td>Python-Code lässt sich nicht ausführen</td><td>Pyodide fehlt lokal. Einmalig <code>scripts/pyodide-holen.cmd</code> bzw. <code>.sh</code> ausführen. Der Reiter „Hilfe &amp; Datenschutz“ zeigt den Zustand.</td></tr>
+      <tr><td>„gehört zu einer anderen Arbeit“</td><td>Die Abgabe stammt aus einer anderen Klassenarbeit – in der Korrektur die richtige Arbeit auswählen.</td></tr>
+      <tr><td>„Abgabe konnte nicht entschlüsselt werden“</td><td>Falscher Schlüssel oder die Datei wurde verändert. Anderen Schlüssel probieren; bei Verdacht Rücksprache mit der Person.</td></tr>
+      <tr><td>„Das Programm lief länger als 10 Sekunden“</td><td>Endlosschleife im Schülercode – die App bricht ab und läuft weiter. Kein Handlungsbedarf.</td></tr>
+      <tr><td>Passphrase vergessen</td><td>Die betroffenen Abgaben sind unwiderruflich unlesbar; es gibt bewusst keine Hintertür. Deshalb: Schlüsseldatei sichern, Passphrase sicher notieren.</td></tr>
+      <tr><td>Eine Person will nach Absturz weiterschreiben</td><td>Seite neu laden, Datei erneut öffnen, „Ja, ich bin …“ bestätigen – alle Eingaben sind noch da.</td></tr>
+    </tbody>
+  </table></div>
+  <p style="margin-top:1rem">Mehr Hintergrund:
+  <a href="DATENSCHUTZ.md">Datenschutz</a> ·
+  <a href="SICHERHEIT.md">Sicherheit</a> ·
+  <a href="BAUPLAN.md">Bauplan</a> ·
+  <a href="docs/anleitung-lehrkraft.md">Lehrkraft-Anleitung (Druckfassung)</a> ·
+  <a href="docs/anleitung-sus.md">Aushang für die Klasse</a></p>
+</section>
+
+</main>
+
+<a class="btn sekundaer klein zurueck-oben" href="#top" onclick="window.scrollTo({top:0,behavior:'smooth'});return false;">↑ nach oben</a>
+
+<footer class="app-fuss">
+  Klassenarbeiten · Johann-Jakob-Widmann-Schule Heilbronn ·
+  <a href="index.html">Startseite</a> ·
+  <a href="https://github.com/Philipp-byte/Klassenarbeiten">Quellcode</a>
+</footer>
+
+</body>
+</html>

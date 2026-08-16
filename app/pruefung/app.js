@@ -15,7 +15,7 @@ import { el, $, meldung, frage, dateiWaehlen, ablageFlaeche, auszeichnung, entpr
 import { ladeJsonDatei, ladeHerunter, dateiName, DATEI_ENDUNG, APP_VERSION, datumDeutsch } from "../shared/model.js";
 import { verschluesseln, pruefsumme } from "../shared/crypto.js";
 import { baueAntwortfeld, istBearbeitet } from "../shared/aufgaben-ui.js";
-import { PythonRunner, pyodideVorhanden } from "../shared/python-runner.js";
+import { PythonRunner, pyodideQuelle } from "../shared/python-runner.js";
 import { persoenlicheFassung } from "../shared/mischen.js";
 
 const inhalt = $("#inhalt");
@@ -34,6 +34,25 @@ const zustand = {
 };
 
 const SPEICHER = (id) => `jjws.abgabe.${id}`;
+
+/* ---------------------------------------------------------------- Demo-Modus
+   Lädt die mitgelieferte Beispiel-Klassenarbeit, damit jede Person die App
+   sofort ausprobieren kann – ohne dass eine Lehrkraft erst eine Datei in den
+   Tauschordner legen muss. Erreichbar über den Knopf auf der Startseite und
+   über die Adresse …/app/pruefung/?demo=1 (so verlinkt die Projektseite). */
+async function ladeDemo() {
+  try {
+    const antwort = await fetch("../../beispiele/klassenarbeit-schulkiosk.jjwsp");
+    if (!antwort.ok) throw new Error(`Beispieldatei nicht gefunden (${antwort.status}).`);
+    const daten = await antwort.json();
+    meldung("Beispiel-Klassenarbeit „Schulkiosk“ geladen – viel Erfolg!", "gut", 6000);
+    await ladePruefungsdatei(
+      new File([JSON.stringify(daten)], "klassenarbeit-schulkiosk.jjwsp")
+    );
+  } catch (fehler) {
+    meldung(`Die Beispiel-Klassenarbeit konnte nicht geladen werden: ${fehler.message}`, "fehler", 9000);
+  }
+}
 
 /* ============================================================ Zwischenspeicher */
 
@@ -106,7 +125,17 @@ function zeigeStart() {
         el("h2", { text: "Klassenarbeit" }),
         el("p", { text: "Öffne die Datei, die deine Lehrkraft im Tauschordner bereitgelegt hat." }),
       ]),
-      el("div", { class: "karte" }, [flaeche]),
+      el("div", { class: "karte" }, [
+        flaeche,
+        el("div", { class: "zentriert", style: { marginTop: ".9rem" } }, [
+          el("span", { class: "klein grau", text: "Keine Datei zur Hand? " }),
+          el("button", {
+            class: "btn sekundaer klein",
+            text: "🧪 Beispiel-Klassenarbeit ausprobieren",
+            onclick: ladeDemo,
+          }),
+        ]),
+      ]),
       el("div", { class: "karte" }, [
         el("h3", { text: "Gut zu wissen" }),
         punkt("💾", "Deine Eingaben werden laufend gespeichert",
@@ -115,6 +144,10 @@ function zeigeStart() {
               "Es wird nichts ins Internet geschickt – auch nicht dein Name."),
         punkt("📤", "Am Ende lädst du eine verschlüsselte Datei herunter",
               "Die legst du im Tauschordner ab. Erst dann ist die Arbeit abgegeben."),
+        el("p", { class: "klein", style: { marginTop: ".4rem", marginBottom: 0 } }, [
+          el("a", { href: "../../anleitung.html", text: "Ausführliche Anleitung" }),
+          document.createTextNode(" – wie das Ganze funktioniert, Schritt für Schritt."),
+        ]),
       ]),
     ])
   );
@@ -261,7 +294,8 @@ async function starteBearbeitung() {
   const brauchtPython = zustand.meine.aufgaben.some((a) => a.typ === "code-python");
   if (brauchtPython && !zustand.runner) {
     zustand.runner = new PythonRunner({ zeitlimitMs: 10000 });
-    if (!(await pyodideVorhanden())) {
+    const quelle = await pyodideQuelle();
+    if (!quelle.art) {
       meldung(
         "Die Python-Umgebung wurde auf diesem Rechner nicht gefunden. Programmieraufgaben lassen sich " +
           "schreiben, aber nicht ausprobieren. Bitte der Lehrkraft Bescheid geben.",
@@ -269,6 +303,14 @@ async function starteBearbeitung() {
         12000
       );
     } else {
+      if (quelle.art === "cdn") {
+        meldung(
+          "Vorführseite: Die Python-Umgebung wird einmalig aus dem Internet geladen. " +
+            "In der Schulversion bleibt alles offline.",
+          "info",
+          8000
+        );
+      }
       zustand.runner.vorbereiten().catch(() => {
         meldung("Die Python-Umgebung konnte nicht gestartet werden.", "warn", 8000);
       });
@@ -556,15 +598,22 @@ function zeigeBestaetigung(name, kennung) {
 
 zeigeStart();
 
-// Bequemlichkeit: liegt neben der App eine Datei „klassenarbeit.jjwsp“,
-// wird sie automatisch angeboten (praktisch für den Klassensatz auf dem Netzlaufwerk).
-fetch(`./klassenarbeit.${DATEI_ENDUNG.pruefung}`)
-  .then((r) => (r.ok ? r.json() : null))
-  .then((daten) => {
-    if (!daten || daten.typ !== "jjws-klassenarbeit" || zustand.pruefung) return;
-    meldung(`Klassenarbeit „${daten.titel}“ gefunden – wird geöffnet.`, "info");
-    ladePruefungsdatei(new File([JSON.stringify(daten)], `klassenarbeit.${DATEI_ENDUNG.pruefung}`));
-  })
-  .catch(() => {
-    /* keine Datei daneben – völlig normal */
-  });
+const abfrage = new URLSearchParams(location.search);
+if (abfrage.has("demo")) {
+  // Von der Projektseite aus: Demo direkt starten.
+  ladeDemo();
+} else if (!location.hostname.endsWith("github.io")) {
+  // Bequemlichkeit: liegt neben der App eine Datei „klassenarbeit.jjwsp“,
+  // wird sie automatisch angeboten (praktisch für den Klassensatz auf dem
+  // Netzlaufwerk). Auf der Vorführseite gibt es sie nie – dort überspringen.
+  fetch(`./klassenarbeit.${DATEI_ENDUNG.pruefung}`)
+    .then((r) => (r.ok ? r.json() : null))
+    .then((daten) => {
+      if (!daten || daten.typ !== "jjws-klassenarbeit" || zustand.pruefung) return;
+      meldung(`Klassenarbeit „${daten.titel}“ gefunden – wird geöffnet.`, "info");
+      ladePruefungsdatei(new File([JSON.stringify(daten)], `klassenarbeit.${DATEI_ENDUNG.pruefung}`));
+    })
+    .catch(() => {
+      /* keine Datei daneben – völlig normal */
+    });
+}

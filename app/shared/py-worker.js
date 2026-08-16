@@ -14,6 +14,7 @@
 /* global importScripts, loadPyodide */
 
 let pyodide = null;
+let indexURL = "../vendor/pyodide/"; // Standard: lokale Ablage neben der App
 
 const HARNESS = `
 import sys, io, json, traceback, re
@@ -169,23 +170,24 @@ def jjws_ausfuehren(quelltext, eingabe):
     return json.dumps({"ausgabe": _kuerze(puffer.getvalue(), 4000), "fehler": fehler})
 `;
 
-async function starte() {
+async function starte(url) {
   if (pyodide) return;
-  importScripts("../vendor/pyodide/pyodide.js");
-  pyodide = await loadPyodide({ indexURL: "../vendor/pyodide/" });
+  if (url) indexURL = url; // Demo-Seite darf eine CDN-Adresse vorgeben
+  importScripts(indexURL + "pyodide.js");
+  pyodide = await loadPyodide({ indexURL });
   pyodide.runPython(HARNESS);
 }
 
 self.onmessage = async (e) => {
-  const { id, typ, daten } = e.data || {};
+  const { id, typ, daten, indexURL: url } = e.data || {};
   try {
     if (typ === "start") {
-      await starte();
+      await starte(url);
       self.postMessage({ id, ok: true, ergebnis: { bereit: true } });
       return;
     }
 
-    await starte();
+    await starte(url);
 
     if (typ === "test") {
       const fn = pyodide.globals.get("jjws_test");

@@ -14,7 +14,7 @@ import {
 import { zeigeArbeiten } from "./editor.js";
 import { zeigeKorrektur } from "./korrektur.js";
 import { allesLoeschen, belegung } from "../shared/speicher.js";
-import { pyodideVorhanden } from "../shared/python-runner.js";
+import { pyodideQuelle } from "../shared/python-runner.js";
 
 const inhalt = $("#inhalt");
 const tabsLeiste = $("#tabs");
@@ -52,9 +52,27 @@ function wechsle(id) {
 
 async function zeigeHilfe(ziel) {
   const platz = belegung();
-  const pyodide = await pyodideVorhanden();
+  const quelle = await pyodideQuelle();
+  const pyodideText =
+    quelle.art === "lokal"
+      ? "lokal vorhanden"
+      : quelle.art === "cdn"
+      ? "über das Internet (nur auf der Vorführseite – die Schulversion bleibt offline)"
+      : "fehlt – Programmieraufgaben können nicht geprüft werden";
 
   ziel.replaceChildren(
+    el("div", { class: "karte" }, [
+      el("div", { class: "karte-kopf" }, [
+        el("h2", { text: "Anleitung" }),
+        el("a", { class: "btn", href: "../../anleitung.html", text: "📖 Ausführliche Anleitung öffnen" }),
+      ]),
+      el("p", {
+        class: "klein grau",
+        text:
+          "Die vollständige Schritt-für-Schritt-Anleitung – vom Schlüssel über das Erstellen und " +
+          "Schreiben bis zur fertig korrigierten Arbeit, inklusive Demo-Durchlauf zum Ausprobieren.",
+      }),
+    ]),
     el("div", { class: "karte" }, [
       el("h2", { text: "Ablauf in fünf Schritten" }),
       el("ol", { style: { lineHeight: "1.9" } }, [
@@ -76,16 +94,12 @@ async function zeigeHilfe(ziel) {
             schluessel.vorhanden ? `vorhanden (${schluessel.fingerabdruck})` : "fehlt – bitte anlegen",
             schluessel.vorhanden
           ),
-          statusZeile(
-            "Python-Umgebung (Pyodide)",
-            pyodide ? "lokal vorhanden" : "fehlt – Programmieraufgaben können nicht geprüft werden",
-            pyodide
-          ),
+          statusZeile("Python-Umgebung (Pyodide)", pyodideText, quelle.art !== null),
           statusZeile("Verschlüsselung des Browsers", window.crypto?.subtle ? "verfügbar" : "NICHT verfügbar – die App muss über http://localhost laufen", !!window.crypto?.subtle),
           statusZeile("Belegter Speicher", `${platz.kb} KB`, true),
         ]),
       ]),
-      !pyodide
+      !quelle.art
         ? el("div", { class: "hinweis warn", style: { marginTop: ".8rem" } }, [
             el("p", {}, [
               document.createTextNode("Zum Prüfen von Python-Aufgaben einmalig im Projektordner ausführen: "),
