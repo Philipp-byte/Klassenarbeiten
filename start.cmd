@@ -29,13 +29,16 @@ echo   =============================================
 echo.
 echo   Der Server laeuft. Diese Adressen im Browser oeffnen:
 echo.
-echo     Fuer die Schuelerinnen und Schueler   http://localhost:%PORT%/app/pruefung/
-echo     Fuer die Lehrkraft                    http://localhost:%PORT%/app/lehrer/
+echo     Lehrkraft-Werkzeug                  http://localhost:%PORT%/app/lehrer/
+echo     Pruefungs-App (lokale Reserve)      http://localhost:%PORT%/app/pruefung/
+echo.
+echo   Die Klasse schreibt normalerweise auf der oeffentlichen SuS-Website:
+echo     https://philipp-byte.github.io/Klassenarbeiten/
 echo.
 echo   Nur auf diesem Rechner erreichbar. Beenden mit Strg+C.
 echo.
 
-start "" "http://localhost:%PORT%/app/pruefung/"
+start "" "http://localhost:%PORT%/app/lehrer/"
 python -m http.server %PORT% --bind 127.0.0.1
 
 endlocal

@@ -99,8 +99,8 @@
 <div class="karte">
   <h3 style="margin-top:0">Inhalt</h3>
   <div class="inhaltsverz">
-    <a href="#demo">1 · Demo: einmal komplett durchspielen</a>
-    <a href="#einrichtung">2 · Einrichtung an der Schule</a>
+    <a href="#programme">1 · Die zwei Programme – und wo sie laufen</a>
+    <a href="#einrichtung">2 · Einrichtung auf dem Lehrer-Rechner</a>
     <a href="#erstellen">3 · Eine Klassenarbeit erstellen</a>
     <a href="#pruefungstag">4 · Am Tag der Klassenarbeit</a>
     <a href="#korrigieren">5 · Korrigieren und zurückgeben</a>
@@ -111,88 +111,48 @@
   </div>
 </div>
 
-<section class="abschnitt" id="demo">
-  <h2><span class="nr">1</span>Demo: einmal komplett durchspielen</h2>
+<section class="abschnitt" id="programme">
+  <h2><span class="nr">1</span>Die zwei Programme – und wo sie laufen</h2>
   <p>
-    Der schnellste Weg, das System zu verstehen: den ganzen Kreislauf einmal selbst durchlaufen –
-    erst als Schülerin/Schüler, dann als Lehrkraft. Dafür liegen eine fertige Beispielarbeit
-    („Der Schulkiosk bekommt eine Kasse“, 10 Aufgaben, 44 Punkte) und ein
-    <strong>Demo-Schlüssel</strong> bei. Dauert etwa zehn Minuten.
+    Es gibt zwei vollständig getrennte Programme, und sie laufen an zwei verschiedenen Orten:
   </p>
-
-  <h3>Teil A – die Arbeit schreiben (Rolle: Klasse)</h3>
-  <ol class="schrittfolge">
-    <li>
-      <div class="st-titel">Demo starten</div>
-      <p><a href="app/pruefung/?demo=1">Prüfungs-App mit Demo öffnen</a> – die Beispielarbeit
-      lädt von selbst. (Alternativ: Prüfungs-App öffnen und auf
-      <span class="knopfname">🧪 Beispiel-Klassenarbeit ausprobieren</span> klicken.)</p>
-    </li>
-    <li>
-      <div class="st-titel">Namen eintragen</div>
-      <p>Einen beliebigen Namen und eine Klasse eingeben, dann
-      <span class="knopfname">Arbeit beginnen</span>.</p>
-    </li>
-    <li>
-      <div class="st-titel">Aufgaben bearbeiten</div>
-      <p>Unten durch die Aufgaben klicken. Bei der Python-Aufgabe lohnt sich
-      <span class="knopfname">▶ Code ausführen</span> und
-      <span class="knopfname">Selbsttests prüfen</span> – der Code läuft wirklich.
-      Alles wird laufend gespeichert.</p>
-    </li>
-    <li>
-      <div class="st-titel">Abgeben</div>
-      <p><span class="knopfname">Abgeben</span> →
-      <span class="knopfname">Verschlüsselt abgeben</span> → bestätigen. Es wird eine Datei
-      wie <code>Klassenarbeit-1_Mustermann-Max.jjwsa</code> heruntergeladen –
-      <strong>merke dir, wo sie liegt</strong>, sie wird gleich gebraucht.</p>
-    </li>
-  </ol>
-
-  <h3>Teil B – die Arbeit korrigieren (Rolle: Lehrkraft)</h3>
-  <ol class="schrittfolge">
-    <li>
-      <div class="st-titel">Demo-Schlüssel laden</div>
-      <p><a href="app/lehrer/">Lehrkraft-Werkzeug öffnen</a> → Reiter
-      <span class="knopfname">Schlüssel</span> →
-      <span class="knopfname">Vorhandene Schlüsseldatei laden</span> → die Datei
-      <a href="beispiele/demo-schluessel.jjwskey" download>demo-schluessel.jjwskey</a>
-      wählen (vorher herunterladen). Passphrase: <code>demo1234</code>.</p>
-      <p class="klein grau">Dieser Schlüssel ist absichtlich öffentlich – nur für die Demo.
-      Für echte Arbeiten legst du dir einen eigenen an.</p>
-    </li>
-    <li>
-      <div class="st-titel">Beispielarbeit laden</div>
-      <p>Reiter <span class="knopfname">Klassenarbeiten</span> →
-      <span class="knopfname">Master-Datei laden</span> → die Datei
-      <a href="beispiele/klassenarbeit-schulkiosk.jjwsm" download>klassenarbeit-schulkiosk.jjwsm</a>
-      wählen (vorher herunterladen). Das ist die Fassung <em>mit</em> Lösungen und Testfällen.</p>
-    </li>
-    <li>
-      <div class="st-titel">Abgabe korrigieren lassen</div>
-      <p>Reiter <span class="knopfname">Korrektur</span> → „Klassenarbeit 1“ anklicken →
-      deine <code>.jjwsa</code>-Datei aus Teil A in das gestrichelte Feld ziehen.
-      Die Datei wird entschlüsselt und automatisch bewertet – auch die Python-Testfälle laufen.</p>
-    </li>
-    <li>
-      <div class="st-titel">Nachbewerten und ausgeben</div>
-      <p>Die Freitext-Aufgabe wartet auf Häkchen im Kriterienraster. Danach:
-      <span class="knopfname">Korrigierte Arbeit als PDF</span> – das fertige Blatt mit
-      Deckblatt, Punkten je Prüfschritt und Note. Oder
-      <span class="knopfname">Notenliste anzeigen</span> für Übersicht, Druck und CSV.</p>
-    </li>
-  </ol>
-
-  <div class="hinweis">
-    <strong>Hinweis zur Vorführseite:</strong> Hier wird die Python-Umgebung einmalig aus dem
-    Internet nachgeladen, damit die Demo ohne Installation funktioniert. In der
-    Schulinstallation (Abschnitt 2) liegt sie lokal – dann geht keine einzige Anfrage ins Netz.
-  </div>
+  <div class="tabelle-scroll"><table class="liste rollen-tabelle">
+    <thead><tr><th>Programm</th><th>Für wen</th><th>Wo es läuft</th></tr></thead>
+    <tbody>
+      <tr>
+        <td>Prüfungs-App</td>
+        <td>die Klasse</td>
+        <td>Öffentlich auf
+          <a href="https://philipp-byte.github.io/Klassenarbeiten/">philipp-byte.github.io/Klassenarbeiten</a>.
+          Die Python-Umgebung ist dort fest eingebaut – die SuS öffnen nur die Adresse,
+          installiert wird nichts.</td>
+      </tr>
+      <tr>
+        <td>Lehrkraft-Werkzeug</td>
+        <td>nur du</td>
+        <td>Nur lokal auf deinem Rechner (<code>start.cmd</code> / <code>start.sh</code>).
+          Es ist über die öffentliche Adresse <strong>nicht</strong> erreichbar – dort liegt
+          es schlicht nicht.</td>
+      </tr>
+    </tbody>
+  </table></div>
+  <p style="margin-top:.8rem">
+    Auf der öffentlichen Website gibt es nichts zu holen: keine Lösungen, keine Schlüssel,
+    kein Lehrkraft-Werkzeug. Eine Klassenarbeit wird erst konkret, wenn du die
+    <code>.jjwsp</code>-Datei ausgibst – und die enthält keine Lösungen. Verbunden sind beide
+    Programme nur über die zwei Dateien im Tauschordner (siehe Schema oben).
+  </p>
+  <p class="klein grau">
+    Als Reserve für Räume ohne Internet liegt die Prüfungs-App zusätzlich in deiner lokalen
+    Installation unter <code>http://localhost:8080/app/pruefung/</code> – dafür müssen die SuS
+    dann an Rechnern mit Zugriff auf diese Installation arbeiten.
+  </p>
 </section>
 
 <section class="abschnitt" id="einrichtung">
-  <h2><span class="nr">2</span>Einrichtung an der Schule</h2>
-  <p>Für den echten Einsatz läuft alles lokal – einmalig etwa zehn Minuten Aufwand.</p>
+  <h2><span class="nr">2</span>Einrichtung auf dem Lehrer-Rechner</h2>
+  <p>Die Klasse braucht nichts einzurichten – sie öffnet nur die öffentliche Adresse.
+  Für dein Lehrkraft-Werkzeug: einmalig etwa zehn Minuten Aufwand.</p>
   <ol class="schrittfolge">
     <li>
       <div class="st-titel">Projekt herunterladen</div>
@@ -204,20 +164,22 @@
     <li>
       <div class="st-titel">Python-Umgebung holen (einmalig, ~12 MB)</div>
       <p>Im Projektordner ausführen: <code>scripts\pyodide-holen.cmd</code> (Windows) bzw.
-      <code>./scripts/pyodide-holen.sh</code> (macOS/Linux). Danach laufen Python-Aufgaben
-      komplett ohne Internet. Ohne diesen Schritt funktioniert alles außer dem Ausführen
-      und Prüfen von Python-Code.</p>
+      <code>./scripts/pyodide-holen.sh</code> (macOS/Linux). Danach laufen die Python-Testfälle
+      bei der Korrektur komplett ohne Internet. Ohne diesen Schritt funktioniert alles außer
+      dem Ausführen und Prüfen von Python-Code. (Auf der öffentlichen SuS-Website ist die
+      Python-Umgebung schon eingebaut – dieser Schritt betrifft nur deinen Rechner.)</p>
     </li>
     <li>
       <div class="st-titel">Starten</div>
       <p>Doppelklick auf <code>start.cmd</code> (Windows) bzw. <code>./start.sh</code>
       (macOS/Linux). Es öffnet sich ein kleines Serverfenster – solange es offen ist,
-      sind die Apps erreichbar:</p>
-      <p><code>http://localhost:8080/app/pruefung/</code> – für die Klasse<br>
-      <code>http://localhost:8080/app/lehrer/</code> – für dich</p>
+      ist das Werkzeug erreichbar:</p>
+      <p><code>http://localhost:8080/app/lehrer/</code> – dein Lehrkraft-Werkzeug<br>
+      <code>http://localhost:8080/app/pruefung/</code> – lokale Reserve der Prüfungs-App</p>
       <p class="klein grau">Warum ein Server? Browser sperren Verschlüsselung und
       Python-Laufzeit, wenn eine Seite per Doppelklick (<code>file://</code>) geöffnet
-      wird. Der Server ist nur auf dem eigenen Rechner erreichbar.</p>
+      wird. Der Server ist nur auf dem eigenen Rechner erreichbar – von außen kommt
+      niemand an dein Werkzeug heran.</p>
     </li>
     <li>
       <div class="st-titel">Tauschordner klären</div>
@@ -304,9 +266,12 @@
       <div class="st-titel">Vorbereiten</div>
       <p>Die <code>.jjwsp</code>-Datei in den Tauschordner legen (sie enthält keine Lösungen –
       selbst im Texteditor ist nichts zu finden). Zur Sicherheit eine Kopie auf einen USB-Stick.
-      Auf einem Schülerrechner kurz testen, ob die Prüfungs-App startet.</p>
-      <p class="klein grau">Tipp: Liegt die Datei als <code>klassenarbeit.jjwsp</code> direkt
-      neben <code>app/pruefung/index.html</code>, öffnet die App sie von selbst.</p>
+      Die Adresse der SuS-Website an die Tafel schreiben:
+      <code>philipp-byte.github.io/Klassenarbeiten</code>. Auf einem Schülerrechner kurz
+      testen, ob sie sich öffnet.</p>
+      <p class="klein grau">Tipp für die lokale Reserve-Fassung: Liegt die Datei als
+      <code>klassenarbeit.jjwsp</code> direkt neben <code>app/pruefung/index.html</code>,
+      öffnet die App sie von selbst.</p>
     </li>
     <li>
       <div class="st-titel">Während der Arbeit</div>
@@ -364,7 +329,7 @@
   <p>Die Kurzfassung zum Ansagen – als Aushang gibt es
   <a href="docs/anleitung-sus.md">docs/anleitung-sus.md</a>.</p>
   <ol class="schrittfolge">
-    <li><div class="st-titel">Prüfungs-App öffnen</div><p>Adresse von der Tafel, dann die Klassenarbeitsdatei aus dem Tauschordner laden (Endung <code>.jjwsp</code>).</p></li>
+    <li><div class="st-titel">Prüfungs-App öffnen</div><p>Adresse von der Tafel öffnen – <code>philipp-byte.github.io/Klassenarbeiten</code> –, dann die Klassenarbeitsdatei aus dem Tauschordner laden (Endung <code>.jjwsp</code>).</p></li>
     <li><div class="st-titel">Name eintragen</div><p>Name und Klasse (oder Prüfungsnummer), dann <span class="knopfname">Arbeit beginnen</span>. Beim Fortsetzen nach Absturz nur bestätigen, wenn der eigene Name angezeigt wird.</p></li>
     <li><div class="st-titel">Bearbeiten</div><p>Unten zwischen Aufgaben springen – blauer Punkt heißt „bearbeitet“. Bei Python: <span class="knopfname">▶ Code ausführen</span> und Selbsttests nutzen (zählen nicht für die Note). Alles speichert von selbst.</p></li>
     <li><div class="st-titel">Abgeben</div><p><span class="knopfname">Abgeben</span> → <span class="knopfname">Verschlüsselt abgeben</span> → heruntergeladene Datei in den Tauschordner ziehen → Bescheid geben. <strong>Erst dann ist die Arbeit abgegeben.</strong></p></li>
@@ -416,7 +381,7 @@
     <thead><tr><th>Meldung / Problem</th><th>Ursache und Lösung</th></tr></thead>
     <tbody>
       <tr><td>„Die Verschlüsselung des Browsers ist nicht verfügbar“</td><td>Seite per Doppelklick geöffnet. Über <code>start.cmd</code> / <code>start.sh</code> starten und die <code>localhost</code>-Adresse verwenden.</td></tr>
-      <tr><td>Python-Code lässt sich nicht ausführen</td><td>Pyodide fehlt lokal. Einmalig <code>scripts/pyodide-holen.cmd</code> bzw. <code>.sh</code> ausführen. Der Reiter „Hilfe &amp; Datenschutz“ zeigt den Zustand.</td></tr>
+      <tr><td>Python-Code lässt sich nicht ausführen (Lehrer-Rechner oder lokale Reserve)</td><td>Pyodide fehlt in der lokalen Installation. Einmalig <code>scripts/pyodide-holen.cmd</code> bzw. <code>.sh</code> ausführen. Der Reiter „Hilfe &amp; Datenschutz“ zeigt den Zustand. Auf der öffentlichen SuS-Website ist Python fest eingebaut – tritt es dort auf, Seite neu laden.</td></tr>
       <tr><td>„gehört zu einer anderen Arbeit“</td><td>Die Abgabe stammt aus einer anderen Klassenarbeit – in der Korrektur die richtige Arbeit auswählen.</td></tr>
       <tr><td>„Abgabe konnte nicht entschlüsselt werden“</td><td>Falscher Schlüssel oder die Datei wurde verändert. Anderen Schlüssel probieren; bei Verdacht Rücksprache mit der Person.</td></tr>
       <tr><td>„Das Programm lief länger als 10 Sekunden“</td><td>Endlosschleife im Schülercode – die App bricht ab und läuft weiter. Kein Handlungsbedarf.</td></tr>

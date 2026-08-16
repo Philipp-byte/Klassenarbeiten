@@ -1,15 +1,22 @@
 # Klassenarbeiten
 
-Zwei kleine Webprogramme für digitale Klassenarbeiten an der
+Zwei vollständig getrennte Webprogramme für digitale Klassenarbeiten an der
 Johann-Jakob-Widmann-Schule Heilbronn – mit automatischer Korrektur, auch von
 Python- und Webprogrammieraufgaben.
 
-**Alles bleibt auf dem jeweiligen Rechner.** Kein Server, kein Konto, keine
-Cloud, keine einzige Anfrage ins Internet.
+- **Prüfungs-App (SuS)** – läuft öffentlich auf
+  <https://philipp-byte.github.io/Klassenarbeiten/>, mit fest eingebauter
+  Python-Umgebung. Die Klasse öffnet nur die Adresse, installiert wird nichts.
+- **Lehrkraft-Werkzeug** – läuft **nur lokal** auf dem Rechner der Lehrkraft
+  (`start.cmd` / `start.sh`) und ist über die öffentliche Adresse nicht
+  erreichbar.
+
+**Alle Inhalte bleiben auf dem jeweiligen Rechner.** Kein Server, kein Konto,
+keine Cloud – Antworten, Namen und Noten werden nie ins Internet geschickt.
 
 ```
-LEHRKRAFT                                          SCHÜLERIN / SCHÜLER
-app/lehrer/                                        app/pruefung/
+LEHRKRAFT (lokal)                                  SCHÜLERIN / SCHÜLER (Pages)
+app/lehrer/                                        philipp-byte.github.io/…
   Klassenarbeit bauen  ──── arbeit.jjwsp ────▶       schreiben
   korrigieren          ◀─── abgabe.jjwsa ─────       verschlüsselt abgeben
   PDF · Notenliste · CSV
@@ -17,7 +24,10 @@ app/lehrer/                                        app/pruefung/
 
 ---
 
-## Schnellstart
+## Schnellstart (Lehrer-Rechner)
+
+Die Klasse braucht keinen Schnellstart – sie öffnet nur
+<https://philipp-byte.github.io/Klassenarbeiten/>.
 
 ### 1. Einmalig einrichten
 
@@ -27,7 +37,9 @@ app/lehrer/                                        app/pruefung/
 scripts\pyodide-holen.cmd           # Windows
 ```
 
-Ohne diesen Schritt funktioniert alles außer den Python-Aufgaben.
+Ohne diesen Schritt funktioniert alles außer den Python-Aufgaben. (Die
+öffentliche SuS-Website bekommt Pyodide automatisch beim Veröffentlichen
+eingebaut – dieser Schritt betrifft nur die lokale Installation.)
 
 ### 2. Starten
 
@@ -38,10 +50,10 @@ start.cmd                           # Windows – Doppelklick genügt
 
 Dann im Browser öffnen:
 
-| Wer | Adresse |
+| Was | Adresse |
 |-----|---------|
-| Schülerinnen und Schüler | <http://localhost:8080/app/pruefung/> |
-| Lehrkraft | <http://localhost:8080/app/lehrer/> |
+| Lehrkraft-Werkzeug | <http://localhost:8080/app/lehrer/> |
+| Prüfungs-App (lokale Reserve, z. B. ohne Internet) | <http://localhost:8080/app/pruefung/> |
 
 > **Warum ein Server?** Browser sperren aus Sicherheitsgründen die
 > Verschlüsselung und das Laden der Python-Laufzeit, wenn eine Seite per
@@ -65,7 +77,8 @@ zehn Aufgaben aller Typen.
    anlegen, Notenschlüssel prüfen.
 3. **Ausgeben**: *Datei für die Klasse erzeugen* → die `.jjwsp`-Datei in den
    Tauschordner legen. Sie enthält keine Lösungen.
-4. **Schreiben lassen**: Die SuS öffnen die Prüfungs-App, laden die Datei,
+4. **Schreiben lassen**: Die SuS öffnen die öffentliche Prüfungs-App
+   (<https://philipp-byte.github.io/Klassenarbeiten/>), laden die Datei,
    bearbeiten die Aufgaben und legen ihre `.jjwsa`-Datei im Tauschordner ab.
 5. **Korrigieren**: Reiter *Korrektur*, Arbeit wählen, alle Abgaben
    hereinziehen. Die Bewertung läuft automatisch; Freitexte bewertest du per
@@ -135,7 +148,10 @@ lit. e DSGVO in Verbindung mit § 115 SchG BW.
 
 Reine statische Webseiten: HTML, CSS und JavaScript-Module. Kein Build-Schritt,
 kein npm, kein Framework, keine Abhängigkeit außer Pyodide – und das liegt
-lokal.
+neben der App: lokal per `scripts/pyodide-holen`, auf der öffentlichen
+SuS-Website fest eingebaut durch den Veröffentlichungs-Workflow
+(`.github/workflows/pages.yml`). Der Workflow packt **nur** die Prüfungs-App –
+das Lehrkraft-Werkzeug taucht auf der öffentlichen Adresse nicht auf.
 
 Getestet mit Chrome/Edge und Firefox (jeweils aktuell). Safari ab Version 16.4.
 

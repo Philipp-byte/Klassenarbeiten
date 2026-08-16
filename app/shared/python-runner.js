@@ -8,15 +8,11 @@
 
 const WORKER_PFAD = new URL("./py-worker.js", import.meta.url);
 
-/* Woher kommt Pyodide?
-   • "lokal": aus app/vendor/pyodide/ – der Normalfall an der Schule,
-     komplett ohne Internet.
-   • "cdn": nur auf der öffentlichen Vorführseite (github.io). Dort liegt
-     Pyodide nicht im Repository; damit die Demo trotzdem funktioniert,
-     lädt der Browser es von jsDelivr. Für echte Klassenarbeiten gilt
-     weiterhin: lokale Installation, kein Netz. */
+/* Pyodide liegt immer neben der App in app/vendor/pyodide/ – lokal durch das
+   Skript scripts/pyodide-holen, auf der veröffentlichten SuS-Website durch den
+   Bau-Schritt des Veröffentlichungs-Workflows. Es wird nie von fremden Servern
+   nachgeladen. */
 const LOKALE_QUELLE = new URL("../vendor/pyodide/", import.meta.url).href;
-const CDN_QUELLE = "https://cdn.jsdelivr.net/pyodide/v0.26.4/full/";
 
 let quelleVersprechen = null;
 export function pyodideQuelle() {
@@ -26,10 +22,7 @@ export function pyodideQuelle() {
         const antwort = await fetch(LOKALE_QUELLE + "pyodide.js", { method: "HEAD" });
         if (antwort.ok) return { art: "lokal", url: LOKALE_QUELLE };
       } catch {
-        /* weiter unten entscheiden */
-      }
-      if (globalThis.location?.hostname?.endsWith("github.io")) {
-        return { art: "cdn", url: CDN_QUELLE };
+        /* fällt auf „nicht vorhanden“ */
       }
       return { art: null, url: null };
     })();
@@ -188,7 +181,7 @@ export class ZeitUeberschreitung extends Error {
   }
 }
 
-/** Ist Pyodide irgendwoher verfügbar (lokal oder – nur auf der Demo-Seite – CDN)? */
+/** Liegt Pyodide neben der App (app/vendor/pyodide/)? */
 export async function pyodideVorhanden() {
   return (await pyodideQuelle()).art !== null;
 }

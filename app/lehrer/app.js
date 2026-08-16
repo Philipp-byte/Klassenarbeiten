@@ -56,8 +56,6 @@ async function zeigeHilfe(ziel) {
   const pyodideText =
     quelle.art === "lokal"
       ? "lokal vorhanden"
-      : quelle.art === "cdn"
-      ? "über das Internet (nur auf der Vorführseite – die Schulversion bleibt offline)"
       : "fehlt – Programmieraufgaben können nicht geprüft werden";
 
   ziel.replaceChildren(
@@ -70,7 +68,7 @@ async function zeigeHilfe(ziel) {
         class: "klein grau",
         text:
           "Die vollständige Schritt-für-Schritt-Anleitung – vom Schlüssel über das Erstellen und " +
-          "Schreiben bis zur fertig korrigierten Arbeit, inklusive Demo-Durchlauf zum Ausprobieren.",
+          "Schreiben bis zur fertig korrigierten Arbeit.",
       }),
     ]),
     el("div", { class: "karte" }, [

@@ -42,7 +42,10 @@ Gesammelt aus den Vorgaben der Lehrkraft, in der Reihenfolge, in der sie kamen.
 | A29 | Modernes Design | ✅ überarbeitete Design-Schicht |
 | A30 | Einfache Handhabung | ✅ Typ-Dialog, Schrittanzeige, feste Aktionsleiste |
 | A31 | Syntax-Highlighting bei Python-Aufgaben | ✅ eigener Editor, auch HTML/CSS/JS |
-| A32 | GitHub-Website | ✅ `index.html` für GitHub Pages |
+| A32 | GitHub-Website | ✅ Pages-Veröffentlichung über `.github/workflows/pages.yml` |
+| A33 | Zwei getrennte Auslieferungen: SuS-App öffentlich auf GitHub Pages, Lehrkraft-Werkzeug **nur lokal** und über die öffentliche Adresse nicht erreichbar | ✅ Workflow packt nur `app/pruefung/` + `app/shared/` + `assets/` in `_site/`; `app/lehrer/` wird nie hochgeladen |
+| A34 | Keine Demo | ✅ Demo-Modus, Demo-Schlüssel und Beispiel-`.jjwsp` entfernt |
+| A35 | Python fest in die SuS-Website eingebaut | ✅ Workflow lädt Pyodide 0.26.4 beim Veröffentlichen nach `_site/app/vendor/pyodide/`; kein CDN, kein Nachladen von fremden Servern |
 
 ---
 

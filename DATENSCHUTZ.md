@@ -95,13 +95,23 @@ keine fremde Bibliothek.
 - Punkte und Noten stehen nicht in der Abgabedatei – sie entstehen erst bei der
   Lehrkraft.
 
-### Keine Übermittlung
+### Keine Übermittlung von Inhalten
 
 Beide Programme laden **keine externen Ressourcen**: keine Schriftarten von
 Google, kein CDN, keine Analysewerkzeuge, keine Fehlerberichte. Die
-Python-Laufzeit liegt lokal im Projektordner. Das lässt sich in den
-Entwicklerwerkzeugen des Browsers (Reiter „Netzwerk") jederzeit überprüfen –
-ein guter Nachweis gegenüber dem Datenschutzbeauftragten.
+Python-Laufzeit liegt jeweils direkt neben der App – beim Lehrkraft-Werkzeug
+im lokalen Projektordner, bei der öffentlichen SuS-Website fest im
+Veröffentlichungspaket. Das lässt sich in den Entwicklerwerkzeugen des
+Browsers (Reiter „Netzwerk") jederzeit überprüfen – ein guter Nachweis
+gegenüber dem Datenschutzbeauftragten.
+
+Zur Einordnung der öffentlichen SuS-Website (GitHub Pages): Beim **Aufruf**
+der Seite überträgt der Browser – wie bei jeder Website – technisch bedingt
+die IP-Adresse des Schulrechners an den Seitenbetreiber (GitHub). Danach
+arbeitet die App vollständig lokal: Namen, Antworten und die Abgabedatei
+verlassen den Rechner nie in Richtung Internet, es gibt keine Formulare, die
+irgendwohin senden. Wer auch den Seitenaufruf vermeiden möchte, nutzt die
+lokale Reserve-Fassung der Prüfungs-App aus dem Projektordner.
 
 ### Speicherorte
 

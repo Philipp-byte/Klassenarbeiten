@@ -1,5 +1,6 @@
 # ---------------------------------------------------------------------------
 # Pyodide wird lokal geholt (ca. 12 MB) und gehört nicht ins Repository.
+# Auf der veröffentlichten SuS-Website legt es der Veröffentlichungs-Workflow ab.
 # ---------------------------------------------------------------------------
 app/vendor/pyodide/
 !app/vendor/pyodide/.gitkeep
@@ -8,12 +9,10 @@ app/vendor/pyodide/
 # NIEMALS einchecken – enthält Lösungen bzw. personenbezogene Daten.
 # ---------------------------------------------------------------------------
 *.jjwsa          # verschlüsselte Abgaben der SuS
-*.jjwskey        # privater Schlüssel der Lehrkraft …
-!beispiele/demo-schluessel.jjwskey   # … außer dem absichtlich öffentlichen Demo-Schlüssel
+*.jjwskey        # privater Schlüssel der Lehrkraft
 *.jjwsm          # Klassenarbeiten mit Lösungen …
 !beispiele/*.jjwsm   # … außer der Beispielarbeit mit erfundenen Inhalten
 *.jjwsp          # ausgegebene Fassungen
-!beispiele/*.jjwsp
 
 abgaben/
 korrekturen/
@@ -29,3 +28,4 @@ Thumbs.db
 desktop.ini
 *.swp
 node_modules/
+_site/

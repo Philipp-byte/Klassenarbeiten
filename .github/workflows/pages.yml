@@ -1,10 +1,22 @@
 # ---------------------------------------------------------------------------
-# Veröffentlicht die Projektseite auf GitHub Pages.
+# Veröffentlicht auf GitHub Pages NUR die SuS-Software (Prüfungs-App).
 #
-# Das Projekt besteht nur aus statischen Dateien – es wird nichts gebaut,
-# der Inhalt des Repositorys wird unverändert ausgeliefert.
+# Das Lehrer-Werkzeug bleibt bewusst draußen: Es läuft ausschließlich lokal
+# auf dem Rechner der Lehrkraft und ist über die öffentliche Adresse nicht
+# erreichbar. Vor dem Hochladen wird ein Ordner _site zusammengestellt, der
+# nur enthält:
 #
-# Damit das funktioniert, muss GitHub Pages EINMAL eingeschaltet werden:
+#   _site/index.html              → Weiterleitung auf die Prüfungs-App
+#   _site/app/pruefung/           → die SuS-Software
+#   _site/app/shared/             → gemeinsame Bausteine (Kryptografie, Design …)
+#   _site/app/vendor/pyodide/     → Python-Umgebung, beim Bau heruntergeladen
+#   _site/assets/                 → Schullogo
+#
+# Pyodide (Python im Browser) wird hier fest eingebaut, damit die SuS-Seite
+# ohne fremde Server auskommt und Programmieraufgaben direkt laufen.
+#
+# Damit das Veröffentlichen funktioniert, muss GitHub Pages EINMAL
+# eingeschaltet werden:
 #   Settings → Pages → Build and deployment → Source: „GitHub Actions“
 #
 # Dieser Schritt lässt sich nicht automatisieren: Der Token, mit dem Actions
@@ -12,7 +24,7 @@
 # Einstellung fehlt, bricht der Workflow deshalb NICHT mit einem Fehler ab –
 # er meldet nur, was zu tun ist. Sonst käme bei jedem Push eine Fehlermail.
 # ---------------------------------------------------------------------------
-name: Projektseite veröffentlichen
+name: SuS-Software veröffentlichen
 
 on:
   push:
@@ -28,6 +40,9 @@ permissions:
 concurrency:
   group: pages
   cancel-in-progress: false
+
+env:
+  PYODIDE_VERSION: "0.26.4"
 
 jobs:
   veroeffentlichen:
@@ -51,7 +66,7 @@ jobs:
           else
             echo "bereit=nein" >> "$GITHUB_OUTPUT"
             {
-              echo "### Projektseite noch nicht veröffentlicht"
+              echo "### SuS-Software noch nicht veröffentlicht"
               echo
               echo "GitHub Pages ist für dieses Repository noch nicht eingeschaltet."
               echo "Das lässt sich nur von Hand erledigen und dauert einen Klick:"
@@ -70,6 +85,50 @@ jobs:
         if: steps.pruefung.outputs.bereit == 'ja'
         uses: actions/checkout@v4
 
+      - name: SuS-Seite zusammenstellen (ohne Lehrer-Werkzeug)
+        if: steps.pruefung.outputs.bereit == 'ja'
+        run: |
+          set -eu
+          mkdir -p _site/app
+          cp -r app/pruefung _site/app/pruefung
+          cp -r app/shared   _site/app/shared
+          cp -r assets       _site/assets
+
+          # Startseite: leitet direkt in die Prüfungs-App weiter.
+          cat > _site/index.html <<'HTML'
+          <!doctype html>
+          <html lang="de">
+          <head>
+            <meta charset="utf-8">
+            <meta http-equiv="refresh" content="0; url=./app/pruefung/">
+            <title>Klassenarbeit schreiben – JJWS</title>
+          </head>
+          <body>
+            <p>Weiter zur <a href="./app/pruefung/">Prüfungs-App</a> …</p>
+          </body>
+          </html>
+          HTML
+
+          # Sicherheitsnetz: Das Lehrer-Werkzeug darf im Paket nicht auftauchen.
+          if [ -e _site/app/lehrer ]; then
+            echo "::error::Lehrer-Werkzeug im Veröffentlichungspaket gefunden – Abbruch."
+            exit 1
+          fi
+
+      - name: Python-Umgebung (Pyodide) einbauen
+        if: steps.pruefung.outputs.bereit == 'ja'
+        run: |
+          set -eu
+          curl -fsSL --retry 4 --retry-delay 2 -o /tmp/pyodide.tar.bz2 \
+            "https://github.com/pyodide/pyodide/releases/download/${PYODIDE_VERSION}/pyodide-core-${PYODIDE_VERSION}.tar.bz2"
+          mkdir -p /tmp/pyodide-auspacken
+          tar -xjf /tmp/pyodide.tar.bz2 -C /tmp/pyodide-auspacken
+          mkdir -p _site/app/vendor/pyodide
+          cp -r /tmp/pyodide-auspacken/pyodide/. _site/app/vendor/pyodide/
+          test -f _site/app/vendor/pyodide/pyodide.js
+          echo "Pyodide ${PYODIDE_VERSION} eingebaut:"
+          du -sh _site/app/vendor/pyodide
+
       - name: Pages einrichten
         if: steps.pruefung.outputs.bereit == 'ja'
         uses: actions/configure-pages@v5
@@ -78,7 +137,7 @@ jobs:
         if: steps.pruefung.outputs.bereit == 'ja'
         uses: actions/upload-pages-artifact@v3
         with:
-          path: .
+          path: _site
 
       - name: Veröffentlichen
         id: veroeffentlichung

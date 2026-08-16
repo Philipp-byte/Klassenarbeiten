@@ -7,7 +7,7 @@ Diese Seite kannst du ausdrucken und austeilen oder im Klassenraum aufhängen.
 ## 1. Vor dem Start
 
 - Öffne den Browser und rufe die Adresse auf, die deine Lehrkraft angesagt hat
-  (meist `http://localhost:8080/app/pruefung/`).
+  (meist `https://philipp-byte.github.io/Klassenarbeiten/`).
 - Schließe alle anderen Fenster und Programme.
 
 ## 2. Klassenarbeit öffnen

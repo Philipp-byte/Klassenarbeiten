@@ -25,8 +25,11 @@ cat <<INFO
 
   Der Server läuft. Diese Adressen im Browser öffnen:
 
-    Für die Schülerinnen und Schüler   http://localhost:$PORT/app/pruefung/
-    Für die Lehrkraft                  http://localhost:$PORT/app/lehrer/
+    Lehrkraft-Werkzeug                  http://localhost:$PORT/app/lehrer/
+    Prüfungs-App (lokale Reserve)       http://localhost:$PORT/app/pruefung/
+
+  Die Klasse schreibt normalerweise auf der öffentlichen SuS-Website:
+    https://philipp-byte.github.io/Klassenarbeiten/
 
   Nur auf diesem Rechner erreichbar. Beenden mit Strg+C.
 

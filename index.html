@@ -76,11 +76,11 @@
   .code-schau .punkt { width: .6rem; height: .6rem; border-radius: 50%; background: var(--grey-200); }
   .code-schau pre { margin: 0; padding: 1rem 1.1rem; overflow-x: auto; font-family: var(--mono); font-size: .86rem; line-height: 1.6; }
 
-  .warnkasten {
-    border: 1px solid var(--amber); background: var(--amber-100);
-    border-radius: var(--r); padding: 1rem 1.15rem; color: #6b3c05;
+  .hinweiskasten {
+    border: 1px solid var(--blue); background: var(--blue-050, #eaf7fd);
+    border-radius: var(--r); padding: 1rem 1.15rem; color: var(--navy);
   }
-  .warnkasten strong { color: #6b3c05; }
+  .hinweiskasten code { word-break: break-all; }
 
   .fuss { background: var(--navy-900); color: #b9cbd6; padding: 2.5rem 1.25rem; }
   .fuss .inner { max-width: 1080px; margin: 0 auto; display: flex; gap: 2rem; flex-wrap: wrap; justify-content: space-between; }
@@ -113,58 +113,55 @@
 
 <section class="held">
   <div class="held-inhalt">
-    <div class="marke">Digitale Leistungsfeststellung</div>
-    <h1>Klassenarbeiten schreiben, <em>automatisch korrigieren</em>, als PDF zurückgeben.</h1>
+    <div class="marke">Lokale Startseite · nur für die Lehrkraft</div>
+    <h1>Klassenarbeiten erstellen, <em>automatisch korrigieren</em>, als PDF zurückgeben.</h1>
     <p class="vorspann">
-      Zwei kleine Webprogramme für berufliche Schulen: eines, in dem die Klasse schreibt,
-      und eines zum Erstellen und Korrigieren. 14 Aufgabenarten, davon 13 vollautomatisch
-      bewertet – einschließlich echter Unit-Tests für Python und DOM-Prüfungen für HTML und CSS.
-      Es verlässt kein einziges Byte den Rechner.
+      Zwei getrennte Programme: Die Klasse schreibt auf der öffentlichen SuS-Website,
+      erstellt und korrigiert wird ausschließlich hier – lokal auf diesem Rechner.
+      14 Aufgabenarten, davon 13 vollautomatisch bewertet, einschließlich echter
+      Unit-Tests für Python. Es verlässt kein einziges Byte den Rechner.
     </p>
     <div class="knoepfe">
-      <a class="btn gross" href="app/pruefung/?demo=1">🧪 Demo-Klassenarbeit schreiben</a>
-      <a class="btn gross sekundaer" href="app/lehrer/">Lehrkraft-Werkzeug öffnen</a>
-      <a class="btn gross leise" href="anleitung.html">📖 Anleitung</a>
+      <a class="btn gross" href="app/lehrer/">🧑‍🏫 Lehrkraft-Werkzeug öffnen</a>
+      <a class="btn gross sekundaer" href="anleitung.html">📖 Anleitung</a>
     </div>
   </div>
 </section>
 
 <section class="band">
-  <div class="warnkasten">
-    <strong>Diese Seite ist die Vorführung.</strong>
-    Hier lässt sich alles ausprobieren – auch das Ausführen von Python-Code (die
-    Python-Umgebung wird dafür einmalig aus dem Internet nachgeladen). Für echte
-    Klassenarbeiten wird das Projekt heruntergeladen und über den mitgelieferten lokalen
-    Server gestartet: Dann geht wirklich nichts ins Netz. Wie das geht, steht in der
-    <a href="anleitung.html">Anleitung</a>.
+  <div class="hinweiskasten">
+    <strong>Adresse für die Klasse:</strong>
+    Die SuS schreiben nicht hier, sondern auf der öffentlichen Prüfungs-Website
+    <a href="https://philipp-byte.github.io/Klassenarbeiten/">philipp-byte.github.io/Klassenarbeiten</a>.
+    Dort liegt nur die Schreib-App mit eingebauter Python-Umgebung – ohne Lehrkraft-Werkzeug,
+    ohne Lösungen. Das Lehrkraft-Werkzeug ist über diese Adresse nicht erreichbar.
   </div>
 </section>
 
 <section class="band" style="padding-top:0">
   <h2>Die zwei Programme</h2>
-  <p class="unterzeile">Getrennt nach Rolle – die Klasse sieht nie die Lösungen, die Bewertung passiert nur bei der Lehrkraft.</p>
+  <p class="unterzeile">Getrennt nach Rolle und nach Ort – die Klasse sieht nie die Lösungen, die Bewertung passiert nur bei der Lehrkraft.</p>
   <div class="merkmale" style="grid-template-columns:repeat(auto-fit,minmax(320px,1fr))">
     <div class="merkmal">
       <span class="zeichen">🧑‍🎓</span>
-      <h3>Prüfungs-App – für die Klasse</h3>
-      <p style="margin-bottom:1rem">Klassenarbeitsdatei laden, Aufgaben bearbeiten, Python-Code
-         schreiben und <strong>direkt ausführen</strong>, am Ende verschlüsselt abgeben.
-         Probier es aus – die Demo enthält zehn Aufgaben quer durch alle Arten,
-         inklusive Programmieren:</p>
+      <h3>Prüfungs-App – öffentlich, für die Klasse</h3>
+      <p style="margin-bottom:1rem">Läuft auf GitHub Pages. Klassenarbeitsdatei laden, Aufgaben
+         bearbeiten, Python-Code schreiben und <strong>direkt ausführen</strong>, am Ende
+         verschlüsselt abgeben. Python ist fest eingebaut – die SuS müssen nichts installieren.</p>
       <div class="zeile" style="gap:.6rem;flex-wrap:wrap">
-        <a class="btn" href="app/pruefung/?demo=1">🧪 Demo-Klassenarbeit schreiben</a>
-        <a class="btn leise" href="app/pruefung/">App ohne Demo öffnen</a>
+        <a class="btn" href="https://philipp-byte.github.io/Klassenarbeiten/">Öffentliche SuS-Website</a>
+        <a class="btn leise" href="app/pruefung/">Lokale Reserve-Fassung</a>
       </div>
     </div>
     <div class="merkmal">
       <span class="zeichen">🧑‍🏫</span>
-      <h3>Lehrkraft-Werkzeug – erstellen &amp; korrigieren</h3>
-      <p style="margin-bottom:1rem">Klassenarbeiten mit 14 Aufgabenarten bauen, als Datei für die
-         Klasse ausgeben, Abgaben entschlüsseln und automatisch bewerten, PDFs und
-         Notenliste erzeugen. Die Beispielarbeit liegt zum Laden bei.</p>
+      <h3>Lehrkraft-Werkzeug – nur lokal</h3>
+      <p style="margin-bottom:1rem">Läuft nur über diese lokale Startseite. Klassenarbeiten mit
+         14 Aufgabenarten bauen, als Datei für die Klasse ausgeben, Abgaben entschlüsseln und
+         automatisch bewerten, PDFs und Notenliste erzeugen. Die Beispielarbeit liegt zum Laden bei.</p>
       <div class="zeile" style="gap:.6rem;flex-wrap:wrap">
         <a class="btn" href="app/lehrer/">Lehrkraft-Werkzeug öffnen</a>
-        <a class="btn leise" href="anleitung.html#demo">Demo-Durchlauf in der Anleitung</a>
+        <a class="btn leise" href="anleitung.html">Anleitung</a>
       </div>
     </div>
   </div>
@@ -278,7 +275,8 @@
     </div>
     <div>
       <h3>Schreiben lassen</h3>
-      <p>Die Klasse arbeitet offline, mit Autosave und Wiederaufnahme nach Absturz, und gibt verschlüsselt ab.</p>
+      <p>Die Klasse öffnet die öffentliche SuS-Website, arbeitet mit Autosave und Wiederaufnahme
+         nach Absturz, und gibt verschlüsselt ab.</p>
     </div>
     <div>
       <h3>Korrigieren</h3>
@@ -293,7 +291,7 @@
   <div class="doku-liste">
     <a href="anleitung.html">
       <div class="t">📖 Die Anleitung</div>
-      <div class="b">Alles Schritt für Schritt – Einrichtung, Erstellen, Schreiben, Korrigieren, Demo-Durchlauf</div>
+      <div class="b">Alles Schritt für Schritt – Einrichtung, Erstellen, Schreiben, Korrigieren</div>
     </a>
     <a href="docs/anleitung-lehrkraft.md">
       <div class="t">Anleitung für die Lehrkraft</div>
@@ -323,8 +321,8 @@
 </section>
 
 <section class="band band-grau">
-  <h2>Selbst ausprobieren</h2>
-  <p class="unterzeile">Drei Befehle, dann läuft es lokal – mit Python-Ausführung und ohne Netz.</p>
+  <h2>Einrichtung auf dem Lehrer-Rechner</h2>
+  <p class="unterzeile">Drei Befehle, dann läuft das Lehrkraft-Werkzeug lokal – mit Python-Ausführung und ohne Netz.</p>
   <div class="code-schau">
     <div class="leiste">
       <span class="punkt"></span><span class="punkt"></span><span class="punkt"></span>
@@ -341,7 +339,7 @@ git clone https://github.com/Philipp-byte/Klassenarbeiten.git
 ./start.sh                          <span class="t-kommentar"># Windows: start.cmd (Doppelklick)</span></code></pre>
   </div>
   <p class="klein grau" style="margin-top:1rem">
-    In der Lehrkraft-App unter <em>Klassenarbeiten → Master-Datei laden</em> die Beispielarbeit
+    Im Lehrkraft-Werkzeug unter <em>Klassenarbeiten → Master-Datei laden</em> die Beispielarbeit
     <code>beispiele/klassenarbeit-schulkiosk.jjwsm</code> öffnen – zehn Aufgaben quer durch alle Arten.
   </p>
 </section>
@@ -358,6 +356,7 @@ git clone https://github.com/Philipp-byte/Klassenarbeiten.git
     <div>
       <h4>Projekt</h4>
       <ul>
+        <li><a href="https://philipp-byte.github.io/Klassenarbeiten/">SuS-Website (öffentlich)</a></li>
         <li><a href="https://github.com/Philipp-byte/Klassenarbeiten">Quellcode auf GitHub</a></li>
         <li><a href="BAUPLAN.md">Bauplan</a></li>
         <li><a href="README.md">Einrichtung</a></li>

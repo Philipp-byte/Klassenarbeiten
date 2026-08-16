@@ -172,7 +172,7 @@ def jjws_ausfuehren(quelltext, eingabe):
 
 async function starte(url) {
   if (pyodide) return;
-  if (url) indexURL = url; // Demo-Seite darf eine CDN-Adresse vorgeben
+  if (url) indexURL = url; // der Hauptthread gibt die geklärte lokale Quelle vor
   importScripts(indexURL + "pyodide.js");
   pyodide = await loadPyodide({ indexURL });
   pyodide.runPython(HARNESS);
